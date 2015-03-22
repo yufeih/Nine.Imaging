@@ -5,10 +5,10 @@
     <version>$version$-alpha</version>
     <authors>$author$</authors>
     <iconUrl>https://avatars3.githubusercontent.com/u/9212229?s=64</iconUrl>
-    <licenseUrl>https://github.com/yufeih/Nine.Injection/blob/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/yufeih/Nine.Injection</projectUrl>
+    <licenseUrl>https://github.com/yufeih/Nine.Imaging/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/yufeih/Nine.Imaging</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <tags>PCL, Portable, IOC, Constructor Injection, Dependency Injection</tags>
+    <tags>PCL, Portable, Image processing</tags>
   </metadata>
 </package>
