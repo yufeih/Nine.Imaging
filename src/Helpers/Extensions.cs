@@ -10,13 +10,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
-using System.Globalization;
-using System.IO;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Resources;
 
 namespace ImageTools.Helpers
 {
@@ -78,43 +72,7 @@ namespace ImageTools.Helpers
 
             return result;
         }
-
-        /// <summary>
-        /// Gets the stream to a local resource
-        /// </summary>
-        /// <param name="uri">The path to the local stream. Cannot be null.</param>
-        /// <returns>The stream to the local resource when such a resource exists or null otherwise.</returns>
-        /// <exception cref="ArgumentNullException"><paramref name="uri"/> is null.</exception>
-        public static Stream GetLocalResourceStream(Uri uri)
-        {
-            Contract.Requires<ArgumentNullException>(uri != null, "Uri cannot be null.");
-
-            StreamResourceInfo info = Application.GetResourceStream(uri);
-            if (info == null)
-            {
-                Application app = Application.Current;
-
-                if (app != null)
-                {
-                    Type appplicationType = app.GetType();
-
-                    string assemblyName = appplicationType.Assembly.FullName.Split(new char[] { ',' })[0];
-
-                    string uriString = uri.OriginalString;
-                    uriString = string.Format(CultureInfo.CurrentCulture, "{0};component/{1}", assemblyName, uriString);
-                    uriString = uriString.Replace("\\", "/");
-                    uriString = uriString.Replace("//", "/");
-
-                    Uri resourceUri = new Uri(uriString, UriKind.Relative);
-
-                    info = Application.GetResourceStream(resourceUri);
-                }
-            }
-
-            Stream stream = info != null ? info.Stream : null;
-            return stream;
-        }
-
+        
         /// <summary>
         /// Multiplies the values of the specified rectangle by the factor.
         /// </summary>

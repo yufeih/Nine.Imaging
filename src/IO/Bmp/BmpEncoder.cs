@@ -53,7 +53,7 @@ namespace ImageTools.IO.Bmp
         {
             Guard.NotNullOrEmpty(extension, "extension");
 
-            string extensionAsUpper = extension.ToUpper(CultureInfo.CurrentCulture);
+            string extensionAsUpper = extension.ToUpperInvariant();
             return extensionAsUpper == "BMP" || extensionAsUpper == "DIP";
         }
 

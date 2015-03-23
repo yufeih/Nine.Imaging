@@ -11,11 +11,8 @@ using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using ImageTools.Helpers;
 using ImageTools.IO;
 
 namespace ImageTools
@@ -181,31 +178,6 @@ namespace ImageTools
             }
         }
 
-        private Uri _uriSource;
-        /// <summary>
-        /// Gets or sets the <see cref="Uri"/> source of the <see cref="ExtendedImage"/>.
-        /// </summary>
-        /// <value>The <see cref="Uri"/> source of the <see cref="ExtendedImage"/>. The
-        /// default value is null (Nothing in Visual Basic).</value>
-        /// <remarks>If the stream source and the uri source are both set, 
-        /// the stream source will be ignored.</remarks>
-        public Uri UriSource
-        {
-            get { return _uriSource; }
-            set
-            {
-                lock (_lockObject)
-                {
-                    _uriSource = value;
-
-                    if (UriSource != null)
-                    {
-                        LoadAsync(UriSource);
-                    }
-                }
-            }
-        }
-
         #endregion
 
         #region Constructors
@@ -269,35 +241,6 @@ namespace ImageTools
         #endregion Constructors 
 
         #region Methods
-
-        /// <summary>
-        /// Sets the source of the image to a specified stream.
-        /// </summary>
-        /// <param name="stream">A <see cref="Stream"/> that contains the data for 
-        /// this <see cref="ExtendedImage"/>. Cannot be null.</param>
-        /// <remarks>
-        /// The stream will not be closed or disposed when the loading
-        /// is finished, so always use a using block or manually dispose
-        /// the stream, when using the method. 
-        /// The <see cref="ExtendedImage"/> class does not support alpha
-        /// transparency in bitmaps. To enable alpha transparency, use
-        /// PNG images with 32 bits per pixel.
-        /// </remarks>
-        /// <exception cref="ArgumentNullException"><paramref name="stream"/>
-        /// is null (Nothing in Visual Basic).</exception>
-        /// <exception cref="ImageFormatException">The image has an invalid
-        /// format.</exception>
-        /// <exception cref="NotSupportedException">The image cannot be loaded
-        /// because loading images of this type are not supported yet.</exception>
-        public void SetSource(Stream stream)
-        {
-            Contract.Requires<ArgumentNullException>(stream != null, "Stream cannot be null.");
-
-            if (_uriSource == null)
-            {
-                LoadAsync(stream);
-            }
-        }
 
         private void Load(Stream stream)
         {
@@ -377,85 +320,6 @@ namespace ImageTools
                     LoadingFailed?.Invoke(e);
                 }
             });
-        }
-
-        private void LoadAsync(Uri uri)
-        {
-            Contract.Requires(uri != null);
-
-            try
-            {
-                bool isHandled = false;
-
-                if (!uri.IsAbsoluteUri)
-                {
-                    string fixedUri = uri.ToString();
-
-                    fixedUri = fixedUri.Replace("\\", "/");
-
-                    if (fixedUri.StartsWith("/", StringComparison.OrdinalIgnoreCase))
-                    {
-                        fixedUri = fixedUri.Substring(1);
-                    }
-
-                    var resourceStream = Extensions.GetLocalResourceStream(new Uri(fixedUri, UriKind.Relative));
-                    if (resourceStream != null)
-                    {
-                        LoadAsync(resourceStream);
-
-                        isHandled = true;
-                    }
-                }
-
-                if (!isHandled)
-                {
-                    IsLoading = true;
-                    
-                    WebClient webClient = new WebClient();
-                    webClient.DownloadProgressChanged += new DownloadProgressChangedEventHandler(webClient_DownloadProgressChanged);
-                    webClient.OpenReadCompleted += new OpenReadCompletedEventHandler(webClient_OpenReadCompleted);
-                    webClient.OpenReadAsync(uri);
-                }
-            }
-            catch (ArgumentException e)
-            {
-                OnLoadingFailed(new UnhandledExceptionEventArgs(e, false));
-            }
-            catch (InvalidOperationException e)
-            {
-                OnLoadingFailed(new UnhandledExceptionEventArgs(e, false));
-            }
-        }
-
-        private void webClient_OpenReadCompleted(object sender, OpenReadCompletedEventArgs e)
-        {
-            try
-            {
-                if (e.Error == null)
-                {
-                    Stream remoteStream = e.Result;
-
-                    if (remoteStream != null)
-                    {
-                        LoadAsync(remoteStream);
-                    }
-                }
-                else
-                {
-                    OnLoadingFailed(new UnhandledExceptionEventArgs(e.Error, false));
-                }
-
-                OnDownloadCompleted(e);
-            }
-            catch (WebException ex)
-            {
-                OnLoadingFailed(new UnhandledExceptionEventArgs(ex, false));
-            }
-        }
-
-        private void webClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
-        {
-            OnDownloadProgress(e);
         }
 
         #endregion Methods 
