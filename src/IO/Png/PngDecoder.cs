@@ -99,7 +99,7 @@ namespace Nine.Imaging.IO.Png
         /// of length zero or contains only blanks.</exception>
         public bool IsSupportedFileExtension(string extension)
         {
-            string extensionAsUpper = extension.ToUpper(CultureInfo.CurrentCulture);
+            string extensionAsUpper = extension.ToUpperInvariant();
             return extensionAsUpper == "PNG";
         }
 
@@ -306,7 +306,7 @@ namespace Nine.Imaging.IO.Png
                         }
                         else if (filter == 3)
                         {
-                            currScanline[column] = (byte)(currScanline[column] + (byte)Math.Floor((a + b) / 2));
+                            currScanline[column] = (byte)(currScanline[column] + (byte)((a + b) / 2));
                         }
                         else if (filter == 4)
                         {

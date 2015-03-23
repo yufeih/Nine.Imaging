@@ -40,6 +40,15 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="BarcodeResult.cs" />
     <Compile Include="BarcodeResultFormat.cs" />
+    <Compile Include="IO\Png\GrayscaleReader.cs" />
+    <Compile Include="IO\Png\IColorReader.cs" />
+    <Compile Include="IO\Png\PaletteIndexReader.cs" />
+    <Compile Include="IO\Png\PngChunk.cs" />
+    <Compile Include="IO\Png\PngColorTypeInformation.cs" />
+    <Compile Include="IO\Png\PngDecoder.cs" />
+    <Compile Include="IO\Png\PngEncoder.cs" />
+    <Compile Include="IO\Png\PngHeader.cs" />
+    <Compile Include="IO\Png\TruecolorReader.cs" />
     <Compile Include="Types.cs" />
     <Compile Include="ExtendedImage.cs" />
     <Compile Include="ExtendedImage_Operations.cs" />
@@ -99,6 +108,13 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Nine.Imaging.nuspec" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib.Portable, Version=0.86.0.51802, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.Portable.0.86.0.0002\lib\portable-net45+netcore45+wp8+win8+wpa81+MonoTouch+MonoAndroid\ICSharpCode.SharpZipLib.Portable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(SolutionDir)\NuGet.targets" Condition="Exists('$(SolutionDir)\NuGet.targets')" />

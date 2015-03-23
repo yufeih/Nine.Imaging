@@ -96,7 +96,7 @@ namespace Nine.Imaging.IO.Png
         {
             Guard.NotNullOrEmpty(extension, "extension");
 
-            string extensionAsUpper = extension.ToUpper(CultureInfo.CurrentCulture);
+            string extensionAsUpper = extension.ToUpperInvariant();
             return extensionAsUpper == "PNG";
         }
 
@@ -324,7 +324,7 @@ namespace Nine.Imaging.IO.Png
                     zStream.Finish();
 
                     bufferLength = (int)memoryStream.Length;
-                    buffer = memoryStream.GetBuffer();
+                    buffer = memoryStream.ToArray();
                 }
             }
             finally
