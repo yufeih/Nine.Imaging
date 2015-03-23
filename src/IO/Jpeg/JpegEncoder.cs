@@ -8,7 +8,6 @@
 
 using System.Globalization;
 using System.IO;
-using System.Windows.Media;
 using FluxJpeg.Core;
 using Nine.Imaging.Helpers;
 
@@ -78,7 +77,7 @@ namespace Nine.Imaging.IO.Jpeg
         {
             Guard.NotNullOrEmpty(extension, "extension");
 
-            string extensionAsUpper = extension.ToUpper(CultureInfo.CurrentCulture);
+            string extensionAsUpper = extension.ToUpperInvariant();
             return extensionAsUpper == "JPG" ||
                    extensionAsUpper == "JPEG" ||
                    extensionAsUpper == "JFIF";

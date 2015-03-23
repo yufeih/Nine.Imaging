@@ -139,7 +139,7 @@ namespace BitMiracle.LibJpeg.Classic
         {
             get
             {
-                Version version = Assembly.GetExecutingAssembly().GetName().Version;
+                Version version = typeof(jpeg_common_struct).GetTypeInfo().Assembly.GetName().Version;
                 string versionString = version.Major.ToString(CultureInfo.InvariantCulture) +
                     "." + version.Minor.ToString(CultureInfo.InvariantCulture);
 

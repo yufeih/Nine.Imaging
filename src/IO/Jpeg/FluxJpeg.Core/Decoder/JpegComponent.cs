@@ -22,9 +22,6 @@ namespace FluxJpeg.Core.Decoder
             set
             {
                 quantizationTable = value;
-#if !WINDOWS_PHONE
-                _quant = EmitQuantize();
-#endif
             }
         }
         private int[] quantizationTable;
@@ -103,42 +100,6 @@ namespace FluxJpeg.Core.Decoder
             previousDC = 0;
         }
 
-#if !WINDOWS_PHONE
-        private delegate void QuantizeDel(float[] arr);
-        private QuantizeDel _quant = null;
-
-        private QuantizeDel EmitQuantize()
-        {
-            Type[] args = { typeof(float[]) };
-
-            DynamicMethod quantizeMethod = new DynamicMethod("Quantize",
-                null, // no return type
-                args); // input array
-
-            ILGenerator il = quantizeMethod.GetILGenerator();
-
-            for (int i = 0; i < quantizationTable.Length; i++)
-            {
-                float mult = (float)quantizationTable[i];
-
-                                                       // Sz Stack:
-                il.Emit(OpCodes.Ldarg_0);              // 1  {arr} 
-                il.Emit(OpCodes.Ldc_I4_S, (short)i);   // 3  {arr,i}
-                il.Emit(OpCodes.Ldarg_0);              // 1  {arr,i,arr}
-                il.Emit(OpCodes.Ldc_I4_S, (short)i);   // 3  {arr,i,arr,i}
-                il.Emit(OpCodes.Ldelem_R4);            // 1  {arr,i,arr[i]}
-                il.Emit(OpCodes.Ldc_R4, mult);         // 5  {arr,i,arr[i],mult}
-                il.Emit(OpCodes.Mul);                  // 1  {arr,i,arr[i]*mult}
-                il.Emit(OpCodes.Stelem_R4);            // 1  {}
-
-            }
-
-            il.Emit(OpCodes.Ret);
-
-            return (QuantizeDel)quantizeMethod.CreateDelegate(typeof(QuantizeDel));
-        }
-#endif
-
         /// <summary>
         /// Run the Quantization backward method on all of the block data.
         /// </summary>
@@ -149,14 +110,9 @@ namespace FluxJpeg.Core.Decoder
                 for(int v = 0; v < factorV; v++)
                     for (int h = 0; h < factorH; h++)
                     {
-#if !WINDOWS_PHONE
-                        // Dynamic IL method
-                        _quant(scanData[i][h, v]);
-#else
                         // Old technique
                         float[] toQuantize = scanData[i][h, v];
                         for (int j = 0; j < 64; j++) toQuantize[j] *= quantizationTable[j];
-#endif
                     }
             }
 

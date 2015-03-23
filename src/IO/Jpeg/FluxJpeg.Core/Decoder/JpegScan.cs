@@ -10,7 +10,7 @@ namespace FluxJpeg.Core.Decoder
     internal class JpegScan
     {
         private List<JpegComponent> components = new List<JpegComponent>();
-        public IList<JpegComponent> Components { get { return components.AsReadOnly(); } } 
+        public IList<JpegComponent> Components { get { return components; } } 
 
         private int maxV = 0, maxH = 0;
         internal int MaxH { get { return maxH; } }

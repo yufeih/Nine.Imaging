@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace BitMiracle.LibJpeg.Classic
 {
@@ -142,7 +143,7 @@ namespace BitMiracle.LibJpeg.Classic
             string buffer = format_message();
 
             // Send it to console, adding a newline */
-            Console.WriteLine(buffer);
+            Debug.WriteLine(buffer);
         }
 
         /// <summary>

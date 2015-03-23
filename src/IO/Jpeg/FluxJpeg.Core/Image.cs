@@ -2,11 +2,6 @@
 // Under the MIT License, details: License.txt.
 
 using System;
-#if SILVERLIGHT
-#else
-using System.Drawing;
-using System.Drawing.Imaging;
-#endif
 
 namespace FluxJpeg.Core
 {
@@ -134,68 +129,5 @@ namespace FluxJpeg.Core
         }
 
         delegate void ConvertColor(ref byte c1, ref byte c2, ref byte c3);
-
-        #if SILVERLIGHT
-        #else
-        public Bitmap ToBitmap()
-        {
-            ConvertColor ColorConverter;
-
-            switch(_cm.colorspace)
-            {
-                case ColorSpace.YCbCr:
-                    ColorConverter = YCbCr.toRGB;
-                    break;
-                default:
-                    throw new Exception("Colorspace not supported yet.");
-            }
-
-            int _width = width;
-            int _height = height;
-
-            Bitmap bitmap = new Bitmap(_width, _height, PixelFormat.Format32bppArgb);
-
-            BitmapData bmData = bitmap.LockBits(new Rectangle(0, 0, bitmap.Width, bitmap.Height),
-                System.Drawing.Imaging.ImageLockMode.WriteOnly,
-                System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-            byte[] outColor = new byte[3];
-            byte[] inColor = new byte[3];
-
-            unsafe
-            {
-                int i = 0;
-
-                byte* ptrBitmap = (byte*)bmData.Scan0;
-
-                for (int y = 0; y < _height; y++)
-                {
-                    for (int x = 0; x < _width; x++)
-                    {
-                        ptrBitmap[0] = (byte)_raster[0][x, y];
-                        ptrBitmap[1] = (byte)_raster[1][x, y];
-                        ptrBitmap[2] = (byte)_raster[2][x, y];
-
-                        ColorConverter(ref ptrBitmap[0], ref ptrBitmap[1], ref ptrBitmap[2]);
-
-                        // Swap RGB --> BGR
-                        byte R = ptrBitmap[0];
-                        ptrBitmap[0] = ptrBitmap[2];
-                        ptrBitmap[2] = R;
-
-                        ptrBitmap[3] = 255; /* 100% opacity */
-                        ptrBitmap += 4;     // advance to the next pixel
-                        i++;                // "
-                    }
-                }
-            }
-
-            bitmap.UnlockBits(bmData);
-
-            return bitmap;
-
-        }
-        #endif
-
     }
 }

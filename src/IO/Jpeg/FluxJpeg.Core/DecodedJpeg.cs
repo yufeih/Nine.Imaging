@@ -36,7 +36,7 @@ namespace FluxJpeg.Core
 
         private List<JpegHeader> _metaHeaders;
 
-        public IList<JpegHeader> MetaHeaders { get { return _metaHeaders.AsReadOnly(); } } 
+        public IList<JpegHeader> MetaHeaders { get { return _metaHeaders; } } 
 
         public DecodedJpeg(Image image, IEnumerable<JpegHeader> metaHeaders)
         {
