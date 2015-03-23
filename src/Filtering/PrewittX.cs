@@ -8,7 +8,7 @@
 
 using System.Diagnostics.Contracts;
 
-namespace ImageTools.Filtering
+namespace Nine.Imaging.Filtering
 {
     /// <summary>
     /// Implements the prewitt filter for detection of horizontal edges.

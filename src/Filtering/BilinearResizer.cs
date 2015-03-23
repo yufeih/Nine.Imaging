@@ -9,7 +9,7 @@
 using System;
 using System.Diagnostics.Contracts;
 
-namespace ImageTools.Filtering
+namespace Nine.Imaging.Filtering
 {
     /// <summary>
     /// Bilinear image resizer, which resizes the image with the bilinear interpolation.

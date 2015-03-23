@@ -8,9 +8,9 @@
 
 using System;
 using System.Diagnostics.Contracts;
-using ImageTools.Helpers;
+using Nine.Imaging.Helpers;
 
-namespace ImageTools.Filtering
+namespace Nine.Imaging.Filtering
 {
     /// <summary>
     /// An <see cref="IImageFilter"/> to change the contrast of an <see cref="ExtendedImage"/>.

@@ -9,7 +9,7 @@
 using System;
 using System.Diagnostics.Contracts;
 
-namespace ImageTools
+namespace Nine.Imaging
 {
     /// <summary>
     /// Stores meta information about a image, like the name of the author,

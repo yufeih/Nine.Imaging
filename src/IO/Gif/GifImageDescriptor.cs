@@ -6,7 +6,7 @@
 // All rights reserved.
 // ===============================================================================
 
-namespace ImageTools.IO.Gif
+namespace Nine.Imaging.IO.Gif
 {
     /// <summary>
     /// Each image in the Data Stream is composed of an Image Descriptor, 

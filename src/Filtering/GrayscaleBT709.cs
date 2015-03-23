@@ -6,7 +6,7 @@
 // All rights reserved.
 // ===============================================================================
 
-namespace ImageTools.Filtering
+namespace Nine.Imaging.Filtering
 {    
     /// <summary>
     /// Grayscale image using BT709 algorithm.

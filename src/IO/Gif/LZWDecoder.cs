@@ -9,9 +9,9 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using ImageTools.Helpers;
+using Nine.Imaging.Helpers;
 
-namespace ImageTools.IO.Gif
+namespace Nine.Imaging.IO.Gif
 {
     /// <summary>
     /// Uncrompress data using the LZW algorithmus.

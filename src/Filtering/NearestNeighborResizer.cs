@@ -7,10 +7,10 @@
 // ===============================================================================
 
 using System;
-using ImageTools.Helpers;
+using Nine.Imaging.Helpers;
 using System.Diagnostics.Contracts;
 
-namespace ImageTools.Filtering
+namespace Nine.Imaging.Filtering
 {
     /// <summary>
     /// Default image resizer, which resizes the image with the fast known method,

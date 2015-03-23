@@ -8,7 +8,7 @@
 
 using System.Diagnostics.Contracts;
 
-namespace ImageTools
+namespace Nine.Imaging
 {
     /// <summary>
     /// Interface for all image resizing algorithms.

@@ -8,7 +8,7 @@
 
 using System;
 
-namespace ImageTools.IO.Png
+namespace Nine.Imaging.IO.Png
 {
     /// <summary>
     /// Contains information that are required when loading a png with a specific color type.

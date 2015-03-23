@@ -8,9 +8,9 @@
 
 using System;
 using System.Diagnostics.Contracts;
-using ImageTools.Helpers;
+using Nine.Imaging.Helpers;
 
-namespace ImageTools
+namespace Nine.Imaging
 {
     partial class ImageBase
     {

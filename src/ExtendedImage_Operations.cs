@@ -10,7 +10,7 @@ using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 
-namespace ImageTools
+namespace Nine.Imaging
 {
     partial class ExtendedImage
     {

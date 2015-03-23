@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.IO;
 
-namespace ImageTools.IO
+namespace Nine.Imaging.IO
 {
     /// <summary>
     /// Interface for image decoders for loading images from streams.

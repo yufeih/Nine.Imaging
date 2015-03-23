@@ -6,7 +6,7 @@
 // All rights reserved.
 // ===============================================================================
 
-namespace ImageTools.IO
+namespace Nine.Imaging.IO
 {
     using System;
     using System.Collections.Generic;

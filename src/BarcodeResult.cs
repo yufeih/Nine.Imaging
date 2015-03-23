@@ -10,7 +10,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 using System.Windows;
 
-namespace ImageTools
+namespace Nine.Imaging
 {
     /// <summary>
     /// Encapsulates the result of decoding a barcode within an image.

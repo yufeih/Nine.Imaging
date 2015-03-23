@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 
-namespace ImageTools.Helpers
+namespace Nine.Imaging.Helpers
 {
     /// <summary>
     /// A collection of simple helper extension methods.

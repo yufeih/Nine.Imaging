@@ -8,9 +8,9 @@
 
 using System;
 using System.Diagnostics.Contracts;
-using ImageTools.Helpers;
+using Nine.Imaging.Helpers;
 
-namespace ImageTools.Filtering
+namespace Nine.Imaging.Filtering
 {
     /// <summary>
     /// Defines an abstract base filter that uses a matrix a factor and a bias value to 

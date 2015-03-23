@@ -9,7 +9,7 @@
 using System;
 using System.Diagnostics.Contracts;
 
-namespace ImageTools
+namespace Nine.Imaging
 {
     [ContractClassFor(typeof(IBarcodeReader))]
     abstract class IBarcodeReaderContract : IBarcodeReader

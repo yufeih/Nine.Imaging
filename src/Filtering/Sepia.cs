@@ -8,7 +8,7 @@
 
 using System.Diagnostics.Contracts;
 
-namespace ImageTools.Filtering
+namespace Nine.Imaging.Filtering
 {
     /// <summary>
     /// Simple sepia filter, which makes the image look like an old brown photo.

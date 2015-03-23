@@ -6,7 +6,7 @@
 // All rights reserved.
 // ===============================================================================
 
-namespace ImageTools
+namespace Nine.Imaging
 {
     /// <summary>
     /// Defines the format of the read barcode.

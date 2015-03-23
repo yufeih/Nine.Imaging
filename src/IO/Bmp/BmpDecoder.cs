@@ -6,12 +6,12 @@
 // All rights reserved.
 // ===============================================================================
 
-namespace ImageTools.IO.Bmp
+namespace Nine.Imaging.IO.Bmp
 {
     using System;
     using System.Globalization;
     using System.IO;
-    using ImageTools.Helpers;
+    using Nine.Imaging.Helpers;
     using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
@@ -77,7 +77,7 @@ namespace ImageTools.IO.Bmp
         /// 	<c>true</c>, if the decoder supports the specified
         /// extensions; otherwise <c>false</c>.
         /// </returns>
-        /// <remarks>For example, the <see cref="ImageTools.IO.Bmp.BmpDecoder"/>
+        /// <remarks>For example, the <see cref="Nine.Imaging.IO.Bmp.BmpDecoder"/>
         /// supports BMP or DIP as file extension.</remarks>
         /// <exception cref="ArgumentNullException"><paramref name="extension"/>
         /// is null (Nothing in Visual Basic).</exception>

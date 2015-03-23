@@ -6,7 +6,7 @@
 // All rights reserved.
 // ===============================================================================
 
-namespace ImageTools.IO.Bmp
+namespace Nine.Imaging.IO.Bmp
 {
     /// <summary>
     /// This block of bytes tells the application detailed information 

@@ -10,9 +10,9 @@ using System.Globalization;
 using System.IO;
 using BitMiracle.LibJpeg;
 using FluxJpeg.Core;
-using ImageTools.Helpers;
+using Nine.Imaging.Helpers;
 
-namespace ImageTools.IO.Jpeg
+namespace Nine.Imaging.IO.Jpeg
 {
     using FluxCoreJpegDecoder = FluxJpeg.Core.Decoder.JpegDecoder;
 

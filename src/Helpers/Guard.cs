@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
-namespace ImageTools.Helpers
+namespace Nine.Imaging.Helpers
 {
     /// <summary>
     /// A static class with a lot of helper methods, which guards 

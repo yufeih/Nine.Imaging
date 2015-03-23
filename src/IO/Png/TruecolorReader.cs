@@ -7,9 +7,9 @@
 // ===============================================================================
 
 using System;
-using ImageTools.Helpers;
+using Nine.Imaging.Helpers;
 
-namespace ImageTools.IO.Png
+namespace Nine.Imaging.IO.Png
 {
     /// <summary>
     /// Color reader for reading truecolors from a PNG file. Only colors

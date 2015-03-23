@@ -6,7 +6,7 @@
 // All rights reserved.
 // ===============================================================================
 
-namespace ImageTools.IO.Gif
+namespace Nine.Imaging.IO.Gif
 {
     /// <summary>
     /// The Logical Screen Descriptor contains the parameters 

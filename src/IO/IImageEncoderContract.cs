@@ -10,7 +10,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.IO;
 
-namespace ImageTools.IO
+namespace Nine.Imaging.IO
 {
     [ContractClassFor(typeof(IImageEncoder))]
     abstract class IImageEncoderContract : IImageEncoder

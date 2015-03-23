@@ -13,9 +13,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ImageTools.IO;
+using Nine.Imaging.IO;
 
-namespace ImageTools
+namespace Nine.Imaging
 {
     /// <summary>
     /// Image class with stores the pixels and provides common functionality

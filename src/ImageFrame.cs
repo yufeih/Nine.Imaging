@@ -10,7 +10,7 @@ using System;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 
-namespace ImageTools
+namespace Nine.Imaging
 {
     /// <summary>
     /// Represents a frame in a animation.

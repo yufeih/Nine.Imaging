@@ -10,7 +10,7 @@ using System;
 using System.Diagnostics.Contracts;
 using System.Diagnostics.CodeAnalysis;
 
-namespace ImageTools.Filtering
+namespace Nine.Imaging.Filtering
 {
     /// <summary>
     /// Implements a gaussian blur filter using a filter matrix.

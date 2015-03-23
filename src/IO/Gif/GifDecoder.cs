@@ -7,12 +7,10 @@
 // ===============================================================================
 
 using System;
-using System.Globalization;
 using System.IO;
-using System.Text;
-using ImageTools.Helpers;
+using Nine.Imaging.Helpers;
 
-namespace ImageTools.IO.Gif
+namespace Nine.Imaging.IO.Gif
 {
     /// <summary>
     /// Decodes GIF files from stream.

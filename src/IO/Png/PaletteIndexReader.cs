@@ -6,9 +6,9 @@
 // All rights reserved.
 // ===============================================================================
 
-using ImageTools.Helpers;
+using Nine.Imaging.Helpers;
 
-namespace ImageTools.IO.Png
+namespace Nine.Imaging.IO.Png
 {
     /// <summary>
     /// A color reader for reading palette indices from the PNG file.
