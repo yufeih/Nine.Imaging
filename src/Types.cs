@@ -14,7 +14,10 @@ namespace Nine.Imaging
     {
         public byte A, R, G, B;
 
-        public static Color FromArgb(byte a, byte r, byte g, byte b) => new Color { A = a, R = r, G = g, B = b };
+        public static Color FromArgb(byte a, byte r, byte g, byte b)
+        {
+            return new Color { A = a, R = r, G = g, B = b };
+        }
     }
 
     public struct Rect

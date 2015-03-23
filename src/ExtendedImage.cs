@@ -7,12 +7,12 @@
 // ===============================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Nine.Imaging.IO;
 
 namespace Nine.Imaging
@@ -59,29 +59,7 @@ namespace Nine.Imaging
 
         #endregion
 
-        #region Events
-
-        /// <summary>
-        /// Occurs when the loading is completed.
-        /// </summary>
-        public event Action LoadingCompleted;
-
-        /// <summary>
-        /// Occurs when the loading of the image failed.
-        /// </summary>
-        public event Action<Exception> LoadingFailed;
-
-        #endregion
-
         #region Properties
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this image is loading at the moment.
-        /// </summary>
-        /// <value>
-        /// true if this instance is image is loading at the moment; otherwise, false.
-        /// </value>
-        public bool IsLoading { get; private set; }
 
         /// <summary>
         /// Gets or sets the resolution of the image in x direction. It is defined as 
@@ -238,11 +216,37 @@ namespace Nine.Imaging
             DensityY = DefaultDensityY;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExtendedImage"/> class.
+        /// </summary>
+        public ExtendedImage(Stream stream)
+        {
+            if (stream == null)
+            {
+                throw new ArgumentNullException("stream");
+            }
+
+            Load(stream, Decoders.Default);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ExtendedImage"/> class.
+        /// </summary>
+        public ExtendedImage(Stream stream, params IImageDecoder[] decoders)
+        {
+            if (stream == null)
+            {
+                throw new ArgumentNullException("stream");
+            }
+
+            Load(stream, decoders);
+        }
+
         #endregion Constructors 
 
         #region Methods
 
-        private void Load(Stream stream)
+        private void Load(Stream stream, IList<IImageDecoder> decoders)
         {
             Contract.Requires(stream != null);
 
@@ -258,8 +262,6 @@ namespace Nine.Imaging
                     throw new NotSupportedException("The stream does not support seeking.");
                 }
 
-                var decoders = Decoders.GetAvailableDecoders();
-
                 if (decoders.Count > 0)
                 {
                     int maxHeaderSize = decoders.Max(x => x.HeaderSize);
@@ -274,25 +276,20 @@ namespace Nine.Imaging
                         if (decoder != null)
                         {
                             decoder.Decode(this, stream);
-                            IsLoading = false;
+                            return;
                         }
                     }
                 }
 
-                if (IsLoading)
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.AppendLine("Image cannot be loaded. Available decoders:");
+
+                foreach (IImageDecoder decoder in decoders)
                 {
-                    IsLoading = false;
-
-                    StringBuilder stringBuilder = new StringBuilder();
-                    stringBuilder.AppendLine("Image cannot be loaded. Available decoders:");
-
-                    foreach (IImageDecoder decoder in decoders)
-                    {
-                        stringBuilder.AppendLine("-" + decoder);
-                    }
-
-                    throw new UnsupportedImageFormatException(stringBuilder.ToString());
+                    stringBuilder.AppendLine("-" + decoder);
                 }
+
+                throw new UnsupportedImageFormatException(stringBuilder.ToString());
             }
             finally
             {
@@ -300,46 +297,6 @@ namespace Nine.Imaging
             }
         }
 
-        private void LoadAsync(Stream stream)
-        {
-            Contract.Requires(stream != null);
-            Contract.Requires<InvalidOperationException>(stream.CanSeek);
-
-            IsLoading = true;
-
-            Task.Run(() =>
-            {
-                try
-                {
-                    Load(stream);
-
-                    LoadingCompleted?.Invoke();
-                }
-                catch (Exception e)
-                {
-                    LoadingFailed?.Invoke(e);
-                }
-            });
-        }
-
-        #endregion Methods 
-
-        #region ICloneable Members
-
-        /// <summary>
-        /// Creates a new object that is a copy of the current instance.
-        /// </summary>
-        /// <returns>
-        /// A new object that is a copy of this instance.
-        /// </returns>
-        public ExtendedImage Clone()
-        {
-            Contract.Requires(IsFilled);
-            Contract.Ensures(Contract.Result<ExtendedImage>() != null);
-
-            return new ExtendedImage(this);
-        }
-
-        #endregion
+        #endregion Methods
     }
 }
