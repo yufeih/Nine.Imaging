@@ -8,16 +8,15 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
-namespace Nine.Imaging.Helpers
+namespace Nine.Imaging
 {
     /// <summary>
     /// A static class with a lot of helper methods, which guards 
     /// a method agains invalid parameters.
     /// </summary>
-    public static class Guard
+    static class Guard
     {
         /// <summary>
         /// Verifies that the specified value is between a lower and a upper value

@@ -12,12 +12,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics.Contracts;
 
-namespace Nine.Imaging.Helpers
+namespace Nine.Imaging
 {
     /// <summary>
     /// A collection of simple helper extension methods.
     /// </summary>
-    public static class Extensions
+    static class Extensions
     {
         /// <summary>
         /// Defines a constant rectangle where all values are zero.

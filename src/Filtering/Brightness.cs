@@ -8,7 +8,6 @@
 
 using System;
 using System.Diagnostics.Contracts;
-using Nine.Imaging.Helpers;
 
 namespace Nine.Imaging.Filtering
 {

@@ -6,8 +6,6 @@
 // All rights reserved.
 // ===============================================================================
 
-using Nine.Imaging.Helpers;
-
 namespace Nine.Imaging.IO.Png
 {
     /// <summary>

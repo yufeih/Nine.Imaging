@@ -7,9 +7,7 @@
 // ===============================================================================
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using Nine.Imaging.Helpers;
 
 namespace Nine.Imaging.IO.Gif
 {

@@ -7,11 +7,9 @@
 // ===============================================================================
 
 using System;
-using System.Globalization;
 using System.IO;
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
-using Nine.Imaging.Helpers;
 
 namespace Nine.Imaging.IO.Png
 {

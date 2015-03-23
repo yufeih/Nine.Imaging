@@ -3,9 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-#if !WINDOWS_PHONE
-using System.Reflection.Emit;
-#endif
 using FluxJpeg.Core.IO;
 
 namespace FluxJpeg.Core.Decoder

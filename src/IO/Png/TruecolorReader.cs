@@ -7,7 +7,6 @@
 // ===============================================================================
 
 using System;
-using Nine.Imaging.Helpers;
 
 namespace Nine.Imaging.IO.Png
 {

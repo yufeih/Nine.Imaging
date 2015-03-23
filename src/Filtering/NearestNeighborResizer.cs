@@ -6,8 +6,6 @@
 // All rights reserved.
 // ===============================================================================
 
-using System;
-using Nine.Imaging.Helpers;
 using System.Diagnostics.Contracts;
 
 namespace Nine.Imaging.Filtering

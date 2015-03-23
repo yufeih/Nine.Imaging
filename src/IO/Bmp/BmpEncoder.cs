@@ -8,10 +8,7 @@
 
 namespace Nine.Imaging.IO.Bmp
 {
-    using System;
     using System.IO;
-    using Nine.Imaging.Helpers;
-    using System.Globalization;
 
     /// <summary>
     /// Image encoder for writing an image to a stream

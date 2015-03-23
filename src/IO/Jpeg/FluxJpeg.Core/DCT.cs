@@ -6,10 +6,6 @@
 //       since there is some overhead in emitting CIL dynamically.
 
 using System;
-#if !WINDOWS_PHONE
-using System.Reflection.Emit;
-#endif
-using System.Reflection;
 
 namespace FluxJpeg.Core
 {

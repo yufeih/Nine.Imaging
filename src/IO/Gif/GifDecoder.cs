@@ -8,7 +8,6 @@
 
 using System;
 using System.IO;
-using Nine.Imaging.Helpers;
 
 namespace Nine.Imaging.IO.Gif
 {

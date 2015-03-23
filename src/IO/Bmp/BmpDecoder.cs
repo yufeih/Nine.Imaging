@@ -11,8 +11,6 @@ namespace Nine.Imaging.IO.Bmp
     using System;
     using System.Globalization;
     using System.IO;
-    using Nine.Imaging.Helpers;
-    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Image decoder for generating an image out of an windows 

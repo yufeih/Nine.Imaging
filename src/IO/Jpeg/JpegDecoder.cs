@@ -6,11 +6,9 @@
 // All rights reserved.
 // ===============================================================================
 
-using System.Globalization;
 using System.IO;
 using BitMiracle.LibJpeg;
 using FluxJpeg.Core;
-using Nine.Imaging.Helpers;
 
 namespace Nine.Imaging.IO.Jpeg
 {
