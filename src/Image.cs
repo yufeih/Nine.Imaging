@@ -43,6 +43,14 @@ namespace Nine.Imaging
             new BmpDecoder(),
             new JpegDecoder(),
             new PngDecoder(),
+            new GifDecoder(),
+        });
+
+        private static readonly Lazy<List<IImageEncoder>> defaultEncoders = new Lazy<List<IImageEncoder>>(() => new List<IImageEncoder>
+        {
+            new BmpEncoder(),
+            new JpegEncoder(),
+            new PngEncoder(),
         });
 
         /// <summary>
@@ -51,6 +59,14 @@ namespace Nine.Imaging
         public static IList<IImageDecoder> Decoders
         {
             get { return defaultDecoders.Value; }
+        }
+
+        /// <summary>
+        /// Gets a list of default encoders.
+        /// </summary>
+        public static IList<IImageEncoder> Encoders
+        {
+            get { return defaultEncoders.Value; }
         }
 
         #endregion

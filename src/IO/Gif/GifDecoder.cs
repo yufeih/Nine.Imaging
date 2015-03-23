@@ -70,8 +70,8 @@ namespace Nine.Imaging.IO
         {
             Guard.NotNullOrEmpty(extension, "extension");
 
-            string extensionAsUpper = extension.ToUpperInvariant();
-            return extensionAsUpper == "GIF";
+            if (extension.StartsWith(".")) extension = extension.Substring(1);
+            return extension.Equals("GIF", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>

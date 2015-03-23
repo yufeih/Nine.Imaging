@@ -97,8 +97,8 @@ namespace Nine.Imaging.IO
         /// of length zero or contains only blanks.</exception>
         public bool IsSupportedFileExtension(string extension)
         {
-            string extensionAsUpper = extension.ToUpperInvariant();
-            return extensionAsUpper == "PNG";
+            if (extension.StartsWith(".")) extension = extension.Substring(1);
+            return extension.Equals("PNG", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>

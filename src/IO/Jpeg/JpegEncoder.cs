@@ -11,6 +11,7 @@ using FluxJpeg.Core;
 
 namespace Nine.Imaging.IO
 {
+    using System;
     using FluxCoreJpegEncoder = FluxJpeg.Core.Encoder.JpegEncoder;
 
     /// <summary>
@@ -75,10 +76,10 @@ namespace Nine.Imaging.IO
         {
             Guard.NotNullOrEmpty(extension, "extension");
 
-            string extensionAsUpper = extension.ToUpperInvariant();
-            return extensionAsUpper == "JPG" ||
-                   extensionAsUpper == "JPEG" ||
-                   extensionAsUpper == "JFIF";
+            if (extension.StartsWith(".")) extension = extension.Substring(1);
+            return extension.Equals("JPG", StringComparison.OrdinalIgnoreCase) ||
+                   extension.Equals("JPEG", StringComparison.OrdinalIgnoreCase) ||
+                   extension.Equals("JFIF", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
