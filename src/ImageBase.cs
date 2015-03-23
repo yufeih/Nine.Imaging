@@ -100,7 +100,7 @@ namespace Nine.Imaging
 
         private int _pixelHeight;
         /// <summary>
-        /// Gets the height of this <see cref="ExtendedImage"/> in pixels.
+        /// Gets the height of this <see cref="Image"/> in pixels.
         /// </summary>
         /// <value>The height of this image.</value>
         /// <remarks>The height will be initialized by the constructor
@@ -116,7 +116,7 @@ namespace Nine.Imaging
 
         private int _pixelWidth;
         /// <summary>
-        /// Gets the width of this <see cref="ExtendedImage"/> in pixels.
+        /// Gets the width of this <see cref="Image"/> in pixels.
         /// </summary>
         /// <value>The width of this image.</value>
         /// <remarks>The width will be initialized by the constructor

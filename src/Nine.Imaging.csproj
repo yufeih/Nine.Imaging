@@ -1,259 +1,257 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
-    <PropertyGroup>
-        <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-        <ProjectGuid>{4AABA076-63EA-409D-8B50-A65D7E10ABF2}</ProjectGuid>
-        <OutputType>Library</OutputType>
-        <RootNamespace>Nine.Image</RootNamespace>
-        <AssemblyName>Nine.Image</AssemblyName>
-        <DefaultLanguage>en-US</DefaultLanguage>
-        <FileAlignment>512</FileAlignment>
-        <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-        <TargetFrameworkProfile>Profile78</TargetFrameworkProfile>
-        <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-        <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
-        <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
-        <CodeContractsRuntimeOnlyPublicSurface>True</CodeContractsRuntimeOnlyPublicSurface>
-        <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
-        <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
-        <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
-        <CodeContractsRunCodeAnalysis>True</CodeContractsRunCodeAnalysis>
-        <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
-        <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
-        <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
-        <CodeContractsEnumObligations>True</CodeContractsEnumObligations>
-        <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
-        <CodeContractsAssertsToContractsCheckBox>True</CodeContractsAssertsToContractsCheckBox>
-        <CodeContractsRedundantTests>True</CodeContractsRedundantTests>
-        <CodeContractsMissingPublicRequiresAsWarnings>True</CodeContractsMissingPublicRequiresAsWarnings>
-        <CodeContractsMissingPublicEnsuresAsWarnings>False</CodeContractsMissingPublicEnsuresAsWarnings>
-        <CodeContractsInferRequires>True</CodeContractsInferRequires>
-        <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
-        <CodeContractsInferEnsuresAutoProperties>True</CodeContractsInferEnsuresAutoProperties>
-        <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
-        <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
-        <CodeContractsSuggestAssumptionsForCallees>False</CodeContractsSuggestAssumptionsForCallees>
-        <CodeContractsSuggestRequires>False</CodeContractsSuggestRequires>
-        <CodeContractsNecessaryEnsures>True</CodeContractsNecessaryEnsures>
-        <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
-        <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
-        <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
-        <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
-        <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
-        <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
-        <CodeContractsCustomRewriterAssembly />
-        <CodeContractsCustomRewriterClass />
-        <CodeContractsLibPaths />
-        <CodeContractsExtraRewriteOptions />
-        <CodeContractsExtraAnalysisOptions />
-        <CodeContractsSQLServerOption />
-        <CodeContractsBaseLineFile />
-        <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
-        <CodeContractsSkipAnalysisIfCannotConnectToCache>False</CodeContractsSkipAnalysisIfCannotConnectToCache>
-        <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
-        <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
-        <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
-        <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
-        <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-        <DebugSymbols>true</DebugSymbols>
-        <DebugType>full</DebugType>
-        <Optimize>false</Optimize>
-        <OutputPath>bin\Debug\</OutputPath>
-        <DefineConstants>DEBUG;TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <DebugType>pdbonly</DebugType>
-        <Optimize>true</Optimize>
-        <OutputPath>bin\Release\</OutputPath>
-        <DefineConstants>TRACE</DefineConstants>
-        <ErrorReport>prompt</ErrorReport>
-        <WarningLevel>4</WarningLevel>
-        <DownloadNuGetExe>true</DownloadNuGetExe>
-        <BuildPackage>true</BuildPackage>
-        <RunCodeAnalysis>true</RunCodeAnalysis>
-        <DocumentationFile>bin\Release\Nine.Image.xml</DocumentationFile>
-    </PropertyGroup>
-    <ItemGroup>
-        <Compile Include="AssemblyInfo.cs" />
-        <Compile Include="BarcodeResult.cs" />
-        <Compile Include="BarcodeResultFormat.cs" />
-        <Compile Include="IO\Jpeg\FluxJpeg.Core\DCT.cs" />
-        <Compile Include="IO\Jpeg\FluxJpeg.Core\DecodedJpeg.cs" />
-        <Compile Include="IO\Jpeg\FluxJpeg.Core\Decoder\HuffmanTable.cs" />
-        <Compile Include="IO\Jpeg\FluxJpeg.Core\Decoder\JpegComponent.cs" />
-        <Compile Include="IO\Jpeg\FluxJpeg.Core\Decoder\JpegDecoder.cs" />
-        <Compile Include="IO\Jpeg\FluxJpeg.Core\Decoder\JpegFrame.cs" />
-        <Compile Include="IO\Jpeg\FluxJpeg.Core\Decoder\JpegHuffmanTable.cs" />
-        <Compile Include="IO\Jpeg\FluxJpeg.Core\Decoder\JpegQuantizationTable.cs" />
-        <Compile Include="IO\Jpeg\FluxJpeg.Core\Decoder\JpegScan.cs" />
-        <Compile Include="IO\Jpeg\FluxJpeg.Core\Encoder\JpegEncoder.cs" />
-        <Compile Include="IO\Jpeg\FluxJpeg.Core\FDCT.cs" />
-        <Compile Include="IO\Jpeg\FluxJpeg.Core\Image.cs" />
-        <Compile Include="IO\Jpeg\FluxJpeg.Core\IO\BinaryReader.cs" />
-        <Compile Include="IO\Jpeg\FluxJpeg.Core\IO\BinaryWriter.cs" />
-        <Compile Include="IO\Jpeg\FluxJpeg.Core\IO\JpegBinaryReader.cs" />
-        <Compile Include="IO\Jpeg\FluxJpeg.Core\JpegMarker.cs" />
-        <Compile Include="IO\Jpeg\FluxJpeg.Core\YCbCr.cs" />
-        <Compile Include="IO\Jpeg\FluxJpeg.Core\ZigZag.cs" />
-        <Compile Include="IO\Jpeg\JpegDecoder.cs" />
-        <Compile Include="IO\Jpeg\JpegEncoder.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\BitmapDestination.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\BitStream.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\DensityUnit.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\bitread_perm_state.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\bitread_working_state.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\ComponentBuffer.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\d_derived_tbl.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\huff_entropy_decoder.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\huff_entropy_encoder.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\JpegUtils.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_color_converter.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_color_deconverter.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_color_quantizer.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_comp_master.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_c_coef_controller.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_c_main_controller.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_c_prep_controller.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_decomp_master.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_downsampler.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_d_coef_controller.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_d_main_controller.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_d_post_controller.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_entropy_decoder.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_entropy_encoder.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_forward_dct.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_input_controller.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_inverse_dct.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_marker_reader.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_marker_writer.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_scan_info.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_upsampler.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\J_BUF_MODE.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\my_1pass_cquantizer.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\my_2pass_cquantizer.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\my_c_coef_controller.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\my_destination_mgr.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\my_merged_upsampler.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\my_source_mgr.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\my_trans_c_coef_controller.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\my_upsampler.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\phuff_entropy_decoder.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\phuff_entropy_encoder.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\JBLOCK.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\JHUFF_TBL.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\JpegConstants.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\jpeg_common_struct.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\jpeg_component_info.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\jpeg_compress_struct.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\jpeg_decompress_struct.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\jpeg_destination_mgr.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\jpeg_error_mgr.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\JPEG_MARKER.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\jpeg_marker_struct.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\jpeg_progress_mgr.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\jpeg_source_mgr.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\JQUANT_TBL.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\jvirt_array.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\J_COLOR_SPACE.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\J_DCT_METHOD.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\J_DITHER_MODE.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\J_MESSAGE_CODE.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Classic\ReadResult.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\CompressionParameters.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\DecompressionParameters.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\DecompressorToJpegImage.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Enumerations.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\IDecompressDestination.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\IRawImage.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Jpeg.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\JpegImage.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\RawImage.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Sample.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\SampleRow.cs" />
-        <Compile Include="IO\Jpeg\LibJpeg\Utils.cs" />
-        <Compile Include="IO\Png\GrayscaleReader.cs" />
-        <Compile Include="IO\Png\IColorReader.cs" />
-        <Compile Include="IO\Png\PaletteIndexReader.cs" />
-        <Compile Include="IO\Png\PngChunk.cs" />
-        <Compile Include="IO\Png\PngColorTypeInformation.cs" />
-        <Compile Include="IO\Png\PngDecoder.cs" />
-        <Compile Include="IO\Png\PngEncoder.cs" />
-        <Compile Include="IO\Png\PngHeader.cs" />
-        <Compile Include="IO\Png\TruecolorReader.cs" />
-        <Compile Include="Types.cs" />
-        <Compile Include="ExtendedImage.cs" />
-        <Compile Include="ExtendedImage_Operations.cs" />
-        <Compile Include="Filtering\BilinearResizer.cs" />
-        <Compile Include="Filtering\BinarizerMode.cs" />
-        <Compile Include="Filtering\BlendingFilter.cs" />
-        <Compile Include="Filtering\Brightness.cs" />
-        <Compile Include="Filtering\Contrast.cs" />
-        <Compile Include="Filtering\GaussianBlur.cs" />
-        <Compile Include="Filtering\Grayscale.cs" />
-        <Compile Include="Filtering\GrayscaleBT709.cs" />
-        <Compile Include="Filtering\GrayscaleRMY.cs" />
-        <Compile Include="Filtering\Inverter.cs" />
-        <Compile Include="Filtering\MatrixFilter.cs" />
-        <Compile Include="Filtering\NearestNeighborResizer.cs" />
-        <Compile Include="Filtering\PrewittX.cs" />
-        <Compile Include="Filtering\PrewittY.cs" />
-        <Compile Include="Filtering\Sepia.cs" />
-        <Compile Include="Filtering\SobelX.cs" />
-        <Compile Include="Filtering\SobelY.cs" />
-        <Compile Include="FlippingType.cs" />
-        <Compile Include="Helpers\Extensions.cs" />
-        <Compile Include="Helpers\Guard.cs" />
-        <Compile Include="IBarcodeReader.cs" />
-        <Compile Include="IBarcodeReaderContract.cs" />
-        <Compile Include="IImageFilter.cs" />
-        <Compile Include="IImageFilterContract.cs" />
-        <Compile Include="IImageResizer.cs" />
-        <Compile Include="IImageResizerContract.cs" />
-        <Compile Include="ImageBase.cs" />
-        <Compile Include="ImageBase_Operations.cs" />
-        <Compile Include="ImageFormatException.cs" />
-        <Compile Include="ImageFrame.cs" />
-        <Compile Include="ImageFrameCollection.cs" />
-        <Compile Include="ImageProperty.cs" />
-        <Compile Include="ImagePropertyCollection.cs" />
-        <Compile Include="IO\Bmp\BmpCompression.cs" />
-        <Compile Include="IO\Bmp\BmpDecoder.cs" />
-        <Compile Include="IO\Bmp\BmpEncoder.cs" />
-        <Compile Include="IO\Bmp\BmpFileHeader.cs" />
-        <Compile Include="IO\Bmp\BmpInfoHeader.cs" />
-        <Compile Include="IO\Decoders.cs" />
-        <Compile Include="IO\Encoders.cs" />
-        <Compile Include="IO\Gif\DisposalMethod.cs" />
-        <Compile Include="IO\Gif\GifDecoder.cs" />
-        <Compile Include="IO\Gif\GifGraphicsControlExtension.cs" />
-        <Compile Include="IO\Gif\GifImageDescriptor.cs" />
-        <Compile Include="IO\Gif\GifLogicalScreenDescriptor.cs" />
-        <Compile Include="IO\Gif\LZWDecoder.cs" />
-        <Compile Include="IO\IImageDecoder.cs" />
-        <Compile Include="IO\IImageDecoderContract.cs" />
-        <Compile Include="IO\IImageEncoder.cs" />
-        <Compile Include="IO\IImageEncoderContract.cs" />
-        <Compile Include="IO\UnsupportedImageFormatException.cs" />
-        <Compile Include="Rectangle.cs" />
-        <Compile Include="RotationType.cs" />
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="Nine.Imaging.nuspec" />
-        <None Include="packages.config" />
-    </ItemGroup>
-    <ItemGroup>
-        <Reference Include="ICSharpCode.SharpZipLib.Portable, Version=0.86.0.51802, Culture=neutral, processorArchitecture=MSIL">
-            <HintPath>..\packages\SharpZipLib.Portable.0.86.0.0002\lib\portable-net45+netcore45+wp8+win8+wpa81+MonoTouch+MonoAndroid\ICSharpCode.SharpZipLib.Portable.dll</HintPath>
-            <Private>True</Private>
-        </Reference>
-    </ItemGroup>
-    <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-    <Import Project="$(SolutionDir)\NuGet.targets" Condition="Exists('$(SolutionDir)\NuGet.targets')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4AABA076-63EA-409D-8B50-A65D7E10ABF2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Nine.Image</RootNamespace>
+    <AssemblyName>Nine.Image</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile78</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <CodeContractsAssemblyMode>1</CodeContractsAssemblyMode>
+    <CodeContractsEnableRuntimeChecking>True</CodeContractsEnableRuntimeChecking>
+    <CodeContractsRuntimeOnlyPublicSurface>True</CodeContractsRuntimeOnlyPublicSurface>
+    <CodeContractsRuntimeThrowOnFailure>True</CodeContractsRuntimeThrowOnFailure>
+    <CodeContractsRuntimeCallSiteRequires>False</CodeContractsRuntimeCallSiteRequires>
+    <CodeContractsRuntimeSkipQuantifiers>False</CodeContractsRuntimeSkipQuantifiers>
+    <CodeContractsRunCodeAnalysis>True</CodeContractsRunCodeAnalysis>
+    <CodeContractsNonNullObligations>True</CodeContractsNonNullObligations>
+    <CodeContractsBoundsObligations>True</CodeContractsBoundsObligations>
+    <CodeContractsArithmeticObligations>True</CodeContractsArithmeticObligations>
+    <CodeContractsEnumObligations>True</CodeContractsEnumObligations>
+    <CodeContractsRedundantAssumptions>True</CodeContractsRedundantAssumptions>
+    <CodeContractsAssertsToContractsCheckBox>True</CodeContractsAssertsToContractsCheckBox>
+    <CodeContractsRedundantTests>True</CodeContractsRedundantTests>
+    <CodeContractsMissingPublicRequiresAsWarnings>True</CodeContractsMissingPublicRequiresAsWarnings>
+    <CodeContractsMissingPublicEnsuresAsWarnings>False</CodeContractsMissingPublicEnsuresAsWarnings>
+    <CodeContractsInferRequires>True</CodeContractsInferRequires>
+    <CodeContractsInferEnsures>False</CodeContractsInferEnsures>
+    <CodeContractsInferEnsuresAutoProperties>True</CodeContractsInferEnsuresAutoProperties>
+    <CodeContractsInferObjectInvariants>False</CodeContractsInferObjectInvariants>
+    <CodeContractsSuggestAssumptions>False</CodeContractsSuggestAssumptions>
+    <CodeContractsSuggestAssumptionsForCallees>False</CodeContractsSuggestAssumptionsForCallees>
+    <CodeContractsSuggestRequires>False</CodeContractsSuggestRequires>
+    <CodeContractsNecessaryEnsures>True</CodeContractsNecessaryEnsures>
+    <CodeContractsSuggestObjectInvariants>False</CodeContractsSuggestObjectInvariants>
+    <CodeContractsSuggestReadonly>True</CodeContractsSuggestReadonly>
+    <CodeContractsRunInBackground>True</CodeContractsRunInBackground>
+    <CodeContractsShowSquigglies>True</CodeContractsShowSquigglies>
+    <CodeContractsUseBaseLine>False</CodeContractsUseBaseLine>
+    <CodeContractsEmitXMLDocs>False</CodeContractsEmitXMLDocs>
+    <CodeContractsCustomRewriterAssembly />
+    <CodeContractsCustomRewriterClass />
+    <CodeContractsLibPaths />
+    <CodeContractsExtraRewriteOptions />
+    <CodeContractsExtraAnalysisOptions />
+    <CodeContractsSQLServerOption />
+    <CodeContractsBaseLineFile />
+    <CodeContractsCacheAnalysisResults>True</CodeContractsCacheAnalysisResults>
+    <CodeContractsSkipAnalysisIfCannotConnectToCache>False</CodeContractsSkipAnalysisIfCannotConnectToCache>
+    <CodeContractsFailBuildOnWarnings>False</CodeContractsFailBuildOnWarnings>
+    <CodeContractsBeingOptimisticOnExternal>True</CodeContractsBeingOptimisticOnExternal>
+    <CodeContractsRuntimeCheckingLevel>Full</CodeContractsRuntimeCheckingLevel>
+    <CodeContractsReferenceAssembly>%28none%29</CodeContractsReferenceAssembly>
+    <CodeContractsAnalysisWarningLevel>0</CodeContractsAnalysisWarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DownloadNuGetExe>true</DownloadNuGetExe>
+    <BuildPackage>true</BuildPackage>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+    <DocumentationFile>bin\Release\Nine.Image.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Barcode\BarcodeResult.cs" />
+    <Compile Include="Barcode\BarcodeResultFormat.cs" />
+    <Compile Include="IO\Jpeg\FluxJpeg.Core\DCT.cs" />
+    <Compile Include="IO\Jpeg\FluxJpeg.Core\DecodedJpeg.cs" />
+    <Compile Include="IO\Jpeg\FluxJpeg.Core\Decoder\HuffmanTable.cs" />
+    <Compile Include="IO\Jpeg\FluxJpeg.Core\Decoder\JpegComponent.cs" />
+    <Compile Include="IO\Jpeg\FluxJpeg.Core\Decoder\JpegDecoder.cs" />
+    <Compile Include="IO\Jpeg\FluxJpeg.Core\Decoder\JpegFrame.cs" />
+    <Compile Include="IO\Jpeg\FluxJpeg.Core\Decoder\JpegHuffmanTable.cs" />
+    <Compile Include="IO\Jpeg\FluxJpeg.Core\Decoder\JpegQuantizationTable.cs" />
+    <Compile Include="IO\Jpeg\FluxJpeg.Core\Decoder\JpegScan.cs" />
+    <Compile Include="IO\Jpeg\FluxJpeg.Core\Encoder\JpegEncoder.cs" />
+    <Compile Include="IO\Jpeg\FluxJpeg.Core\FDCT.cs" />
+    <Compile Include="IO\Jpeg\FluxJpeg.Core\Image.cs" />
+    <Compile Include="IO\Jpeg\FluxJpeg.Core\IO\BinaryReader.cs" />
+    <Compile Include="IO\Jpeg\FluxJpeg.Core\IO\BinaryWriter.cs" />
+    <Compile Include="IO\Jpeg\FluxJpeg.Core\IO\JpegBinaryReader.cs" />
+    <Compile Include="IO\Jpeg\FluxJpeg.Core\JpegMarker.cs" />
+    <Compile Include="IO\Jpeg\FluxJpeg.Core\YCbCr.cs" />
+    <Compile Include="IO\Jpeg\FluxJpeg.Core\ZigZag.cs" />
+    <Compile Include="IO\Jpeg\JpegDecoder.cs" />
+    <Compile Include="IO\Jpeg\JpegEncoder.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\BitmapDestination.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\BitStream.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\DensityUnit.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\bitread_perm_state.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\bitread_working_state.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\ComponentBuffer.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\d_derived_tbl.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\huff_entropy_decoder.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\huff_entropy_encoder.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\JpegUtils.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_color_converter.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_color_deconverter.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_color_quantizer.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_comp_master.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_c_coef_controller.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_c_main_controller.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_c_prep_controller.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_decomp_master.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_downsampler.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_d_coef_controller.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_d_main_controller.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_d_post_controller.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_entropy_decoder.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_entropy_encoder.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_forward_dct.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_input_controller.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_inverse_dct.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_marker_reader.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_marker_writer.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_scan_info.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\jpeg_upsampler.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\J_BUF_MODE.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\my_1pass_cquantizer.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\my_2pass_cquantizer.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\my_c_coef_controller.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\my_destination_mgr.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\my_merged_upsampler.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\my_source_mgr.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\my_trans_c_coef_controller.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\my_upsampler.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\phuff_entropy_decoder.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\Internal\phuff_entropy_encoder.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\JBLOCK.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\JHUFF_TBL.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\JpegConstants.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\jpeg_common_struct.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\jpeg_component_info.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\jpeg_compress_struct.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\jpeg_decompress_struct.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\jpeg_destination_mgr.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\jpeg_error_mgr.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\JPEG_MARKER.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\jpeg_marker_struct.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\jpeg_progress_mgr.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\jpeg_source_mgr.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\JQUANT_TBL.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\jvirt_array.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\J_COLOR_SPACE.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\J_DCT_METHOD.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\J_DITHER_MODE.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\J_MESSAGE_CODE.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Classic\ReadResult.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\CompressionParameters.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\DecompressionParameters.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\DecompressorToJpegImage.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Enumerations.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\IDecompressDestination.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\IRawImage.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Jpeg.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\JpegImage.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\RawImage.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Sample.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\SampleRow.cs" />
+    <Compile Include="IO\Jpeg\LibJpeg\Utils.cs" />
+    <Compile Include="IO\Png\GrayscaleReader.cs" />
+    <Compile Include="IO\Png\IColorReader.cs" />
+    <Compile Include="IO\Png\PaletteIndexReader.cs" />
+    <Compile Include="IO\Png\PngChunk.cs" />
+    <Compile Include="IO\Png\PngColorTypeInformation.cs" />
+    <Compile Include="IO\Png\PngDecoder.cs" />
+    <Compile Include="IO\Png\PngEncoder.cs" />
+    <Compile Include="IO\Png\PngHeader.cs" />
+    <Compile Include="IO\Png\TruecolorReader.cs" />
+    <Compile Include="Types.cs" />
+    <Compile Include="Image.cs" />
+    <Compile Include="Filtering\ImageFiltering.cs" />
+    <Compile Include="Filtering\BilinearResizer.cs" />
+    <Compile Include="Filtering\BinarizerMode.cs" />
+    <Compile Include="Filtering\BlendingFilter.cs" />
+    <Compile Include="Filtering\Brightness.cs" />
+    <Compile Include="Filtering\Contrast.cs" />
+    <Compile Include="Filtering\GaussianBlur.cs" />
+    <Compile Include="Filtering\Grayscale.cs" />
+    <Compile Include="Filtering\GrayscaleBT709.cs" />
+    <Compile Include="Filtering\GrayscaleRMY.cs" />
+    <Compile Include="Filtering\Inverter.cs" />
+    <Compile Include="Filtering\MatrixFilter.cs" />
+    <Compile Include="Filtering\NearestNeighborResizer.cs" />
+    <Compile Include="Filtering\PrewittX.cs" />
+    <Compile Include="Filtering\PrewittY.cs" />
+    <Compile Include="Filtering\Sepia.cs" />
+    <Compile Include="Filtering\SobelX.cs" />
+    <Compile Include="Filtering\SobelY.cs" />
+    <Compile Include="FlippingType.cs" />
+    <Compile Include="Helpers\Extensions.cs" />
+    <Compile Include="Helpers\Guard.cs" />
+    <Compile Include="Barcode\IBarcodeReader.cs" />
+    <Compile Include="Barcode\IBarcodeReaderContract.cs" />
+    <Compile Include="Filtering\IImageFilter.cs" />
+    <Compile Include="Filtering\IImageFilterContract.cs" />
+    <Compile Include="Filtering\IImageResizer.cs" />
+    <Compile Include="Filtering\IImageResizerContract.cs" />
+    <Compile Include="ImageBase.cs" />
+    <Compile Include="ImageBase_Operations.cs" />
+    <Compile Include="ImageFormatException.cs" />
+    <Compile Include="ImageFrame.cs" />
+    <Compile Include="ImageFrameCollection.cs" />
+    <Compile Include="ImageProperty.cs" />
+    <Compile Include="ImagePropertyCollection.cs" />
+    <Compile Include="IO\Bmp\BmpCompression.cs" />
+    <Compile Include="IO\Bmp\BmpDecoder.cs" />
+    <Compile Include="IO\Bmp\BmpEncoder.cs" />
+    <Compile Include="IO\Bmp\BmpFileHeader.cs" />
+    <Compile Include="IO\Bmp\BmpInfoHeader.cs" />
+    <Compile Include="IO\Gif\DisposalMethod.cs" />
+    <Compile Include="IO\Gif\GifDecoder.cs" />
+    <Compile Include="IO\Gif\GifGraphicsControlExtension.cs" />
+    <Compile Include="IO\Gif\GifImageDescriptor.cs" />
+    <Compile Include="IO\Gif\GifLogicalScreenDescriptor.cs" />
+    <Compile Include="IO\Gif\LZWDecoder.cs" />
+    <Compile Include="IO\IImageDecoder.cs" />
+    <Compile Include="IO\IImageDecoderContract.cs" />
+    <Compile Include="IO\IImageEncoder.cs" />
+    <Compile Include="IO\IImageEncoderContract.cs" />
+    <Compile Include="IO\UnsupportedImageFormatException.cs" />
+    <Compile Include="Rectangle.cs" />
+    <Compile Include="RotationType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Nine.Imaging.nuspec" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib.Portable, Version=0.86.0.51802, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.Portable.0.86.0.0002\lib\portable-net45+netcore45+wp8+win8+wpa81+MonoTouch+MonoAndroid\ICSharpCode.SharpZipLib.Portable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="$(SolutionDir)\NuGet.targets" Condition="Exists('$(SolutionDir)\NuGet.targets')" />
 </Project>

@@ -20,11 +20,6 @@ namespace Nine.Imaging
     static class Extensions
     {
         /// <summary>
-        /// Defines a constant rectangle where all values are zero.
-        /// </summary>
-        public static readonly Rect ZeroRect = new Rect();
-
-        /// <summary>
         /// Converts byte array to a new array where each value in the original array is represented 
         /// by a the specified number of bits.
         /// </summary>
@@ -86,23 +81,6 @@ namespace Nine.Imaging
 
             rectangle.Width  = (int)(rectangle.Width * factor);
             rectangle.Height = (int)(rectangle.Height * factor);
-
-            return rectangle;
-        }
-
-        /// <summary>
-        /// Multiplies the values of the specified rectangle by the factor.
-        /// </summary>
-        /// <param name="rectangle">The rectangle to multiply with the factor.</param>
-        /// <param name="factor">The factor.</param>
-        /// <returns>The new rectangle.</returns>
-        public static Rect Multiply(Rect rectangle, double factor)
-        {
-            rectangle.X = rectangle.X * factor;
-            rectangle.Y = rectangle.Y * factor;
-
-            rectangle.Width  = rectangle.Width * factor;
-            rectangle.Height = rectangle.Height * factor;
 
             return rectangle;
         }

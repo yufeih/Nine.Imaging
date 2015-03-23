@@ -8,7 +8,7 @@
 
 using System.Diagnostics.Contracts;
 
-namespace Nine.Imaging
+namespace Nine.Imaging.Barcode
 {
     /// <summary>
     /// Base interface for all barcode readers.
@@ -25,6 +25,6 @@ namespace Nine.Imaging
         /// <returns>The result of the reading operation when a barcode could be read or null otherwise.</returns>
         /// <exception cref="T:System.ArgumentNullException"><paramref name="image"/> is null.</exception>
         /// <exception cref="T:System.ArgumentException"><paramref name="image"/> is empty.</exception>
-        BarcodeResult ReadBarcode(ExtendedImage image);
+        BarcodeResult ReadBarcode(Image image);
     }
 }

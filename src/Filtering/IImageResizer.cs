@@ -8,7 +8,7 @@
 
 using System.Diagnostics.Contracts;
 
-namespace Nine.Imaging
+namespace Nine.Imaging.Filtering
 {
     /// <summary>
     /// Interface for all image resizing algorithms.

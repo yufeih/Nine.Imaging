@@ -34,7 +34,7 @@ namespace Nine.Imaging.IO
             throw new NotImplementedException();
         }
 
-        void IImageDecoder.Decode(ExtendedImage image, Stream stream)
+        void IImageDecoder.Decode(Image image, Stream stream)
         {
             Contract.Requires<ArgumentNullException>(image != null, "Image cannot be null.");
             Contract.Requires<ArgumentNullException>(stream != null, "Stream cannot be null.");

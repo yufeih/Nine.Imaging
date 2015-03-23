@@ -10,8 +10,9 @@ using System;
 using System.IO;
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+using Nine.Imaging.IO.Png;
 
-namespace Nine.Imaging.IO.Png
+namespace Nine.Imaging.IO
 {
     /// <summary>
     /// Image encoder for writing image data to a stream in png format.
@@ -27,7 +28,7 @@ namespace Nine.Imaging.IO.Png
         #region Fields
 
         private Stream _stream;
-        private ExtendedImage _image;
+        private Image _image;
 
         #endregion
 
@@ -111,7 +112,7 @@ namespace Nine.Imaging.IO.Png
         /// <para>- or -</para>
         /// <para><paramref name="stream"/> is null (Nothing in Visual Basic).</para>
         /// </exception>
-        public void Encode(ExtendedImage image, Stream stream)
+        public void Encode(Image image, Stream stream)
         {
             Guard.NotNull(image, "image");
             Guard.NotNull(stream, "stream");

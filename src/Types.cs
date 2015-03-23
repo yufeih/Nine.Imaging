@@ -20,11 +20,6 @@ namespace Nine.Imaging
         }
     }
 
-    public struct Rect
-    {
-        public double X, Y, Width, Height;
-    }
-
     public struct Point
     {
         public int X, Y;

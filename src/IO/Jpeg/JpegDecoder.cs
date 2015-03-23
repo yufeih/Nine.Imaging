@@ -10,7 +10,7 @@ using System.IO;
 using BitMiracle.LibJpeg;
 using FluxJpeg.Core;
 
-namespace Nine.Imaging.IO.Jpeg
+namespace Nine.Imaging.IO
 {
     using FluxCoreJpegDecoder = FluxJpeg.Core.Decoder.JpegDecoder;
 
@@ -124,7 +124,7 @@ namespace Nine.Imaging.IO.Jpeg
         /// 	<para>- or -</para>
         /// 	<para><paramref name="stream"/> is null (Nothing in Visual Basic).</para>
         /// </exception>
-        public void Decode(ExtendedImage image, Stream stream)
+        public void Decode(Image image, Stream stream)
         {
             Guard.NotNull(image, "image");
             Guard.NotNull(stream, "stream");

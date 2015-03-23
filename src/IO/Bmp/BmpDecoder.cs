@@ -6,11 +6,12 @@
 // All rights reserved.
 // ===============================================================================
 
-namespace Nine.Imaging.IO.Bmp
+namespace Nine.Imaging.IO
 {
     using System;
     using System.Globalization;
     using System.IO;
+    using Nine.Imaging.IO.Bmp;
 
     /// <summary>
     /// Image decoder for generating an image out of an windows 
@@ -128,7 +129,7 @@ namespace Nine.Imaging.IO.Bmp
         /// 	<para>- or -</para>
         /// 	<para><paramref name="stream"/> is null (Nothing in Visual Basic).</para>
         /// </exception>
-        public void Decode(ExtendedImage image, Stream stream)
+        public void Decode(Image image, Stream stream)
         {
             _stream = stream;
 

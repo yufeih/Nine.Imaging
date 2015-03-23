@@ -12,7 +12,7 @@ using System.Diagnostics.Contracts;
 namespace Nine.Imaging.Filtering
 {
     /// <summary>
-    /// An <see cref="IImageFilter"/> for adding an overlay image to an <see cref="ExtendedImage"/>. The transperency
+    /// An <see cref="IImageFilter"/> for adding an overlay image to an <see cref="Image"/>. The transperency
     /// of the overlay is respected, so an alpha value of 255 in the overlay image pixel means that the original image pixel
     /// is fully replaced. A value of 0 means that the original image pixel is not changed at all.
     /// </summary>

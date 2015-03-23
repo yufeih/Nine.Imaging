@@ -25,7 +25,7 @@ namespace Nine.Imaging
     /// alpha values are simple bytes.</remarks>
     [DebuggerDisplay("Image: {PixelWidth}x{PixelHeight}")]
     [ContractVerification(false)]
-    public sealed partial class ExtendedImage : ImageBase
+    public sealed partial class Image : ImageBase
     {
         #region Constants
 
@@ -37,6 +37,21 @@ namespace Nine.Imaging
         /// The default density value (dots per inch) in y direction. The default value is 75 dots per inch.
         /// </summary>
         public const double DefaultDensityY = 75;
+
+        private static readonly Lazy<List<IImageDecoder>> defaultDecoders = new Lazy<List<IImageDecoder>>(() => new List<IImageDecoder>
+        {
+            new BmpDecoder(),
+            new JpegDecoder(),
+            new PngDecoder(),
+        });
+
+        /// <summary>
+        /// Gets a list of default decoders.
+        /// </summary>
+        public static IList<IImageDecoder> Decoders
+        {
+            get { return defaultDecoders.Value; }
+        }
 
         #endregion
 
@@ -161,12 +176,12 @@ namespace Nine.Imaging
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtendedImage"/> class
+        /// Initializes a new instance of the <see cref="Image"/> class
         /// with the height and the width of the image.
         /// </summary>
         /// <param name="width">The width of the image in pixels.</param>
         /// <param name="height">The height of the image in pixels.</param>
-        public ExtendedImage(int width, int height)
+        public Image(int width, int height)
             : base(width, height)
         {
             Contract.Requires<ArgumentException>(width >= 0, "Width must be greater or equals than zero.");
@@ -177,13 +192,13 @@ namespace Nine.Imaging
             DensityY = DefaultDensityY;
         }
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtendedImage"/> class
+        /// Initializes a new instance of the <see cref="Image"/> class
         /// by making a copy from another image.
         /// </summary>
         /// <param name="other">The other image, where the clone should be made from.</param>
         /// <exception cref="ArgumentNullException"><paramref name="other"/> is null
         /// (Nothing in Visual Basic).</exception>
-        public ExtendedImage(ExtendedImage other)
+        public Image(Image other)
             : base(other)
         {
             Contract.Requires<ArgumentNullException>(other != null, "Other image cannot be null.");
@@ -208,31 +223,31 @@ namespace Nine.Imaging
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtendedImage"/> class.
+        /// Initializes a new instance of the <see cref="Image"/> class.
         /// </summary>
-        public ExtendedImage()
+        public Image()
         {
             DensityX = DefaultDensityX;
             DensityY = DefaultDensityY;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtendedImage"/> class.
+        /// Initializes a new instance of the <see cref="Image"/> class.
         /// </summary>
-        public ExtendedImage(Stream stream)
+        public Image(Stream stream)
         {
             if (stream == null)
             {
                 throw new ArgumentNullException("stream");
             }
 
-            Load(stream, Decoders.Default);
+            Load(stream, Decoders);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ExtendedImage"/> class.
+        /// Initializes a new instance of the <see cref="Image"/> class.
         /// </summary>
-        public ExtendedImage(Stream stream, params IImageDecoder[] decoders)
+        public Image(Stream stream, params IImageDecoder[] decoders)
         {
             if (stream == null)
             {

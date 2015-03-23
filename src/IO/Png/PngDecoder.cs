@@ -13,8 +13,9 @@ using System.Linq;
 using System.Text;
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+using Nine.Imaging.IO.Png;
 
-namespace Nine.Imaging.IO.Png
+namespace Nine.Imaging.IO
 {
     /// <summary>
     /// Encoder for generating a image out of a png stream.
@@ -41,7 +42,7 @@ namespace Nine.Imaging.IO.Png
         #region Fields
 
         private static readonly Dictionary<int, PngColorTypeInformation> _colorTypes = new Dictionary<int, PngColorTypeInformation>();
-        private ExtendedImage _image;
+        private Image _image;
         private Stream _stream;
         private PngHeader _header;
 
@@ -144,7 +145,7 @@ namespace Nine.Imaging.IO.Png
         /// 	<para>- or -</para>
         /// 	<para><paramref name="stream"/> is null (Nothing in Visual Basic).</para>
         /// </exception>
-        public void Decode(ExtendedImage image, Stream stream)
+        public void Decode(Image image, Stream stream)
         {
             _image = image;
 

@@ -8,7 +8,7 @@
 
 using System.Diagnostics.Contracts;
 
-namespace Nine.Imaging
+namespace Nine.Imaging.Filtering
 {    
     /// <summary>
     /// Image processing filter interface.

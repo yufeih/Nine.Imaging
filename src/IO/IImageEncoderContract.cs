@@ -27,7 +27,7 @@ namespace Nine.Imaging.IO
             throw new NotImplementedException();
         }
 
-        void IImageEncoder.Encode(ExtendedImage image, Stream stream)
+        void IImageEncoder.Encode(Image image, Stream stream)
         {
             Contract.Requires<ArgumentNullException>(image != null, "Image cannot be null.");
             Contract.Requires<ArgumentNullException>(stream != null, "Stream cannot be null.");

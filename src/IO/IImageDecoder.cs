@@ -67,6 +67,6 @@ namespace Nine.Imaging.IO
         ///     <para>- or -</para>
         ///     <para><paramref name="stream"/> is null (Nothing in Visual Basic).</para>
         /// </exception>
-        void Decode(ExtendedImage image, Stream stream);
+        void Decode(Image image, Stream stream);
     }
 }

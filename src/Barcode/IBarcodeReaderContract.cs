@@ -9,12 +9,12 @@
 using System;
 using System.Diagnostics.Contracts;
 
-namespace Nine.Imaging
+namespace Nine.Imaging.Barcode
 {
     [ContractClassFor(typeof(IBarcodeReader))]
     abstract class IBarcodeReaderContract : IBarcodeReader
     {
-        BarcodeResult IBarcodeReader.ReadBarcode(ExtendedImage image)
+        BarcodeResult IBarcodeReader.ReadBarcode(Image image)
         {
             Contract.Requires<ArgumentNullException>(image != null, "Image cannot be null.");
             Contract.Requires<ArgumentException>(image.IsFilled, "Image cannot be empty.");

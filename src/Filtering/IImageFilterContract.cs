@@ -9,7 +9,7 @@
 using System;
 using System.Diagnostics.Contracts;
 
-namespace Nine.Imaging
+namespace Nine.Imaging.Filtering
 {
     [ContractClassFor(typeof(IImageFilter))]
     abstract class IImageFilterContract : IImageFilter

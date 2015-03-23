@@ -12,7 +12,7 @@ namespace Nine.Imaging.IO.Gif
     /// Specifies, what to do with the last image 
     /// in an animation sequence.
     /// </summary>
-    public enum DisposalMethod : int
+    enum DisposalMethod : int
     {
         /// <summary>
         /// No disposal specified. The decoder is not 

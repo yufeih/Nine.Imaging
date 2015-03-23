@@ -9,7 +9,7 @@
 using System.IO;
 using FluxJpeg.Core;
 
-namespace Nine.Imaging.IO.Jpeg
+namespace Nine.Imaging.IO
 {
     using FluxCoreJpegEncoder = FluxJpeg.Core.Encoder.JpegEncoder;
 
@@ -94,7 +94,7 @@ namespace Nine.Imaging.IO.Jpeg
         /// 	<para>- or -</para>
         /// 	<para><paramref name="stream"/> is null (Nothing in Visual Basic).</para>
         /// </exception>
-        public void Encode(ExtendedImage image, Stream stream)
+        public void Encode(Image image, Stream stream)
         {
             Guard.NotNull(image, "image");
             Guard.NotNull(stream, "stream");
@@ -127,7 +127,7 @@ namespace Nine.Imaging.IO.Jpeg
                 }
             }
 
-            Image newImage = new Image(new ColorModel { ColorSpace = ColorSpace.RGB, Opaque = false }, pixels);
+            FluxJpeg.Core.Image newImage = new FluxJpeg.Core.Image(new ColorModel { ColorSpace = ColorSpace.RGB, Opaque = false }, pixels);
 
             if (image.DensityX > 0 && image.DensityY > 0)
             {

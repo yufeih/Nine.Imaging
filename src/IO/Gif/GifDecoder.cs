@@ -8,8 +8,9 @@
 
 using System;
 using System.IO;
+using Nine.Imaging.IO.Gif;
 
-namespace Nine.Imaging.IO.Gif
+namespace Nine.Imaging.IO
 {
     /// <summary>
     /// Decodes GIF files from stream.
@@ -32,7 +33,7 @@ namespace Nine.Imaging.IO.Gif
 
         #region Fields
 
-        private ExtendedImage _image;
+        private Image _image;
         private Stream _stream;
         private GifLogicalScreenDescriptor _logicalScreenDescriptor;
         private byte[] _globalColorTable;
@@ -115,7 +116,7 @@ namespace Nine.Imaging.IO.Gif
         /// 	<para>- or -</para>
         /// 	<para><paramref name="stream"/> is null (Nothing in Visual Basic).</para>
         /// </exception>
-        public void Decode(ExtendedImage image, Stream stream)
+        public void Decode(Image image, Stream stream)
         {
             _image  = image;
 
