@@ -378,6 +378,11 @@ namespace Nine.Imaging.Encoding
             {
                 currentImage = _image;
                 currentImage.SetPixels(imageWidth, imageHeight, pixels);
+
+                if (_graphicsControl != null && _graphicsControl.DelayTime > 0)
+                {
+                    _image.DelayTime = _graphicsControl.DelayTime;
+                }
             }
             else
             {
@@ -391,11 +396,6 @@ namespace Nine.Imaging.Encoding
 
             if (_graphicsControl != null)
             {
-                if (_graphicsControl.DelayTime > 0)
-                {
-                    currentImage.DelayTime = _graphicsControl.DelayTime;
-                }
-
                 if (_graphicsControl.DisposalMethod == DisposalMethod.RestoreToBackground)
                 {
                     for (int y = descriptor.Top; y < descriptor.Top + descriptor.Height; y++)
