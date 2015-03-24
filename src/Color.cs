@@ -10,11 +10,6 @@
         public static readonly Color Black = new Color(255, 0, 0, 0);
         public static readonly Color White = new Color(255, 255, 255, 255);
 
-        public uint PackedValue
-        {
-            get { return _packedValue; }
-            set { _packedValue = value; }
-        }
         private uint _packedValue;
 
         public byte A
@@ -216,10 +211,10 @@
             var sb = new StringBuilder(32);
             sb.Append("#");
 
-            sb.Append(A);
-            sb.Append(R);
-            sb.Append(G);
-            sb.Append(B);
+            sb.Append(A.ToString("X2"));
+            sb.Append(R.ToString("X2"));
+            sb.Append(G.ToString("X2"));
+            sb.Append(B.ToString("X2"));
 
             return sb.ToString();
         }
