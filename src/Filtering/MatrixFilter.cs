@@ -64,48 +64,52 @@ namespace Nine.Imaging.Filtering
         public void Apply(ImageBase target, ImageBase source, Rectangle rectangle)
         {
             PrepareFilter();
-            
-                int width = rectangle.Width;
-                int height = rectangle.Height;
 
-                int sourceWidth = source.PixelWidth;
-                int halfFilterSize = _filterSize >> 1;
+            int width = rectangle.Width;
+            int height = rectangle.Height;
 
-                byte[] pixels = source.Pixels;
+            int sourceWidth = source.PixelWidth;
+            int halfFilterSize = _filterSize >> 1;
 
-                for (int y = rectangle.Y; y < rectangle.Bottom; y++)
+            byte[] pixels = source.Pixels;
+
+            for (int y = rectangle.Y; y < rectangle.Bottom; y++)
+            {
+                int baseY = y - halfFilterSize + height;
+
+                for (int x = rectangle.X; x < rectangle.Right; x++)
                 {
-                    for (int x = rectangle.X; x < rectangle.Right; x++)
+                    double r = 0, g = 0, b = 0;
+
+                    int baseX = x - halfFilterSize + width;
+
+                    for (int filterY = 0; filterY < _filterSize; filterY++)
                     {
-                        double r = 0, g = 0, b = 0;
+                        int filterStart = filterY * _filterSize;
+                        int imageY = ((baseY + filterY) % height) * sourceWidth;
 
-                        for (int filterY = 0; filterY < _filterSize; filterY++)
+                        for (int filterX = 0; filterX < _filterSize; filterX++)
                         {
-                            for (int filterX = 0; filterX < _filterSize; filterX++)
-                            {
-                                int imageX = (x - halfFilterSize + filterX + width) % width;
-                                int imageY = (y - halfFilterSize + filterY + height) % height;
+                            int sourceStart = ((baseX + filterX) % width + imageY) << 2;
 
-                                int sourceStart = (imageX + imageY * sourceWidth) << 2;
+                            byte tr = pixels[sourceStart];
+                            byte tg = pixels[sourceStart + 1];
+                            byte tb = pixels[sourceStart + 2];
 
-                                byte tr = pixels[sourceStart];
-                                byte tg = pixels[sourceStart + 1];
-                                byte tb = pixels[sourceStart + 2];
+                            double multiplier = _filter[filterStart + filterX];
 
-                                double multiplier = _filter[filterX + filterY * _filterSize];
-
-                                r += tr * multiplier;
-                                g += tg * multiplier;
-                                b += tb * multiplier;
-                            }
+                            r += tr * multiplier;
+                            g += tg * multiplier;
+                            b += tb * multiplier;
                         }
-
-                        target[x, y] = new Color(
-                            (byte)r.RemainBetween(0, 255),
-                            (byte)g.RemainBetween(0, 255),
-                            (byte)b.RemainBetween(0, 255));
                     }
+
+                    target[x, y] = new Color(
+                        (byte)r.RemainBetween(0, 255),
+                        (byte)g.RemainBetween(0, 255),
+                        (byte)b.RemainBetween(0, 255));
                 }
+            }
         }
 
         #endregion
