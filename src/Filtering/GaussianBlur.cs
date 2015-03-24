@@ -6,12 +6,10 @@
 // All rights reserved.
 // ===============================================================================
 
-using System;
-
-
-
 namespace Nine.Imaging.Filtering
 {
+    using System;
+
     /// <summary>
     /// Implements a gaussian blur filter using a filter matrix.
     /// </summary>
@@ -35,7 +33,7 @@ namespace Nine.Imaging.Filtering
             {
                 int filterSize = (int)(2 * Variance) * 2 + 1;
 
-                double[,] filter = new double[filterSize, filterSize];
+                double[] filter = new double[filterSize * filterSize];
 
                 for (int y = 0; y < filterSize; y++)
                 {
@@ -50,14 +48,13 @@ namespace Nine.Imaging.Filtering
                         int y2 = filterY * filterY;
 
                         double factor = (1.0 / (2 * Math.PI * v2));
-
                         double exponent = -(x2 + y2) / (2 * v2);
 
-                        filter[x, y] = factor * Math.Pow(Math.E, exponent);
+                        filter[x + y * filterSize] = factor * Math.Pow(Math.E, exponent);
                     }
                 }
 
-                Initialize(filter);
+                Initialize(filter, filterSize);
 
                 _oldVariance = Variance;
             }

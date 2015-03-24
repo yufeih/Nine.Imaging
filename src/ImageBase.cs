@@ -116,14 +116,7 @@ namespace Nine.Imaging
             {
                 int start = (y * PixelWidth + x) * 4;
 
-                Color result = new Color();
-
-                result.R = _pixels[start + 0];
-                result.G = _pixels[start + 1];
-                result.B = _pixels[start + 2];
-                result.A = _pixels[start + 3];
-
-                return result;
+                return new Color(_pixels[start + 3], _pixels[start + 0], _pixels[start + 1], _pixels[start + 2]);
             }
             set
             {

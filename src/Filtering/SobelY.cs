@@ -6,8 +6,6 @@
 // All rights reserved.
 // ===============================================================================
 
-
-
 namespace Nine.Imaging.Filtering
 {
     /// <summary>
@@ -20,14 +18,14 @@ namespace Nine.Imaging.Filtering
         /// </summary>
         public SobelY()
         {
-            double[,] filter = new double[3, 3] 
+            double[] filter = new double[]
                                 {
-                                    { -1, -2, -1 },
-                                    {  0,  0,  0 },
-                                    {  1,  2,  1 }
+                                    -1, 0, 1,
+                                    -2, 0, 2,
+                                    -1, 0, 1
                                 };
 
-            Initialize(filter);
+            Initialize(filter, 3);
         }
     }
 }

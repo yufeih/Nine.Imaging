@@ -20,14 +20,14 @@ namespace Nine.Imaging.Filtering
         /// </summary>
         public PrewittX()
         {
-            double[,] filter = new double[3, 3] 
+            double[] filter = new double[]
                                 {
-                                    { -1, 0, 1 },
-                                    { -1, 0, 1 },
-                                    { -1, 0, 1 }
+                                    -1, -1, -1,
+                                    0,  0,  0,
+                                    1,  1,  1
                                 };
 
-            Initialize(filter);
+            Initialize(filter, 3);
         }
     }
 }

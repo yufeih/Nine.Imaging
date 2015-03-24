@@ -8,8 +8,6 @@
 
 namespace Nine.Imaging.IO.Bmp
 {
-    
-
     /// <summary>
     /// Defines how the compression type of the image data
     /// in the bitmap file.
