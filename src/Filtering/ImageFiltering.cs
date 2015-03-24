@@ -152,8 +152,6 @@ namespace Nine.Imaging.Filtering
         
         private static Image PerformAction(Image source, bool clone, Action<ImageBase, ImageBase> action)
         {
-            VerifyHasLoaded(source);
-
             Image transformedImage = clone ? new Image(source) : new Image();
             
             action(source, transformedImage);
@@ -171,17 +169,6 @@ namespace Nine.Imaging.Filtering
             }
 
             return transformedImage;
-        }        
-        
-        private static void VerifyHasLoaded(Image image)
-        {
-            foreach (ImageFrame frame in image.Frames)
-            {
-                if (frame != null)
-                {
-                    throw new InvalidOperationException("Not all frames has been loaded yet.");
-                }
-            }
         }
     }
 }

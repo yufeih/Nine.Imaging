@@ -18,14 +18,12 @@ namespace Nine.Imaging
         /// </summary>
         None,
         /// <summary>
-        /// Flip the image at the x-axis which goes 
-        /// through the middle of the image.
+        /// Flip the image horizontally.
         /// </summary>
-        FlipX,
+        Horizontal,
         /// <summary>
-        /// Flip the image at the y-axis, which goes through the 
-        /// middle of the image.
+        /// Flip the image vertically.
         /// </summary>
-        FlipY
+        Vertical,
     }
 }

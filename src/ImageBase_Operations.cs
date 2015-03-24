@@ -61,10 +61,10 @@ namespace Nine.Imaging
 
             switch (flippingType)
             {
-                case FlippingType.FlipX:
+                case FlippingType.Vertical:
                     FlipX(target);
                     break;
-                case FlippingType.FlipY:
+                case FlippingType.Horizontal:
                     FlipY(target);
                     break;
             }
@@ -107,7 +107,7 @@ namespace Nine.Imaging
             {
                 for (int x = 0; x < source.PixelWidth; x++)
                 {
-                    oldIndex = (y * source.PixelHeight + x) * 4;
+                    oldIndex = (y * source.PixelWidth + x) * 4;
 
                     // The new index will be calculated as if the image would be flipped
                     // at the x and the y axis.
