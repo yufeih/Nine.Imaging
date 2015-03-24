@@ -7,7 +7,7 @@
 // ===============================================================================
 
 using System;
-using System.Diagnostics.Contracts;
+
 using System.Diagnostics.CodeAnalysis;
 
 namespace Nine.Imaging.Filtering
@@ -29,7 +29,6 @@ namespace Nine.Imaging.Filtering
         /// This method is called before the filter is applied to prepare the filter
         /// matrix. Only calculate a new matrix, when the properties has been changed.
         /// </summary>
-        [ContractVerification(false)]
         protected override void PrepareFilter()
         {
             if (_oldVariance != Variance && Variance > 0)

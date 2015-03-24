@@ -6,10 +6,6 @@
 // All rights reserved.
 // ===============================================================================
 
-using System;
-using System.Diagnostics;
-using System.Diagnostics.Contracts;
-
 namespace Nine.Imaging
 {
     /// <summary>
@@ -26,20 +22,12 @@ namespace Nine.Imaging
         /// <param name="other">The other image, where the clone should be made from.</param>
         /// <exception cref="System.ArgumentNullException"><paramref name="other"/> is null
         /// (Nothing in Visual Basic).</exception>
-        public ImageFrame(ImageFrame other)
-            : base(other)
-        {
-            Contract.Requires<ArgumentNullException>(other != null, "Other image cannot be null.");
-            Contract.Requires<ArgumentException>(other.IsFilled, "Other image has not been loaded.");
-            Contract.Ensures(IsFilled);
-        }
+        public ImageFrame(ImageFrame other) : base(other) { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ImageFrame"/> class.
         /// </summary>
-        public ImageFrame()
-        {
-        }
+        public ImageFrame() { }
 
         #endregion
     }

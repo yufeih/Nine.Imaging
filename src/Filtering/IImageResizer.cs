@@ -6,16 +6,11 @@
 // All rights reserved.
 // ===============================================================================
 
-using System.Diagnostics.Contracts;
-
 namespace Nine.Imaging.Filtering
 {
     /// <summary>
     /// Interface for all image resizing algorithms.
     /// </summary>
-#if !WINDOWS_PHONE
-    [ContractClass(typeof(IImageResizerContract))]
-#endif
     public interface IImageResizer
     {
         /// <summary>

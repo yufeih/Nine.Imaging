@@ -6,9 +6,6 @@
 // All rights reserved.
 // ===============================================================================
 
-using System;
-using System.Diagnostics.Contracts;
-
 namespace Nine.Imaging.Filtering
 {
     /// <summary>
@@ -36,9 +33,6 @@ namespace Nine.Imaging.Filtering
         /// </exception>
         public Contrast(int contrast)
         {
-            Contract.Requires<ArgumentException>(contrast >= -255, "Brightness must be greater than -255.");
-            Contract.Requires<ArgumentException>(contrast <= 255, "Brightness must be less than 255.");
-
             _contrast = contrast;
         }
 
@@ -62,7 +56,6 @@ namespace Nine.Imaging.Filtering
         /// </exception>
         /// <exception cref="System.ArgumentException"><paramref name="rectangle"/> doesnt fits
         /// to the image.</exception>
-        [ContractVerification(false)]
         public void Apply(ImageBase target, ImageBase source, Rectangle rectangle)
         {
             double pixel = 0, contrast = (100.0 + _contrast) / 100.0;

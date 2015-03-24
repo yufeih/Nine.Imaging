@@ -6,7 +6,7 @@
 // All rights reserved.
 // ===============================================================================
 
-using System.Diagnostics.Contracts;
+
 
 namespace Nine.Imaging.Filtering
 {

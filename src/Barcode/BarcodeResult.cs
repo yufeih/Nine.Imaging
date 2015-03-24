@@ -7,8 +7,6 @@
 // ===============================================================================
 
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
-using System.Windows;
 
 namespace Nine.Imaging.Barcode
 {
@@ -17,50 +15,19 @@ namespace Nine.Imaging.Barcode
     /// </summary>
     public class BarcodeResult
     {
-        #region Invariant
-
-#if !WINDOWS_PHONE
-        [ContractInvariantMethod()]
-        private void BarcodeResultInvariantMethod()
-        {
-            Contract.Invariant(_points != null);
-            Contract.Invariant(_rawBytes != null);
-        }
-#endif
-
-        #endregion
-
-        #region Properties
-
-        private Collection<Point> _points = new Collection<Point>();
         /// <returns>
         /// Points related to the barcode in the image. These are typically points
         /// identifying finder patterns or the corners of the barcode. The exact meaning is
         /// specific to the type of barcode that was decoded.
         /// </returns>
         /// <value>Points related to the barcode in the image.</value>
-        public Collection<Point> Points
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<Collection<Point>>() != null);
-                return _points;
-            }
-        }
-
-        private Collection<int> _rawBytes = new Collection<int>();
+        public Collection<Point> Points { get; } = new Collection<Point>();
+        
         /// <returns>
         /// Raw bytes encoded by the barcode, if applicable, otherwise null.
         /// </returns>
         /// <value>Raw bytes of the barcode.</value>
-        public Collection<int> RawBytes
-        {
-            get
-            {
-                Contract.Ensures(Contract.Result<Collection<int>>() != null);
-                return _rawBytes;
-            }
-        }
+        public Collection<int> RawBytes { get; } = new Collection<int>();
 
         /// <returns> 
         /// Raw text encoded by the barcode, if applicable, otherwise null.
@@ -73,7 +40,5 @@ namespace Nine.Imaging.Barcode
         /// </returns>
         /// <value>The format of the barcode.</value>
         public BarcodeResultFormat Format { get; set; }
-
-        #endregion
     }
 }

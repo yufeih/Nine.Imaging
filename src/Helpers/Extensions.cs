@@ -10,7 +10,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Contracts;
+
 
 namespace Nine.Imaging
 {
@@ -30,10 +30,6 @@ namespace Nine.Imaging
         /// <exception cref="ArgumentException"><paramref name="bits"/> is greater or equals than zero.</exception>
         public static byte[] ToArrayByBitsLength(this byte[] bytes, int bits)
         {
-            Contract.Requires<ArgumentNullException>(bytes != null, "Bytes cannot be null.");
-            Contract.Requires<ArgumentException>(bits > 0, "Bits must be greater than zero.");
-            Contract.Ensures(Contract.Result<byte[]>() != null);
-
             byte[] result = null;
 
             if (bits < 8)
@@ -48,9 +44,6 @@ namespace Nine.Imaging
                 {
                     for (int shift = 0; shift < 8; shift += bits)
                     {
-                        Contract.Assume(resultOffset < result.Length);
-                        Contract.Assume(factor > 0);
-
                         int colorIndex = (((bytes[i]) >> (8 - bits - shift)) & mask) * (255 / factor);
 
                         result[resultOffset] = (byte)colorIndex;
@@ -118,9 +111,6 @@ namespace Nine.Imaging
         /// </exception>
         public static void Foreach<T>(this IEnumerable<T> items, Action<T> action)
         {
-            Contract.Requires<ArgumentNullException>(items != null, "Items cannot be null");
-            Contract.Requires<ArgumentNullException>(action != null, "Action cannot be null.");
-
             foreach (T item in items)
             {
                 if (item != null)
@@ -142,9 +132,6 @@ namespace Nine.Imaging
         /// </exception>
         public static void Foreach(this IEnumerable items, Action<object> action)
         {
-            Contract.Requires<ArgumentNullException>(items != null, "Items cannot be null");
-            Contract.Requires<ArgumentNullException>(action != null, "Action cannot be null.");
-
             foreach (object item in items)
             {
                 if (item != null)
@@ -167,9 +154,6 @@ namespace Nine.Imaging
         /// </exception>
         public static void AddRange<TItem>(this ObservableCollection<TItem> target, IEnumerable<TItem> elements)
         {
-            Contract.Requires<ArgumentNullException>(target != null, "Target cannot be null");
-            Contract.Requires<ArgumentNullException>(elements != null, "Elements cannot be null.");
-
             foreach (TItem item in elements)
             {
                 target.Add(item);
@@ -189,9 +173,6 @@ namespace Nine.Imaging
         /// </exception>
         public static void AddRange<TItem>(this Collection<TItem> target, IEnumerable<TItem> elements)
         {
-            Contract.Requires<ArgumentNullException>(target != null, "Target cannot be null");
-            Contract.Requires<ArgumentNullException>(elements != null, "Elements cannot be null.");
-
             foreach (TItem item in elements)
             {
                 target.Add(item);

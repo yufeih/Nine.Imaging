@@ -7,7 +7,7 @@
 // ===============================================================================
 
 using System;
-using System.Diagnostics.Contracts;
+
 
 namespace Nine.Imaging.Filtering
 {
@@ -43,8 +43,6 @@ namespace Nine.Imaging.Filtering
         /// <exception cref="ArgumentException"><paramref name="blendedImage"/> is null.</exception>
         public BlendingFilter(ImageBase blendedImage)
         {
-            Contract.Requires<ArgumentException>(blendedImage != null, "Pased image is not allowed to be null!");
-
             _blendedImage = blendedImage;
         }
 
@@ -68,7 +66,6 @@ namespace Nine.Imaging.Filtering
         /// </exception>
         /// <exception cref="System.ArgumentException"><paramref name="rectangle"/> doesnt fits
         /// to the image.</exception>
-        [ContractVerification(false)]
         public void Apply(ImageBase target, ImageBase source, Rectangle rectangle)
         {
             // Make sure we stop combining when the whole image that should be combined has been processed.

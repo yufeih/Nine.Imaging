@@ -9,7 +9,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,7 +23,6 @@ namespace Nine.Imaging
     /// <remarks>The image data is alway stored in RGBA format, where the red, the blue, the
     /// alpha values are simple bytes.</remarks>
     [DebuggerDisplay("Image: {PixelWidth}x{PixelHeight}")]
-    [ContractVerification(false)]
     public sealed partial class Image : ImageBase
     {
         #region Constants
@@ -70,20 +68,7 @@ namespace Nine.Imaging
         }
 
         #endregion
-
-        #region Invariant
-
-#if !WINDOWS_PHONE
-        [ContractInvariantMethod]
-        private void ImageInvariantMethod()
-        {
-            Contract.Invariant(_frames != null);
-            Contract.Invariant(_properties != null);
-        }
-#endif
-
-        #endregion
-
+        
         #region Fields
 
         private readonly object _lockObject = new object();
@@ -166,11 +151,7 @@ namespace Nine.Imaging
         /// <value>The list of frame images.</value>
         public ImageFrameCollection Frames
         {
-            get
-            {
-                Contract.Ensures(Contract.Result<ImageFrameCollection>() != null);
-                return _frames;
-            }
+            get { return _frames; }
         }
 
         private ImagePropertyCollection _properties = new ImagePropertyCollection();
@@ -180,11 +161,7 @@ namespace Nine.Imaging
         /// <value>A list of image properties.</value>
         public ImagePropertyCollection Properties
         {
-            get
-            {
-                Contract.Ensures(Contract.Result<ImagePropertyCollection>() != null);
-                return _properties;
-            }
+            get { return _properties; }
         }
 
         #endregion
@@ -197,13 +174,8 @@ namespace Nine.Imaging
         /// </summary>
         /// <param name="width">The width of the image in pixels.</param>
         /// <param name="height">The height of the image in pixels.</param>
-        public Image(int width, int height)
-            : base(width, height)
+        public Image(int width, int height) : base(width, height)
         {
-            Contract.Requires<ArgumentException>(width >= 0, "Width must be greater or equals than zero.");
-            Contract.Requires<ArgumentException>(height >= 0, "Height must be greater or equals than zero.");
-            Contract.Ensures(IsFilled);
-
             DensityX = DefaultDensityX;
             DensityY = DefaultDensityY;
         }
@@ -214,22 +186,14 @@ namespace Nine.Imaging
         /// <param name="other">The other image, where the clone should be made from.</param>
         /// <exception cref="ArgumentNullException"><paramref name="other"/> is null
         /// (Nothing in Visual Basic).</exception>
-        public Image(Image other)
-            : base(other)
+        public Image(Image other) : base(other)
         {
-            Contract.Requires<ArgumentNullException>(other != null, "Other image cannot be null.");
-            Contract.Requires<ArgumentException>(other.IsFilled, "Other image has not been loaded.");
-            Contract.Ensures(IsFilled);
+            if (other == null) throw new ArgumentNullException("Other image cannot be null.");
 
             foreach (ImageFrame frame in other.Frames)
             {
                 if (frame != null)
                 {
-                    if (!frame.IsFilled)
-                    {
-                        throw new ArgumentException("The image contains a frame that has not been loaded yet.");
-                    }
-
                     Frames.Add(new ImageFrame(frame));
                 }
             }
@@ -279,8 +243,6 @@ namespace Nine.Imaging
 
         private void Load(Stream stream, IList<IImageDecoder> decoders)
         {
-            Contract.Requires(stream != null);
-
             try
             {
                 if (!stream.CanRead)

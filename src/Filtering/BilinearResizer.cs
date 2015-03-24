@@ -7,7 +7,7 @@
 // ===============================================================================
 
 using System;
-using System.Diagnostics.Contracts;
+
 
 namespace Nine.Imaging.Filtering
 {
@@ -36,7 +36,6 @@ namespace Nine.Imaging.Filtering
         /// 	<para>- or -</para>
         /// 	<para><paramref name="height"/> is negative.</para>
         /// </exception>
-        [ContractVerification(false)]
         public void Resize(ImageBase source, ImageBase target, int width, int height)
         {
             byte[] newPixels = new byte[width * height * 4];

@@ -7,14 +7,12 @@
 // ===============================================================================
 
 using System;
-using System.Diagnostics.Contracts;
 
 namespace Nine.Imaging
 {
     /// <summary>
     /// Base classes for all Images.
     /// </summary>
-    [ContractVerification(false)]
     public partial class ImageBase
     {
         #region Constants
@@ -23,20 +21,6 @@ namespace Nine.Imaging
         /// The default animation speed, when the image is animated.
         /// </summary>
         public const int DefaultDelayTime = 10;
-
-        #endregion
-
-        #region Invariant
-
-#if !WINDOWS_PHONE
-        [ContractInvariantMethod]
-        private void ImageBaseInvariantMethod()
-        {
-            Contract.Invariant(!_isFilled || _pixels != null);
-            Contract.Invariant(!_isFilled || _pixelWidth >= 0);
-            Contract.Invariant(!_isFilled || _pixelHeight >= 0);
-        }
-#endif
 
         #endregion
 
@@ -49,7 +33,6 @@ namespace Nine.Imaging
 		/// The clock starts ticking immediately after the graphic is rendered. 
 		/// This field may be used in conjunction with the User Input Flag field. 
 		/// </summary>
-        [Pure]
         public int DelayTime
         {
             get
@@ -66,20 +49,6 @@ namespace Nine.Imaging
             set { _delayTime = value; }
         }
 
-        private bool _isFilled;
-        /// <summary>
-        /// Gets or sets a value indicating whether this image has been loaded.
-        /// </summary>
-        /// <value><c>true</c> if this image has been loaded; otherwise, <c>false</c>.</value>
-        [Pure]
-        public bool IsFilled
-        {
-            get
-            {
-                return _isFilled;
-            }
-        }
-
         private byte[] _pixels;
         /// <summary>
         /// Returns all pixels of the image as simple byte array.
@@ -88,14 +57,9 @@ namespace Nine.Imaging
         /// <remarks>The returned array has a length of Width * Length * 4 bytes
         /// and stores the red, the green, the blue and the alpha value for
         /// each pixel in this order.</remarks>
-        [Pure]
         public byte[] Pixels
         {
-            get
-            {
-                Contract.Ensures(!IsFilled || Contract.Result<byte[]>() != null);
-                return _pixels;
-            }
+            get { return _pixels; }
         }
 
         private int _pixelHeight;
@@ -107,11 +71,7 @@ namespace Nine.Imaging
         /// or when the data will be pixel data will set.</remarks>
         public int PixelHeight
         {
-            get 
-            {
-                Contract.Ensures(!IsFilled || Contract.Result<int>() > 0);
-                return _pixelHeight; 
-            }
+            get { return _pixelHeight; }
         }
 
         private int _pixelWidth;
@@ -123,11 +83,7 @@ namespace Nine.Imaging
         /// or when the data will be pixel data will set.</remarks>
         public int PixelWidth
         {
-            get
-            {
-                Contract.Ensures(!IsFilled || Contract.Result<int>() > 0);
-                return _pixelWidth;
-            }
+            get { return _pixelWidth; }
         }
 
         /// <summary>
@@ -136,19 +92,7 @@ namespace Nine.Imaging
         /// <value>The ratio between the width and the height.</value>
         public double PixelRatio
         {
-            get
-            {
-                Contract.Ensures(!IsFilled || Contract.Result<double>() > 0);
-
-                if (IsFilled)
-                {
-                    return (double)PixelWidth / PixelHeight;
-                }
-                else
-                {
-                    return 0;
-                }
-            }
+            get { return (double)PixelWidth / PixelHeight; }
         }
 
         /// <summary>
@@ -166,16 +110,10 @@ namespace Nine.Imaging
         ///     <para><paramref name="y"/> is smaller than zero or greater than
         ///     the height of the image.</para>
         /// </exception>
-        [Pure]
         public Color this[int x, int y]
         {
             get
             {
-                Contract.Requires<InvalidOperationException>(IsFilled, "Image is not loaded.");
-                Contract.Requires<ArgumentException>(x >= 0 && x < PixelWidth, "X must be in the range of the image.");
-                Contract.Requires<ArgumentException>(y >= 0 && y < PixelHeight, "Y must be in the range of the image.");
-                Contract.Ensures(IsFilled);
-
                 int start = (y * PixelWidth + x) * 4;
 
                 Color result = new Color();
@@ -189,11 +127,6 @@ namespace Nine.Imaging
             }
             set
             {
-                Contract.Requires<InvalidOperationException>(IsFilled, "Image is not loaded.");
-                Contract.Requires<ArgumentException>(x >= 0 && x < PixelWidth, "X must be in the range of the image.");
-                Contract.Requires<ArgumentException>(y >= 0 && y < PixelHeight, "Y must be in the range of the image.");
-                Contract.Ensures(IsFilled);
-
                 int start = (y * PixelWidth + x) * 4;
 
                 _pixels[start + 0] = value.R;
@@ -209,7 +142,6 @@ namespace Nine.Imaging
         /// </summary>
         /// <value>The <see cref="Rectangle"/> object, which
         /// represents the image dimension.</value>
-        [Pure]
         public Rectangle Bounds
         {
             get
@@ -235,16 +167,13 @@ namespace Nine.Imaging
         /// </exception>
         public ImageBase(int width, int height)
         {
-            Contract.Requires<ArgumentException>(width >= 0, "Width must be greater or equals than zero.");
-            Contract.Requires<ArgumentException>(height >= 0, "Height must be greater or equals than zero.");
-            Contract.Ensures(IsFilled);
+            if (width < 0) throw new ArgumentException("Width must be greater or equals than zero.");
+            if (height < 0) throw new ArgumentException("Height must be greater or equals than zero.");
 
-            _pixelWidth  = width;
+            _pixelWidth = width;
             _pixelHeight = height;
 
             _pixels = new byte[PixelWidth * PixelHeight * 4];
-
-            _isFilled = true;
         }
 
         /// <summary>
@@ -257,9 +186,7 @@ namespace Nine.Imaging
         /// <exception cref="ArgumentException"><paramref name="other"/> is not loaded.</exception>
         public ImageBase(ImageBase other)
         {
-            Contract.Requires<ArgumentNullException>(other != null, "Other image cannot be null.");
-            Contract.Requires<ArgumentException>(other.IsFilled, "Other image has not been loaded.");
-            Contract.Ensures(IsFilled);
+            if (other == null) throw new ArgumentNullException("Other image cannot be null.");
 
             byte[] pixels = other.Pixels;
 
@@ -268,8 +195,6 @@ namespace Nine.Imaging
             _pixels = new byte[pixels.Length];
 
             Array.Copy(pixels, _pixels, pixels.Length);
-
-            _isFilled = other.IsFilled;
         }
 
         /// <summary>
@@ -303,23 +228,13 @@ namespace Nine.Imaging
         /// <exception cref="ArgumentNullException"><paramref name="pixels"/> is null.</exception>
         public void SetPixels(int width, int height, byte[] pixels)
         {
-            Contract.Requires<ArgumentException>(width >= 0, "Width must be greater than zero.");
-            Contract.Requires<ArgumentException>(height >= 0, "Height must be greater than zero.");
-            Contract.Requires<ArgumentNullException>(pixels != null, "Pixels cannot be null.");
-            Contract.Ensures(IsFilled);
-
-            if (pixels.Length != width * height * 4)
-            {
-                throw new ArgumentException(
-                    "Pixel array must have the length of width * height * 4.",
-                    "pixels");
-            }
+            if (width < 0) throw new ArgumentException("Width must be greater or equals than zero.");
+            if (height < 0) throw new ArgumentException("Height must be greater or equals than zero.");
+            if (pixels.Length != width * height * 4) throw new ArgumentException("Pixel array must have the length of width * height * 4.");
 
             _pixelWidth  = width;
             _pixelHeight = height;
             _pixels = pixels;
-
-            _isFilled = true;
         }
 
         #endregion

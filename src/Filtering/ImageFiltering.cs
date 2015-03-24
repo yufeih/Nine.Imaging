@@ -8,8 +8,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 
 namespace Nine.Imaging.Filtering
 {
@@ -31,10 +29,6 @@ namespace Nine.Imaging.Filtering
         /// </exception>
         public static Image ApplyFilters(this Image source, params IImageFilter[] filters)
         {
-            Contract.Requires<ArgumentNullException>(source != null, "Source image cannot be null.");
-            Contract.Requires<ArgumentException>(source.IsFilled, "Source image has not been loaded.");
-            Contract.Requires<ArgumentNullException>(filters != null, "Filters cannot be null.");
-
             Rectangle bounds = source.Bounds;
 
             foreach (IImageFilter filter in filters)
@@ -61,10 +55,6 @@ namespace Nine.Imaging.Filtering
         /// </exception>
         public static Image ApplyFilters(this Image source, Rectangle rectangle, params IImageFilter[] filters)
         {
-            Contract.Requires<ArgumentNullException>(source != null, "Source image cannot be null.");
-            Contract.Requires<ArgumentException>(source.IsFilled, "Source image has not been loaded.");
-            Contract.Requires<ArgumentNullException>(filters != null, "Filters cannot be null.");
-
             foreach (IImageFilter filter in filters)
             {
                 source = PerformAction(source, true, (sourceImage, targetImage) => filter.Apply(targetImage, sourceImage, rectangle));
@@ -83,9 +73,6 @@ namespace Nine.Imaging.Filtering
         /// (Nothing in Visual Basic).</exception>
         public static Image Crop(this Image source, Rectangle bounds)
         {
-            Contract.Requires<ArgumentNullException>(source != null, "Source image cannot be null.");
-            Contract.Requires<ArgumentException>(source.IsFilled, "Source image has not been loaded.");
-
             return PerformAction(source, false, (sourceImage, targetImage) => ImageBase.Crop(sourceImage, targetImage, bounds));
         }
 
@@ -102,9 +89,6 @@ namespace Nine.Imaging.Filtering
         /// (Nothing in Visual Basic).</exception>
         public static Image Transform(this Image source, RotationType rotationType, FlippingType flippingType)
         {
-            Contract.Requires<ArgumentNullException>(source != null, "Source image cannot be null.");
-            Contract.Requires<ArgumentException>(source.IsFilled, "Source image has not been loaded.");
-
             return PerformAction(source, false, (sourceImage, targetImage) => ImageBase.Transform(sourceImage, targetImage, rotationType, flippingType));
         }
 
@@ -130,10 +114,6 @@ namespace Nine.Imaging.Filtering
         /// </exception>
         public static Image Resize(this Image source, int width, int height, IImageResizer resizer)
         {
-            Contract.Requires<ArgumentNullException>(source != null, "Source image cannot be null.");
-            Contract.Requires<ArgumentException>(source.IsFilled, "Source image has not been loaded.");
-            Contract.Requires<ArgumentNullException>(resizer != null, "Image Resizer cannot be null.");
-
             return PerformAction(source, false, (sourceImage, targetImage) => resizer.Resize(sourceImage, targetImage, width, height));
         }
 
@@ -151,10 +131,6 @@ namespace Nine.Imaging.Filtering
         /// <exception cref="ArgumentException"><paramref name="size"/> is negative.</exception>
         public static Image Resize(this Image source, int size, IImageResizer resizer)
         {
-            Contract.Requires<ArgumentNullException>(source != null, "Source image cannot be null.");
-            Contract.Requires<ArgumentException>(source.IsFilled, "Source image has not been loaded.");
-            Contract.Requires<ArgumentNullException>(resizer != null, "Image Resizer cannot be null.");
-
             int width = 0;
             int height = 0;
 
@@ -173,8 +149,7 @@ namespace Nine.Imaging.Filtering
 
             return PerformAction(source, false, (sourceImage, targetImage) => resizer.Resize(sourceImage, targetImage, width, height));
         }
-
-        [ContractVerification(false)]
+        
         private static Image PerformAction(Image source, bool clone, Action<ImageBase, ImageBase> action)
         {
             VerifyHasLoaded(source);
@@ -200,16 +175,9 @@ namespace Nine.Imaging.Filtering
         
         private static void VerifyHasLoaded(Image image)
         {
-            Contract.Requires(image != null);
-
-            if (!image.IsFilled)
-            {
-                throw new InvalidOperationException("Image has not been loaded");
-            }
-
             foreach (ImageFrame frame in image.Frames)
             {
-                if (frame != null && frame.IsFilled)
+                if (frame != null)
                 {
                     throw new InvalidOperationException("Not all frames has been loaded yet.");
                 }

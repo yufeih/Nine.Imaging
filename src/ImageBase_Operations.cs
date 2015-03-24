@@ -7,7 +7,6 @@
 // ===============================================================================
 
 using System;
-using System.Diagnostics.Contracts;
 
 namespace Nine.Imaging
 {
@@ -29,10 +28,6 @@ namespace Nine.Imaging
         /// </exception>
         internal static void Transform(ImageBase source, ImageBase target, RotationType rotationType, FlippingType flippingType)
         {
-            Contract.Requires<ArgumentNullException>(source != null, "Source image cannot be null.");
-            Contract.Requires<ArgumentException>(source.IsFilled, "Source image has not been loaded.");
-            Contract.Requires<ArgumentNullException>(target != null, "Target image cannot be null.");
-
             switch (rotationType)
             {
                 case RotationType.None:
@@ -77,11 +72,6 @@ namespace Nine.Imaging
 
         private static void Rotate270(ImageBase source, ImageBase target)
         {
-            Contract.Requires(source != null);
-            Contract.Requires(source.IsFilled);
-            Contract.Requires(target != null);
-            Contract.Ensures(target.IsFilled);
-
             int oldIndex = 0, newIndex = 0;
 
             byte[] sourcePixels = source.Pixels;
@@ -108,11 +98,6 @@ namespace Nine.Imaging
 
         private static void Rotate180(ImageBase source, ImageBase target)
         {
-            Contract.Requires(source != null);
-            Contract.Requires(source.IsFilled);
-            Contract.Requires(target != null);
-            Contract.Ensures(target.IsFilled);
-
             int oldIndex = 0, newIndex = 0;
 
             byte[] sourcePixels = source.Pixels;
@@ -139,11 +124,6 @@ namespace Nine.Imaging
 
         private static void Rotate90(ImageBase source, ImageBase target)
         {
-            Contract.Requires(source != null);
-            Contract.Requires(source.IsFilled);
-            Contract.Requires(target != null);
-            Contract.Ensures(target.IsFilled);
-
             int oldIndex = 0, newIndex = 0;
 
             byte[] sourcePixels = source.Pixels;
@@ -178,9 +158,6 @@ namespace Nine.Imaging
         /// (Nothing in Visual Basic).</exception>
         private static void FlipX(ImageBase image)
         {
-            Contract.Requires<ArgumentNullException>(image != null, "Image cannot be null.");
-            Contract.Requires<ArgumentException>(image.IsFilled, "Other image has not been loaded.");
-
             int oldIndex = 0, newIndex = 0;
 
             byte[] sourcePixels = image.Pixels;
@@ -223,9 +200,6 @@ namespace Nine.Imaging
         /// (Nothing in Visual Basic).</exception>
         private static void FlipY(ImageBase image)
         {
-            Contract.Requires<ArgumentNullException>(image != null, "Image cannot be null.");
-            Contract.Requires<ArgumentException>(image.IsFilled, "Other image has not been loaded.");
-
             int oldIndex = 0, newIndex = 0;
 
             byte[] sourcePixels = image.Pixels;
@@ -269,23 +243,14 @@ namespace Nine.Imaging
         /// 	<para>- or -</para>
         /// 	<para><paramref name="target"/> is null (Nothing in Visual Basic).</para>
         /// </exception>
-        [ContractVerification(false)]
         internal static void Crop(ImageBase source, ImageBase target, Rectangle bounds)
         {
-            Contract.Requires<ArgumentNullException>(source != null, "Source image cannot be null.");
-            Contract.Requires<ArgumentException>(source.IsFilled, "Source image has not been loaded.");
-            Contract.Requires<ArgumentNullException>(target != null, "Target image cannot be null.");
-
-            Guard.GreaterThan(bounds.Width, 0, "bounds",
-                "Width of the rectangle must be greater than zero.");
-
-            Guard.GreaterThan(bounds.Height, 0, "bounds",
-                "Height of the rectangle must be greater than zero.");
+            Guard.GreaterThan(bounds.Width, 0, "bounds", "Width of the rectangle must be greater than zero.");
+            Guard.GreaterThan(bounds.Height, 0, "bounds", "Height of the rectangle must be greater than zero.");
 
             if (bounds.Right > source.PixelWidth || bounds.Bottom > source.PixelHeight)
             {
-                throw new ArgumentException(
-                    "Rectangle must be in the range of the image's dimension.", "bounds");
+                throw new ArgumentException("Rectangle must be in the range of the image's dimension.", "bounds");
             }
 
             byte[] sourcePixels = source.Pixels;

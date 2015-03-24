@@ -6,7 +6,7 @@
 // All rights reserved.
 // ===============================================================================
 
-using System.Diagnostics.Contracts;
+
 
 namespace Nine.Imaging.Filtering
 {
@@ -62,7 +62,6 @@ namespace Nine.Imaging.Filtering
         /// </exception>
         /// <exception cref="System.ArgumentException"><paramref name="rectangle"/> doesnt fits
         /// to the image.</exception>
-        [ContractVerification(false)]
         public void Apply(ImageBase target, ImageBase source, Rectangle rectangle)
         {
             byte temp = 0;

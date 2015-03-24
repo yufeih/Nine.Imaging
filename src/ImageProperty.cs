@@ -7,7 +7,7 @@
 // ===============================================================================
 
 using System;
-using System.Diagnostics.Contracts;
+
 
 namespace Nine.Imaging
 {
@@ -18,18 +18,6 @@ namespace Nine.Imaging
     /// </summary>
     public sealed class ImageProperty : IEquatable<ImageProperty>
     {
-        #region Invariant
-
-#if !WINDOWS_PHONE
-        [ContractInvariantMethod]
-        private void ImagePropertyInvariantMethod()
-        {
-            Contract.Invariant(!string.IsNullOrEmpty(_name));
-        }
-#endif
-
-        #endregion
-
         #region Properties
 
         private string _name;
@@ -44,7 +32,6 @@ namespace Nine.Imaging
         {
             get
             {
-                Contract.Ensures(!string.IsNullOrEmpty(Contract.Result<string>()));
                 return _name;
             }
         }
@@ -69,8 +56,6 @@ namespace Nine.Imaging
         /// <exception cref="ArgumentException"><paramref name="name"/> is null or empty.</exception>
         public ImageProperty(string name, string value)
         {
-            Contract.Requires<ArgumentException>(!string.IsNullOrEmpty(name), "Name cannot be null or empty.");
-
             _name = name;
 
             Value = value;
