@@ -22,6 +22,7 @@
             Filters.Add(typeof(SobelY).Name, new SobelY());
             Filters.Add(typeof(PrewittX).Name, new PrewittX());
             Filters.Add(typeof(PrewittY).Name, new PrewittY());
+            Filters.Add("Tint-yellow", new Tint { TintColor = new Color(255, 255, 0) });
             Filters.Add("Contrast-128", new Contrast(128));
             Filters.Add("Contrast--128", new Contrast(-128));
             Filters.Add("Brightness-128", new Brightness(128));
