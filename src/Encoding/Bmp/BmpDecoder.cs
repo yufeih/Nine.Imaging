@@ -6,7 +6,7 @@
 // All rights reserved.
 // ===============================================================================
 
-namespace Nine.Imaging
+namespace Nine.Imaging.Encoding
 {
     using System;
     using System.Globalization;

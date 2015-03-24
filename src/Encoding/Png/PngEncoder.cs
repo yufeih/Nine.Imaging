@@ -12,7 +12,7 @@ using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using Nine.Imaging.Png;
 
-namespace Nine.Imaging
+namespace Nine.Imaging.Encoding
 {
     /// <summary>
     /// Image encoder for writing image data to a stream in png format.

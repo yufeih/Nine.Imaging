@@ -2,7 +2,8 @@
 {
     using System.IO;
     using System.ComponentModel;
-    
+    using Nine.Imaging.Encoding;
+
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class ImageIOExtensions
     {

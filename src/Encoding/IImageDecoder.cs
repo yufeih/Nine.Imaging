@@ -8,7 +8,7 @@
 
 using System.IO;
 
-namespace Nine.Imaging
+namespace Nine.Imaging.Encoding
 {
     /// <summary>
     /// Interface for image decoders for loading images from streams.

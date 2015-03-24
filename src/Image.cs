@@ -13,6 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Nine.Imaging;
+using Nine.Imaging.Encoding;
 
 namespace Nine.Imaging
 {

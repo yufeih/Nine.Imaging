@@ -10,7 +10,7 @@ using System;
 using System.IO;
 using Nine.Imaging.Gif;
 
-namespace Nine.Imaging
+namespace Nine.Imaging.Encoding
 {
     /// <summary>
     /// Decodes GIF files from stream.

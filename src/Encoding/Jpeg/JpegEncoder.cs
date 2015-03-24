@@ -8,7 +8,7 @@
 
 using System.IO;
 
-namespace Nine.Imaging
+namespace Nine.Imaging.Encoding
 {
     using System;
     using BitMiracle.LibJpeg;

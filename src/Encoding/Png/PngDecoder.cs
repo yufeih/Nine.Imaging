@@ -15,7 +15,7 @@ using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using Nine.Imaging.Png;
 
-namespace Nine.Imaging
+namespace Nine.Imaging.Encoding
 {
     /// <summary>
     /// Encoder for generating a image out of a png stream.
@@ -365,8 +365,8 @@ namespace Nine.Imaging
                 }
             }
 
-            string name  = Encoding.Unicode.GetString(data, 0, zeroIndex);
-            string value = Encoding.Unicode.GetString(data, zeroIndex + 1, data.Length - zeroIndex - 1);
+            string name  = System.Text.Encoding.Unicode.GetString(data, 0, zeroIndex);
+            string value = System.Text.Encoding.Unicode.GetString(data, zeroIndex + 1, data.Length - zeroIndex - 1);
 
             _image.Properties.Add(new ImageProperty(name, value));
         }
