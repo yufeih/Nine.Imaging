@@ -64,11 +64,14 @@ namespace Nine.Imaging.Filtering
         public void Apply(ImageBase target, ImageBase source, Rectangle rectangle)
         {
             PrepareFilter();
-
-            if (_filter != null)
-            {
+            
                 int width = rectangle.Width;
                 int height = rectangle.Height;
+
+                int sourceWidth = source.PixelWidth;
+                int halfFilterSize = _filterSize >> 1;
+
+                byte[] pixels = source.Pixels;
 
                 for (int y = rectangle.Y; y < rectangle.Bottom; y++)
                 {
@@ -76,31 +79,33 @@ namespace Nine.Imaging.Filtering
                     {
                         double r = 0, g = 0, b = 0;
 
-                        Color color = source[x, y];
-
                         for (int filterY = 0; filterY < _filterSize; filterY++)
                         {
                             for (int filterX = 0; filterX < _filterSize; filterX++)
                             {
-                                int imageX = (x - _filterSize / 2 + filterX + width) % width;
-                                int imageY = (y - _filterSize / 2 + filterY + height) % height;
+                                int imageX = (x - halfFilterSize + filterX + width) % width;
+                                int imageY = (y - halfFilterSize + filterY + height) % height;
 
-                                Color tempColor = source[imageX, imageY];
+                                int sourceStart = (imageX + imageY * sourceWidth) << 2;
 
-                                r += tempColor.R * _filter[filterX + filterY * _filterSize];
-                                g += tempColor.G * _filter[filterX + filterY * _filterSize];
-                                b += tempColor.B * _filter[filterX + filterY * _filterSize];
+                                byte tr = pixels[sourceStart];
+                                byte tg = pixels[sourceStart + 1];
+                                byte tb = pixels[sourceStart + 2];
+
+                                double multiplier = _filter[filterX + filterY * _filterSize];
+
+                                r += tr * multiplier;
+                                g += tg * multiplier;
+                                b += tb * multiplier;
                             }
                         }
 
-                        color.R = (byte)r.RemainBetween(0, 255);
-                        color.G = (byte)g.RemainBetween(0, 255);
-                        color.B = (byte)b.RemainBetween(0, 255);
-
-                        target[x, y] = color;
+                        target[x, y] = new Color(
+                            (byte)r.RemainBetween(0, 255),
+                            (byte)g.RemainBetween(0, 255),
+                            (byte)b.RemainBetween(0, 255));
                     }
                 }
-            }
         }
 
         #endregion
