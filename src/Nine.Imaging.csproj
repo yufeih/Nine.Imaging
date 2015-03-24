@@ -85,6 +85,7 @@
     <Compile Include="Barcode\BarcodeResult.cs" />
     <Compile Include="Barcode\BarcodeResultFormat.cs" />
     <Compile Include="Filtering\ParallelImageFilter.cs" />
+    <Compile Include="IO\ImageIOExtensions.cs" />
     <Compile Include="IO\Jpeg\FluxJpeg.Core\DCT.cs" />
     <Compile Include="IO\Jpeg\FluxJpeg.Core\DecodedJpeg.cs" />
     <Compile Include="IO\Jpeg\FluxJpeg.Core\Decoder\HuffmanTable.cs" />

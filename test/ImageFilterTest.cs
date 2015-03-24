@@ -4,6 +4,7 @@
     using System.IO;
     using System.Linq;
     using Nine.Imaging.Filtering;
+    using Nine.Imaging.IO;
     using System.Diagnostics;
 
     public class ImageFilterTest
@@ -39,16 +40,16 @@
             var image = new Image(stream);
 
             var watch = Stopwatch.StartNew();
+
             image = image.ApplyFilters(filter);
+
+            Trace.WriteLine($"{ name }: { watch.ElapsedMilliseconds}ms");
 
             var outputFilename = "Filtered/" + name + ".jpg";
             using (var output = File.OpenWrite(outputFilename))
             {
-                var encoder = Image.Encoders.First(e => e.IsSupportedFileExtension("jpg"));
-                encoder.Encode(image, output);
+                image.SaveAsJpeg(output);
             }
-
-            Trace.WriteLine($"{ name }: { watch.ElapsedMilliseconds}ms");
         }
     }
 }
