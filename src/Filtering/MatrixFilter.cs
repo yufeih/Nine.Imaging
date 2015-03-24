@@ -9,13 +9,12 @@
 namespace Nine.Imaging.Filtering
 {
     using System;
-    using System.Threading.Tasks;
-    
+
     /// <summary>
     /// Defines an abstract base filter that uses a matrix a factor and a bias value to 
     /// change the color of a matrix.
     /// </summary>
-    public abstract class MatrixFilter : IImageFilter
+    public abstract class MatrixFilter : ParallelImageFilter
     {
         #region Fields
 
@@ -25,11 +24,6 @@ namespace Nine.Imaging.Filtering
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// Gets or sets whether the filter algorithm is applied in paralell.
-        /// </summary>
-        public bool IsParallel { get; set; } = true;
 
         /// <summary>
         /// Initializes this filter with the filter matrix.
@@ -45,47 +39,7 @@ namespace Nine.Imaging.Filtering
             _filterSize = filterSize;
         }
 
-        /// <summary>
-        /// This method is called before the filter is applied to prepare the filter 
-        /// matrix. Only calculate a new matrix, when the properties has been changed.
-        /// </summary>
-        protected virtual void PrepareFilter() { }
-
-        /// <summary>
-        /// Apply filter to an image at the area of the specified rectangle.
-        /// </summary>
-        /// <param name="target">Target image to apply filter to.</param>
-        /// <param name="source">The source image. Cannot be null.</param>
-        /// <param name="rectangle">The rectangle, which defines the area of the
-        /// image where the filter should be applied to.</param>
-        public void Apply(ImageBase target, ImageBase source, Rectangle rectangle)
-        {
-            PrepareFilter();
-
-            if (IsParallel)
-            {
-                int partitionCount = Environment.ProcessorCount;
-
-                Task[] tasks = new Task[partitionCount];
-
-                for (int p = 0; p < partitionCount; p++)
-                {
-                    int current = p;
-                    tasks[p] = Task.Run(() =>
-                    {
-                        ApplyPartition(target, source, rectangle, current, partitionCount);
-                    });
-                }
-
-                Task.WaitAll(tasks);
-            }
-            else
-            {
-                ApplyPartition(target, source, rectangle, 0, 4);
-            }
-        }
-
-        private void ApplyPartition(ImageBase target, ImageBase source, Rectangle rectangle, int partition, int partitionCount)
+        protected override void Apply(ImageBase target, ImageBase source, Rectangle rectangle, int startY, int endY)
         {
             int width = rectangle.Width;
             int height = rectangle.Height;
@@ -95,15 +49,12 @@ namespace Nine.Imaging.Filtering
 
             byte[] pixels = source.Pixels;
 
-            int batchSize = rectangle.Height / partitionCount;
-            int yBegin = rectangle.Y + partition * batchSize;
-            int yEnd = Math.Min(rectangle.Bottom, yBegin + batchSize);
-
-            for (int y = yBegin; y < yEnd; y++)
+            for (int y = startY; y < endY; y++)
             {
                 int baseY = y - halfFilterSize + height;
+                int right = rectangle.Right;
 
-                for (int x = rectangle.X; x < rectangle.Right; x++)
+                for (int x = rectangle.X; x < right; x++)
                 {
                     double r = 0, g = 0, b = 0;
 

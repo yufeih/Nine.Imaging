@@ -11,7 +11,7 @@ namespace Nine.Imaging.Filtering
     /// <summary>
     /// An <see cref="IImageFilter"/> to change the contrast of an <see cref="Image"/>.
     /// </summary>
-    public sealed class Contrast : IImageFilter
+    public sealed class Contrast : ParallelImageFilter
     {
         #region Fields
 
@@ -40,27 +40,11 @@ namespace Nine.Imaging.Filtering
 
         #region Methods
 
-        /// <summary>
-        /// Apply filter to an image at the area of the specified rectangle.
-        /// </summary>
-        /// <param name="target">Target image to apply filter to.</param>
-        /// <param name="source">The source image. Cannot be null.</param>
-        /// <param name="rectangle">The rectangle, which defines the area of the
-        /// image where the filter should be applied to.</param>
-        /// <remarks>The method keeps the source image unchanged and returns the
-        /// the result of image processing filter as new image.</remarks>
-        /// <exception cref="System.ArgumentNullException">
-        /// 	<para><paramref name="target"/> is null.</para>
-        /// 	<para>- or -</para>
-        /// 	<para><paramref name="target"/> is null.</para>
-        /// </exception>
-        /// <exception cref="System.ArgumentException"><paramref name="rectangle"/> doesnt fits
-        /// to the image.</exception>
-        public void Apply(ImageBase target, ImageBase source, Rectangle rectangle)
+        protected override void Apply(ImageBase target, ImageBase source, Rectangle rectangle, int startY, int endY)
         {
             double pixel = 0, contrast = (100.0 + _contrast) / 100.0;
 
-            for (int y = rectangle.Y; y < rectangle.Bottom; y++)
+            for (int y = startY; y < endY; y++)
             {
                 for (int x = rectangle.X; x < rectangle.Right; x++)
                 {

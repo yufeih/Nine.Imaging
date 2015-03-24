@@ -16,7 +16,7 @@ namespace Nine.Imaging.Filtering
     /// of the overlay is respected, so an alpha value of 255 in the overlay image pixel means that the original image pixel
     /// is fully replaced. A value of 0 means that the original image pixel is not changed at all.
     /// </summary>
-    public sealed class BlendingFilter : IImageFilter
+    public sealed class BlendingFilter : ParallelImageFilter
     {
         #region Fields
 
@@ -50,23 +50,7 @@ namespace Nine.Imaging.Filtering
 
         #region Methods
 
-        /// <summary>
-        /// Apply filter to an image at the area of the specified rectangle.
-        /// </summary>
-        /// <param name="target">Target image to apply filter to.</param>
-        /// <param name="source">The source image. Cannot be null.</param>
-        /// <param name="rectangle">The rectangle, which defines the area of the
-        /// image where the filter should be applied to.</param>
-        /// <remarks>The method keeps the source image unchanged and returns the
-        /// the result of image processing filter as new image.</remarks>
-        /// <exception cref="System.ArgumentNullException">
-        /// 	<para><paramref name="target"/> is null.</para>
-        /// 	<para>- or -</para>
-        /// 	<para><paramref name="source"/> is null.</para>
-        /// </exception>
-        /// <exception cref="System.ArgumentException"><paramref name="rectangle"/> doesnt fits
-        /// to the image.</exception>
-        public void Apply(ImageBase target, ImageBase source, Rectangle rectangle)
+        protected override void Apply(ImageBase target, ImageBase source, Rectangle rectangle, int startY, int endY)
         {
             // Make sure we stop combining when the whole image that should be combined has been processed.
             if (rectangle.Right > _blendedImage.PixelWidth)
@@ -79,7 +63,7 @@ namespace Nine.Imaging.Filtering
                 rectangle.Height = _blendedImage.PixelHeight - rectangle.Top;
             }
 
-            for (int y = rectangle.Y; y < rectangle.Bottom; y++)
+            for (int y = startY; y < endY; y++)
             {
                 for (int x = rectangle.X; x < rectangle.Right; x++)
                 {
@@ -90,9 +74,9 @@ namespace Nine.Imaging.Filtering
 
                     double invertedAlphaFactor = 1 - alphaFactor;
 
-                    int r = (int) (color.R * invertedAlphaFactor) + (int) (blendedColor.R * alphaFactor);
-                    int g = (int) (color.G * invertedAlphaFactor) + (int) (blendedColor.G * alphaFactor);
-                    int b = (int) (color.B * invertedAlphaFactor) + (int) (blendedColor.B * alphaFactor);
+                    int r = (int)(color.R * invertedAlphaFactor) + (int)(blendedColor.R * alphaFactor);
+                    int g = (int)(color.G * invertedAlphaFactor) + (int)(blendedColor.G * alphaFactor);
+                    int b = (int)(color.B * invertedAlphaFactor) + (int)(blendedColor.B * alphaFactor);
 
                     r = r.RemainBetween(0, 255);
                     g = g.RemainBetween(0, 255);

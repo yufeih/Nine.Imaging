@@ -12,29 +12,12 @@ namespace Nine.Imaging.Filtering
     /// Simple sepia filter, which makes the image look like an old brown photo.
     /// </summary>
     /// <remarks>The filter makes an image look like an old brown photo.</remarks>
-    public sealed class Sepia : IImageFilter
+    public sealed class Sepia : ParallelImageFilter
     {
-        /// <summary>
-        /// Apply filter to an image at the area of the specified rectangle.
-        /// </summary>
-        /// <param name="target">Target image to apply filter to.</param>
-        /// <param name="source">The source image. Cannot be null.</param>
-        /// <param name="rectangle">The rectangle, which defines the area of the
-        /// image where the filter should be applied to.</param>
-        /// <remarks>The method keeps the source image unchanged and returns the
-        /// the result of image processing filter as new image.</remarks>
-        /// <exception cref="System.ArgumentNullException">
-        /// 	<para><paramref name="target"/> is null.</para>
-        /// 	<para>- or -</para>
-        /// 	<para><paramref name="target"/> is null.</para>
-        /// </exception>
-        /// <exception cref="System.ArgumentException"><paramref name="rectangle"/> doesnt fits
-        /// to the image.</exception>
-        public void Apply(ImageBase target, ImageBase source, Rectangle rectangle)
+        protected override void Apply(ImageBase target, ImageBase source, Rectangle rectangle, int startY, int endY)
         {
             byte temp = 0;
-
-            for (int y = rectangle.Y; y < rectangle.Bottom; y++)
+            for (int y = startY; y < endY; y++)
             {
                 for (int x = rectangle.X; x < rectangle.Right; x++)
                 {
