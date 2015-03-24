@@ -7,12 +7,11 @@
 // ===============================================================================
 
 using System.IO;
-using FluxJpeg.Core;
 
 namespace Nine.Imaging.IO
 {
     using System;
-    using FluxCoreJpegEncoder = FluxJpeg.Core.Encoder.JpegEncoder;
+    using BitMiracle.LibJpeg;
 
     /// <summary>
     /// Encoder for writing the data image to a stream in jpg format.
@@ -20,20 +19,7 @@ namespace Nine.Imaging.IO
     public class JpegEncoder : IImageEncoder
     {
         #region Properties
-
-        private Color _transparentColor = Color.Transparent;
-        /// <summary>
-        /// Gets or sets the color that will be used, when the source pixel is transparent.
-        /// The default transparent color is white.
-        /// </summary>
-        /// <value>The color of the transparent that will be used, 
-        /// when the source pixel is transparent.</value>
-        public Color TransparentColor
-        {
-            get { return _transparentColor; }
-            set { _transparentColor = value; }
-        }
-
+        
         private int _quality = 100;
         /// <summary>
         /// Gets or sets the quality, that will be used to encode the image. Quality 
@@ -99,53 +85,33 @@ namespace Nine.Imaging.IO
         {
             Guard.NotNull(image, "image");
             Guard.NotNull(stream, "stream");
-            
-            const int bands = 3;
 
             int pixelWidth  = image.PixelWidth;
             int pixelHeight = image.PixelHeight;
 
             byte[] sourcePixels = image.Pixels;
 
-            byte[][,] pixels = new byte[bands][,];
-
-            for (int b = 0; b < bands; b++)
-            {
-                pixels[b] = new byte[pixelWidth, pixelHeight];
-            }
-
-            byte tr = _transparentColor.R;
-            byte tg = _transparentColor.G;
-            byte tb = _transparentColor.B;
+            SampleRow[] rows = new SampleRow[pixelHeight];
 
             for (int y = 0; y < pixelHeight; y++)
             {
+                byte[] samples = new byte[pixelWidth * 3];
+
                 for (int x = 0; x < pixelWidth; x++)
                 {
-                    int offset = (y * pixelWidth + x) * 4;
+                    int start = x * 3;
+                    int source = (y * pixelWidth + x) * 4;
 
-                    float a = (float)sourcePixels[offset + 3] / 255.0f;
-
-                    pixels[0][x, y] = (byte)(sourcePixels[offset + 0] * a + (1 - a) * tr);
-                    pixels[1][x, y] = (byte)(sourcePixels[offset + 1] * a + (1 - a) * tg);
-                    pixels[2][x, y] = (byte)(sourcePixels[offset + 2] * a + (1 - a) * tb);
+                    samples[start] = sourcePixels[source];
+                    samples[start + 1] = sourcePixels[source + 1];
+                    samples[start + 2] = sourcePixels[source + 2];
                 }
+
+                rows[y] = new SampleRow(samples, pixelWidth, 8, 3);
             }
 
-            FluxJpeg.Core.Image newImage = new FluxJpeg.Core.Image(new ColorModel { ColorSpace = ColorSpace.RGB, Opaque = false }, pixels);
-
-            if (image.DensityX > 0 && image.DensityY > 0)
-            {
-                newImage.DensityX = image.DensityX;
-                newImage.DensityY = image.DensityY;
-            }
-
-            // Create a jpg image from the image object.
-            DecodedJpeg jpg = new DecodedJpeg(newImage);
-
-            // Create a new encoder and start encoding.
-            FluxCoreJpegEncoder fluxCoreJpegEncoder = new FluxCoreJpegEncoder(jpg, _quality, stream);
-            fluxCoreJpegEncoder.Encode();
+            JpegImage jpg = new JpegImage(rows, Colorspace.RGB);
+            jpg.WriteJpeg(stream, new CompressionParameters { Quality = Quality });
         }
 
         #endregion

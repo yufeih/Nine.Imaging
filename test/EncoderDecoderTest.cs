@@ -15,11 +15,13 @@
         [InlineData("TestImages/Windmill.gif")]
         public void decode_then_encode_image_from_stream_should_succeed(string filename)
         {
+            if (!Directory.Exists("Encoded")) Directory.CreateDirectory("Encoded");
+
             var stream = File.OpenRead(filename);
             var watch = Stopwatch.StartNew();
             var image = new Image(stream);
             
-            var encodedFilename = Path.GetFileNameWithoutExtension(filename) + "_encoded" + Path.GetExtension(filename);
+            var encodedFilename = "Encoded/" + Path.GetFileName(filename);
 
             if (!image.IsAnimated)
             {

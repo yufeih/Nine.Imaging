@@ -87,7 +87,7 @@ namespace BitMiracle.LibJpeg
         {
             get
             {
-                return GetComponent(componentNumber);
+                return m_components[componentNumber];
             }
         }
 
