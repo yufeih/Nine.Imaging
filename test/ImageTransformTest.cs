@@ -4,7 +4,7 @@
     using System.IO;
     using System.Diagnostics;
     using Nine.Imaging.Filtering;
-    using Nine.Imaging.IO;
+    using Nine.Imaging;
 
     public class ImageTransformTest
     {

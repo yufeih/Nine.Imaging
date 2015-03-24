@@ -2,9 +2,8 @@
 {
     using Xunit;
     using System.IO;
-    using System.Linq;
+    using Nine.Imaging;
     using Nine.Imaging.Filtering;
-    using Nine.Imaging.IO;
     using System.Diagnostics;
 
     public class ImageFilterTest

@@ -6,7 +6,7 @@
 // All rights reserved.
 // ===============================================================================
 
-namespace Nine.Imaging.IO.Gif
+namespace Nine.Imaging.Gif
 {
     /// <summary>
     /// Specifies, what to do with the last image 

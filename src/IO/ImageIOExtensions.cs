@@ -1,4 +1,4 @@
-﻿namespace Nine.Imaging.IO
+﻿namespace Nine.Imaging
 {
     using System.IO;
     using System.ComponentModel;

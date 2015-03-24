@@ -10,9 +10,9 @@ using System;
 using System.IO;
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
-using Nine.Imaging.IO.Png;
+using Nine.Imaging.Png;
 
-namespace Nine.Imaging.IO
+namespace Nine.Imaging
 {
     /// <summary>
     /// Image encoder for writing image data to a stream in png format.

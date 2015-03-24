@@ -6,11 +6,9 @@
 // All rights reserved.
 // ===============================================================================
 
-using System.Collections.ObjectModel;
-
 using System.IO;
 
-namespace Nine.Imaging.IO
+namespace Nine.Imaging
 {
     /// <summary>
     /// Interface for image decoders for loading images from streams.

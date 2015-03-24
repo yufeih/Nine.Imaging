@@ -6,7 +6,7 @@
 // All rights reserved.
 // ===============================================================================
 
-namespace Nine.Imaging.IO
+namespace Nine.Imaging
 {
     using System;
 

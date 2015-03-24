@@ -6,7 +6,7 @@
 // All rights reserved.
 // ===============================================================================
 
-namespace Nine.Imaging.IO.Bmp
+namespace Nine.Imaging.Bmp
 {
     /// <summary>
     /// Defines how the compression type of the image data

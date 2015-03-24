@@ -6,7 +6,7 @@
 // All rights reserved.
 // ===============================================================================
 
-namespace Nine.Imaging.IO.Png
+namespace Nine.Imaging.Png
 {
     /// <summary>
     /// Represents the png header chunk.

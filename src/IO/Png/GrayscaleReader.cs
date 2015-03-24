@@ -6,7 +6,7 @@
 // All rights reserved.
 // ===============================================================================
 
-namespace Nine.Imaging.IO.Png
+namespace Nine.Imaging.Png
 {
     /// <summary>
     /// Color reader for reading grayscale colors from a PNG file.

@@ -6,10 +6,9 @@
 // All rights reserved.
 // ===============================================================================
 
-
 using System.IO;
 
-namespace Nine.Imaging.IO
+namespace Nine.Imaging
 {
     /// <summary>
     /// Interface for image decoders for saving images to streams.

@@ -8,7 +8,7 @@
 
 using System;
 
-namespace Nine.Imaging.IO.Png
+namespace Nine.Imaging.Png
 {
     /// <summary>
     /// Color reader for reading truecolors from a PNG file. Only colors

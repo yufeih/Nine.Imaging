@@ -13,9 +13,9 @@ using System.Linq;
 using System.Text;
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
-using Nine.Imaging.IO.Png;
+using Nine.Imaging.Png;
 
-namespace Nine.Imaging.IO
+namespace Nine.Imaging
 {
     /// <summary>
     /// Encoder for generating a image out of a png stream.

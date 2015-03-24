@@ -6,11 +6,11 @@
 // All rights reserved.
 // ===============================================================================
 
-namespace Nine.Imaging.IO
+namespace Nine.Imaging
 {
     using System;
     using System.IO;
-    using Nine.Imaging.IO.Bmp;
+    using Nine.Imaging.Bmp;
 
     /// <summary>
     /// Image encoder for writing an image to a stream
@@ -42,7 +42,7 @@ namespace Nine.Imaging.IO
         /// <c>true</c>, if the encoder supports the specified
         /// extensions; otherwise <c>false</c>.
         /// </returns>
-        /// <remarks>For example, the <see cref="Nine.Imaging.IO.Bmp.BmpDecoder"/>
+        /// <remarks>For example, the <see cref="Nine.Imaging.Bmp.BmpDecoder"/>
         /// supports BMP or DIP as file extension.</remarks>
         /// <exception cref="ArgumentNullException"><paramref name="extension"/>
         /// is null (Nothing in Visual Basic).</exception>

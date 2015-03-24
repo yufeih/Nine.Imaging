@@ -6,7 +6,7 @@
 // All rights reserved.
 // ===============================================================================
 
-namespace Nine.Imaging.IO.Png
+namespace Nine.Imaging.Png
 {
     /// <summary>
     /// Contains a list of possible chunk type identifier.

@@ -9,7 +9,7 @@
 using System;
 using System.IO;
 
-namespace Nine.Imaging.IO.Gif
+namespace Nine.Imaging.Gif
 {
     /// <summary>
     /// Uncrompress data using the LZW algorithmus.

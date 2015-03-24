@@ -7,7 +7,7 @@
 // ===============================================================================
 
 
-namespace Nine.Imaging.IO.Png
+namespace Nine.Imaging.Png
 {
     /// <summary>
     /// A color reader for reading palette indices from the PNG file.
