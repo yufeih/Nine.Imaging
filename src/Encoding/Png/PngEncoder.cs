@@ -28,7 +28,7 @@ namespace Nine.Imaging.Encoding
         #region Fields
 
         private Stream _stream;
-        private Image _image;
+        private ImageBase _image;
 
         #endregion
 
@@ -112,7 +112,7 @@ namespace Nine.Imaging.Encoding
         /// <para>- or -</para>
         /// <para><paramref name="stream"/> is null (Nothing in Visual Basic).</para>
         /// </exception>
-        public void Encode(Image image, Stream stream)
+        public void Encode(ImageBase image, Stream stream)
         {
             Guard.NotNull(image, "image");
             Guard.NotNull(stream, "stream");
@@ -158,10 +158,11 @@ namespace Nine.Imaging.Encoding
 
         private void WritePhysicsChunk()
         {
-            if (_image.DensityX > 0 && _image.DensityY > 0)
+            var image = _image as Image;
+            if (image != null && image.DensityX > 0 && image.DensityY > 0)
             {
-                int dpmX = (int)Math.Round(_image.DensityX * 39.3700787d);
-                int dpmY = (int)Math.Round(_image.DensityY * 39.3700787d);
+                int dpmX = (int)Math.Round(image.DensityX * 39.3700787d);
+                int dpmY = (int)Math.Round(image.DensityY * 39.3700787d);
 
                 byte[] chunkData = new byte[9];
 

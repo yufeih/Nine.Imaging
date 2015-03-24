@@ -81,7 +81,7 @@ namespace Nine.Imaging.Encoding
         /// 	<para>- or -</para>
         /// 	<para><paramref name="stream"/> is null (Nothing in Visual Basic).</para>
         /// </exception>
-        public void Encode(Image image, Stream stream)
+        public void Encode(ImageBase image, Stream stream)
         {
             Guard.NotNull(image, "image");
             Guard.NotNull(stream, "stream");
