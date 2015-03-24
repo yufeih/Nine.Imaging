@@ -243,6 +243,11 @@ namespace Nine.Imaging
             return !left.Equals(right);
         }
 
+        public override string ToString()
+        {
+            return $"{ _x }, { _y }, { _width }, { _height }";
+        }
+
         #endregion
     }
 }
