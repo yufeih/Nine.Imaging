@@ -187,7 +187,8 @@
     <Compile Include="IO\Png\PngEncoder.cs" />
     <Compile Include="IO\Png\PngHeader.cs" />
     <Compile Include="IO\Png\TruecolorReader.cs" />
-    <Compile Include="Types.cs" />
+    <Compile Include="Color.cs" />
+    <Compile Include="Point.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="Filtering\ImageFiltering.cs" />
     <Compile Include="Filtering\BilinearResizer.cs" />

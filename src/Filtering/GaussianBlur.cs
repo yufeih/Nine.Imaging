@@ -8,7 +8,7 @@
 
 using System;
 
-using System.Diagnostics.CodeAnalysis;
+
 
 namespace Nine.Imaging.Filtering
 {

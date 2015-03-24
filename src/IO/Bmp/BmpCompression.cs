@@ -8,7 +8,7 @@
 
 namespace Nine.Imaging.IO.Bmp
 {
-    using System.Diagnostics.CodeAnalysis;
+    
 
     /// <summary>
     /// Defines how the compression type of the image data

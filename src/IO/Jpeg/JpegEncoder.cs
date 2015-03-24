@@ -21,7 +21,7 @@ namespace Nine.Imaging.IO
     {
         #region Properties
 
-        private Color _transparentColor = Color.FromArgb(0, 255, 255, 255);
+        private Color _transparentColor = Color.Transparent;
         /// <summary>
         /// Gets or sets the color that will be used, when the source pixel is transparent.
         /// The default transparent color is white.
@@ -114,6 +114,10 @@ namespace Nine.Imaging.IO
                 pixels[b] = new byte[pixelWidth, pixelHeight];
             }
 
+            byte tr = _transparentColor.R;
+            byte tg = _transparentColor.G;
+            byte tb = _transparentColor.B;
+
             for (int y = 0; y < pixelHeight; y++)
             {
                 for (int x = 0; x < pixelWidth; x++)
@@ -122,9 +126,9 @@ namespace Nine.Imaging.IO
 
                     float a = (float)sourcePixels[offset + 3] / 255.0f;
 
-                    pixels[0][x, y] = (byte)(sourcePixels[offset + 0] * a + (1 - a) * _transparentColor.R);
-                    pixels[1][x, y] = (byte)(sourcePixels[offset + 1] * a + (1 - a) * _transparentColor.G);
-                    pixels[2][x, y] = (byte)(sourcePixels[offset + 2] * a + (1 - a) * _transparentColor.B);
+                    pixels[0][x, y] = (byte)(sourcePixels[offset + 0] * a + (1 - a) * tr);
+                    pixels[1][x, y] = (byte)(sourcePixels[offset + 1] * a + (1 - a) * tg);
+                    pixels[2][x, y] = (byte)(sourcePixels[offset + 2] * a + (1 - a) * tb);
                 }
             }
 

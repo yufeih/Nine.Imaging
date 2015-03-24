@@ -9,7 +9,6 @@
 namespace Nine.Imaging
 {
     using System;
-    using System.Diagnostics.CodeAnalysis;
 
     /// <summary>
     /// Stores a set of four integers that represent the location and 
