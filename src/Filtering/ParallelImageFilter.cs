@@ -32,7 +32,7 @@
                     {
                         int batchSize = rectangle.Height / partitionCount;
                         int yBegin = rectangle.Y + current * batchSize;
-                        int yEnd = Math.Min(rectangle.Bottom, yBegin + batchSize);
+                        int yEnd = (current == partitionCount - 1 ? rectangle.Bottom : yBegin + batchSize);
 
                         Apply(target, source, rectangle, yBegin, yEnd);
                     });

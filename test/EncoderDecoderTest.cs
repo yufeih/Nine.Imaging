@@ -3,7 +3,6 @@
     using Xunit;
     using System.IO;
     using System.Linq;
-    using Nine.Imaging.IO;
     using System.Diagnostics;
 
     public class EncoderDecoderTest
