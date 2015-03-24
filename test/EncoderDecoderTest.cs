@@ -4,6 +4,7 @@
     using System.IO;
     using System.Linq;
     using Nine.Imaging.IO;
+    using System.Diagnostics;
 
     public class EncoderDecoderTest
     {
@@ -15,7 +16,9 @@
         public void decode_then_encode_image_from_stream_should_succeed(string filename)
         {
             var stream = File.OpenRead(filename);
+            var watch = Stopwatch.StartNew();
             var image = new Image(stream);
+            
             var encodedFilename = Path.GetFileNameWithoutExtension(filename) + "_encoded" + Path.GetExtension(filename);
 
             if (!image.IsAnimated)
@@ -33,6 +36,8 @@
                     // TODO: save the frame
                 }
             }
+
+            Trace.WriteLine($"{ filename }: { watch.ElapsedMilliseconds}ms");
         }
     }
 }

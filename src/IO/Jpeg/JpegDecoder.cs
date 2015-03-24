@@ -8,12 +8,10 @@
 
 using System.IO;
 using BitMiracle.LibJpeg;
-using FluxJpeg.Core;
 
 namespace Nine.Imaging.IO
 {
     using System;
-    using FluxCoreJpegDecoder = FluxJpeg.Core.Decoder.JpegDecoder;
 
     /// <summary>
     /// Image decoder for generating an image out of an jpg stream.
@@ -21,12 +19,6 @@ namespace Nine.Imaging.IO
     public class JpegDecoder : IImageDecoder
     {
         #region IImageDecoder Members
-
-        /// <summary>
-        /// Gets or sets a value indicating whether FJCore should be used to decode the images.
-        /// </summary>
-        /// <value>A value indicating whether FJCore should be used to decode the images.</value>
-        public bool UseLegacyLibrary { get; set; }
 
         /// <summary>
         /// Gets the size of the header for this image type.
@@ -129,82 +121,44 @@ namespace Nine.Imaging.IO
         {
             Guard.NotNull(image, "image");
             Guard.NotNull(stream, "stream");
+            JpegImage jpg = new JpegImage(stream);
 
-            if (UseLegacyLibrary)
+            int pixelWidth = jpg.Width;
+            int pixelHeight = jpg.Height;
+
+            byte[] pixels = new byte[pixelWidth * pixelHeight * 4];
+
+            if (!(jpg.Colorspace == Colorspace.RGB && jpg.BitsPerComponent == 8))
             {
-                FluxCoreJpegDecoder fluxCoreJpegDecoder = new FluxCoreJpegDecoder(stream);
-
-                DecodedJpeg jpg = fluxCoreJpegDecoder.Decode();
-
-                jpg.Image.ChangeColorSpace(ColorSpace.RGB);
-
-                int pixelWidth  = jpg.Image.Width;
-                int pixelHeight = jpg.Image.Height;
-
-                byte[] pixels = new byte[pixelWidth * pixelHeight * 4];
-
-                byte[][,] sourcePixels = jpg.Image.Raster;
-
-                for (int y = 0; y < pixelHeight; y++)
-                {
-                    for (int x = 0; x < pixelWidth; x++)
-                    {
-                        int offset = (y * pixelWidth + x) * 4;
-
-                        pixels[offset + 0] = sourcePixels[0][x, y];
-                        pixels[offset + 1] = sourcePixels[1][x, y];
-                        pixels[offset + 2] = sourcePixels[2][x, y];
-                        pixels[offset + 3] = (byte)255;
-
-                    }
-                }
-
-                image.DensityX = jpg.Image.DensityX;
-                image.DensityY = jpg.Image.DensityY;
-
-                image.SetPixels(pixelWidth, pixelHeight, pixels);
+                throw new UnsupportedImageFormatException();
             }
-            else
+
+            for (int y = 0; y < pixelHeight; y++)
             {
-                JpegImage jpg = new JpegImage(stream);
+                SampleRow row = jpg.GetRow(y);
 
-                int pixelWidth  = jpg.Width;
-                int pixelHeight = jpg.Height;
-
-                byte[] pixels = new byte[pixelWidth * pixelHeight * 4];
-
-                if (!(jpg.Colorspace == Colorspace.RGB && jpg.BitsPerComponent == 8))
+                for (int x = 0; x < pixelWidth; x++)
                 {
-                    throw new UnsupportedImageFormatException();
+                    Sample sample = row.GetAt(x);
+
+                    byte r = 0;
+                    byte g = 0;
+                    byte b = 0;
+
+                    r = (byte)sample[0];
+                    g = (byte)sample[1];
+                    b = (byte)sample[2];
+
+                    int offset = (y * pixelWidth + x) * 4;
+
+                    pixels[offset + 0] = r;
+                    pixels[offset + 1] = g;
+                    pixels[offset + 2] = b;
+                    pixels[offset + 3] = (byte)255;
                 }
-
-                for (int y = 0; y < pixelHeight; y++)
-                {
-                    SampleRow row = jpg.GetRow(y);
-
-                    for (int x = 0; x < pixelWidth; x++)
-                    {
-                        Sample sample = row.GetAt(x);
-
-                        byte r = 0;
-                        byte g = 0;
-                        byte b = 0;
-
-                        r = (byte)sample[0];
-                        g = (byte)sample[1];
-                        b = (byte)sample[2];
-
-                        int offset = (y * pixelWidth + x) * 4;
-
-                        pixels[offset + 0] = r;
-                        pixels[offset + 1] = g;
-                        pixels[offset + 2] = b;
-                        pixels[offset + 3] = (byte)255;
-                    }
-                }
-
-                image.SetPixels(pixelWidth, pixelHeight, pixels);
             }
+
+            image.SetPixels(pixelWidth, pixelHeight, pixels);
         }
 
         #endregion
