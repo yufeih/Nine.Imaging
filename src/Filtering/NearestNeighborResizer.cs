@@ -6,8 +6,6 @@
 // All rights reserved.
 // ===============================================================================
 
-
-
 namespace Nine.Imaging.Filtering
 {
     /// <summary>
