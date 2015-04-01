@@ -6,9 +6,9 @@
     public abstract class ParallelImageFilter : IImageFilter
     {
         /// <summary>
-        /// Gets or sets whether the filter algorithm is applied in paralell.
+        /// Gets or sets the count of workers to run the filter in parallel.
         /// </summary>
-        public bool IsParallel { get; set; } = true;
+        public int Parallelism { get; set; } = Environment.ProcessorCount;
 
         /// <summary>
         /// This method is called before the filter is applied to prepare the filter.
@@ -19,9 +19,9 @@
         {
             PrepareFilter();
 
-            if (IsParallel)
+            if (Parallelism > 1)
             {
-                int partitionCount = Environment.ProcessorCount;
+                int partitionCount = Parallelism;
 
                 Task[] tasks = new Task[partitionCount];
 
