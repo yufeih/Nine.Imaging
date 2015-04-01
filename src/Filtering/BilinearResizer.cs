@@ -6,11 +6,10 @@
 // All rights reserved.
 // ===============================================================================
 
-using System;
-
-
 namespace Nine.Imaging.Filtering
 {
+    using System;
+
     /// <summary>
     /// Bilinear image resizer, which resizes the image with the bilinear interpolation.
     /// </summary>

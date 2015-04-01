@@ -84,6 +84,8 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Barcode\BarcodeResult.cs" />
     <Compile Include="Barcode\BarcodeResultFormat.cs" />
+    <Compile Include="Filtering\SuperSamplingResizer.cs" />
+    <Compile Include="Filtering\BicubicResizer.cs" />
     <Compile Include="Filtering\ParallelImageFilter.cs" />
     <Compile Include="Filtering\Tint.cs" />
     <Compile Include="Encoding\ImageIOExtensions.cs" />
