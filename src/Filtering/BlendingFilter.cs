@@ -30,7 +30,7 @@ namespace Nine.Imaging.Filtering
         /// Gets or sets the global alpha factor.
         /// </summary>
         /// <value>The global alpha factor.</value>
-        public double? GlobalAlphaFactor { get; set; }
+        public double? Alpha { get; set; }
 
         #endregion
 
@@ -70,7 +70,7 @@ namespace Nine.Imaging.Filtering
                     Color color = source[x, y], blendedColor = _blendedImage[x, y];
 
                     // combining colors is dependent o the alpha of the blended color
-                    double alphaFactor = GlobalAlphaFactor != null ? GlobalAlphaFactor.Value : blendedColor.A / 255.0;
+                    double alphaFactor = Alpha != null ? Alpha.Value : blendedColor.A / 255.0;
 
                     double invertedAlphaFactor = 1 - alphaFactor;
 

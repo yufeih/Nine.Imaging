@@ -13,7 +13,7 @@
         static ImageFilterTest()
         {
             Filters.Add(typeof(Inverter).Name, new Inverter());
-            Filters.Add(typeof(BlendingFilter).Name, new BlendingFilter(new Image(File.OpenRead("TestImages/Car.bmp"))) { GlobalAlphaFactor = 0.25 });
+            Filters.Add(typeof(BlendingFilter).Name, new BlendingFilter(new Image(File.OpenRead("TestImages/Car.bmp"))) { Alpha = 0.25 });
             Filters.Add("GrayscaleBT709", new Grayscale { Coefficients = Grayscale.BT709 });
             Filters.Add("GrayscaleRMY", new Grayscale { Coefficients = Grayscale.RMY });
             Filters.Add(typeof(Sepia).Name, new Sepia());

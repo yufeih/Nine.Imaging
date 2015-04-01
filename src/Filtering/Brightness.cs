@@ -13,13 +13,7 @@ namespace Nine.Imaging.Filtering
     /// </summary>
     public sealed class Brightness : ParallelImageFilter
     {
-        #region Fields
-
-        private int _brightness;
-
-        #endregion
-
-        #region Constructors
+        public int Value { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Brightness"/> class.
@@ -32,12 +26,8 @@ namespace Nine.Imaging.Filtering
         /// </exception>
         public Brightness(int brightness)
         {
-            _brightness = brightness;
+            Value = brightness;
         }
-
-        #endregion
-
-        #region Methods
 
         protected override void Apply(ImageBase target, ImageBase source, Rectangle rectangle, int startY, int endY)
         {
@@ -47,9 +37,9 @@ namespace Nine.Imaging.Filtering
                 {
                     Color color = source[x, y];
 
-                    int r = color.R + _brightness;
-                    int g = color.G + _brightness;
-                    int b = color.B + _brightness;
+                    int r = color.R + Value;
+                    int g = color.G + Value;
+                    int b = color.B + Value;
 
                     r = r.RemainBetween(0, 255);
                     g = g.RemainBetween(0, 255);
@@ -63,7 +53,5 @@ namespace Nine.Imaging.Filtering
                 }
             }
         }
-
-        #endregion
     }
 }

@@ -180,7 +180,6 @@
     <Compile Include="Image.cs" />
     <Compile Include="Filtering\ImageFiltering.cs" />
     <Compile Include="Filtering\BilinearResizer.cs" />
-    <Compile Include="Filtering\BinarizerMode.cs" />
     <Compile Include="Filtering\BlendingFilter.cs" />
     <Compile Include="Filtering\Brightness.cs" />
     <Compile Include="Filtering\Contrast.cs" />

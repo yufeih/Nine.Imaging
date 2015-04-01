@@ -13,13 +13,7 @@ namespace Nine.Imaging.Filtering
     /// </summary>
     public sealed class Contrast : ParallelImageFilter
     {
-        #region Fields
-
-        private int _contrast;
-
-        #endregion
-
-        #region Constructors
+        public int Value { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Contrast"/> class and sets 
@@ -33,16 +27,12 @@ namespace Nine.Imaging.Filtering
         /// </exception>
         public Contrast(int contrast)
         {
-            _contrast = contrast;
+            Value = contrast;
         }
-
-        #endregion
-
-        #region Methods
-
+        
         protected override void Apply(ImageBase target, ImageBase source, Rectangle rectangle, int startY, int endY)
         {
-            double pixel = 0, contrast = (100.0 + _contrast) / 100.0;
+            double pixel = 0, contrast = (100.0 + Value) / 100.0;
 
             for (int y = startY; y < endY; y++)
             {
@@ -81,7 +71,5 @@ namespace Nine.Imaging.Filtering
                 }
             }
         }
-
-        #endregion
     }
 }
