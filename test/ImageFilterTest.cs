@@ -14,8 +14,8 @@
         {
             Filters.Add(typeof(Inverter).Name, new Inverter());
             Filters.Add(typeof(BlendingFilter).Name, new BlendingFilter(new Image(File.OpenRead("TestImages/Car.bmp"))) { GlobalAlphaFactor = 0.25 });
-            Filters.Add(typeof(GrayscaleBT709).Name, new GrayscaleBT709());
-            Filters.Add(typeof(GrayscaleRMY).Name, new GrayscaleRMY());
+            Filters.Add("GrayscaleBT709", new Grayscale { Coefficients = Grayscale.BT709 });
+            Filters.Add("GrayscaleRMY", new Grayscale { Coefficients = Grayscale.RMY });
             Filters.Add(typeof(Sepia).Name, new Sepia());
             Filters.Add(typeof(SobelX).Name, new SobelX());
             Filters.Add(typeof(SobelY).Name, new SobelY());

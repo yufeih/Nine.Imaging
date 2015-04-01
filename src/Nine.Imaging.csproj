@@ -183,8 +183,6 @@
     <Compile Include="Filtering\Contrast.cs" />
     <Compile Include="Filtering\GaussianBlur.cs" />
     <Compile Include="Filtering\Grayscale.cs" />
-    <Compile Include="Filtering\GrayscaleBT709.cs" />
-    <Compile Include="Filtering\GrayscaleRMY.cs" />
     <Compile Include="Filtering\Inverter.cs" />
     <Compile Include="Filtering\MatrixFilter.cs" />
     <Compile Include="Filtering\NearestNeighborResizer.cs" />

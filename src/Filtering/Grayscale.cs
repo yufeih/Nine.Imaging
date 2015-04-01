@@ -15,37 +15,21 @@ namespace Nine.Imaging.Filtering
     /// This class is the base class for image grayscaling. Other classes should inherit from 
     /// this class and specify coefficients used for image conversion to grayscale.
     /// </remarks>
-    public abstract class Grayscale : ParallelImageFilter
+    public class Grayscale : ParallelImageFilter
     {
-        #region Fields
+        public double[] Coefficients { get; set; } = RMY;
 
-        private double _cr;
-        private double _cg;
-        private double _cb;
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Grayscale"/> class.
-        /// </summary>
-        /// <param name="redCoefficient">Red coefficient.</param>
-        /// <param name="greenCoefficient">Green coefficient.</param>
-        /// <param name="blueCoefficient">Blue coefficient.</param>
-        protected Grayscale(double redCoefficient, double greenCoefficient, double blueCoefficient)
-        {
-            _cr = redCoefficient;
-            _cg = greenCoefficient;
-            _cb = blueCoefficient;
-        }
-
-        #endregion
+        public readonly static double[] BT709 = new[] { 0.2125, 0.7154, 0.0721 };
+        public readonly static double[] RMY = new[] { 0.5, 0.419, 0.081 };
 
         #region Methods
 
         protected override void Apply(ImageBase target, ImageBase source, Rectangle rectangle, int startY, int endY)
         {
+            double _cr = Coefficients[0];
+            double _cg = Coefficients[1];
+            double _cb = Coefficients[2];
+
             byte temp = 0;
 
             for (int y = startY; y < endY; y++)
