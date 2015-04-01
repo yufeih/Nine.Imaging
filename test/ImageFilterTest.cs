@@ -12,22 +12,23 @@
 
         static ImageFilterTest()
         {
-            Filters.Add(typeof(Inverter).Name, new Inverter());
-            Filters.Add(typeof(BlendingFilter).Name, new BlendingFilter(new Image(File.OpenRead("TestImages/Car.bmp"))) { GlobalAlphaFactor = 0.25 });
-            Filters.Add("GrayscaleBT709", new Grayscale { Coefficients = Grayscale.BT709 });
-            Filters.Add("GrayscaleRMY", new Grayscale { Coefficients = Grayscale.RMY });
-            Filters.Add(typeof(Sepia).Name, new Sepia());
-            Filters.Add(typeof(SobelX).Name, new SobelX());
-            Filters.Add(typeof(SobelY).Name, new SobelY());
-            Filters.Add(typeof(PrewittX).Name, new PrewittX());
-            Filters.Add(typeof(PrewittY).Name, new PrewittY());
-            Filters.Add("Tint-yellow", new Tint { TintColor = new Color(255, 255, 0) });
-            Filters.Add("Contrast-128", new Contrast(128));
-            Filters.Add("Contrast--128", new Contrast(-128));
-            Filters.Add("Brightness-128", new Brightness(128));
-            Filters.Add("Brightness--128", new Brightness(-128));
-            Filters.Add("GaussianBlur-2", new GaussianBlur { Variance = 2 });
-            Filters.Add("GaussianBlur-5", new GaussianBlur { Variance = 5 });
+            //Filters.Add(typeof(Inverter).Name, new Inverter());
+            //Filters.Add(typeof(BlendingFilter).Name, new BlendingFilter(new Image(File.OpenRead("TestImages/Car.bmp"))) { GlobalAlphaFactor = 0.25 });
+            //Filters.Add("GrayscaleBT709", new Grayscale { Coefficients = Grayscale.BT709 });
+            //Filters.Add("GrayscaleRMY", new Grayscale { Coefficients = Grayscale.RMY });
+            //Filters.Add(typeof(Sepia).Name, new Sepia());
+            //Filters.Add(typeof(SobelX).Name, new SobelX());
+            //Filters.Add(typeof(SobelY).Name, new SobelY());
+            //Filters.Add(typeof(PrewittX).Name, new PrewittX());
+            //Filters.Add(typeof(PrewittY).Name, new PrewittY());
+            Filters.Add("Tint-yellow", new Tint { TintColor = new Color(255, 223, 119) });
+            Filters.Add("Tint-yellow-hsb", new Tint { TintColor = new Color(255, 223, 119), UseHsbSpace = true });
+            //Filters.Add("Contrast-128", new Contrast(128));
+            //Filters.Add("Contrast--128", new Contrast(-128));
+            //Filters.Add("Brightness-128", new Brightness(128));
+            //Filters.Add("Brightness--128", new Brightness(-128));
+            //Filters.Add("GaussianBlur-2", new GaussianBlur { Variance = 2 });
+            //Filters.Add("GaussianBlur-5", new GaussianBlur { Variance = 5 });
         }
 
         [Theory]
