@@ -11,7 +11,7 @@ namespace Nine.Imaging.Filtering
     /// <summary>
     /// Interface for all image resizing algorithms.
     /// </summary>
-    public interface IImageResizer
+    public interface IImageSampler
     {
         /// <summary>
         /// Resizes the specified source image by creating a new image with
@@ -31,6 +31,6 @@ namespace Nine.Imaging.Filtering
         /// 	<para>- or -</para>
         /// 	<para><paramref name="height"/> is negative.</para>
         /// </exception>
-        void Resize(ImageBase source, ImageBase target, int width, int height);
+        void Sample(ImageBase source, ImageBase target, int width, int height);
     }
 }

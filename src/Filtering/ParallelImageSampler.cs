@@ -3,14 +3,14 @@
     using System;
     using System.Threading.Tasks;
 
-    public abstract class ParallelImageResizer : IImageResizer
+    public abstract class ParallelImageSampler : IImageSampler
     {
         /// <summary>
         /// Gets or sets the count of workers to run the filter in parallel.
         /// </summary>
         public int Parallelism { get; set; } = Environment.ProcessorCount;
 
-        public void Resize(ImageBase source, ImageBase target, int width, int height)
+        public void Sample(ImageBase source, ImageBase target, int width, int height)
         {
             byte[] pixels = new byte[width * height * 4];
 
@@ -29,7 +29,7 @@
                         int yBegin = current * batchSize;
                         int yEnd = (current == partitionCount - 1 ? height : yBegin + batchSize);
 
-                        Resize(source, width, height, yBegin, yEnd, pixels);
+                        Sample(source, width, height, yBegin, yEnd, pixels);
                     });
                 }
 
@@ -37,12 +37,12 @@
             }
             else
             {
-                Resize(source, width, height, 0, height, pixels);
+                Sample(source, width, height, 0, height, pixels);
             }
 
             target.SetPixels(width, height, pixels);
         }
 
-        protected abstract void Resize(ImageBase source, int width, int height, int startY, int endY, byte[] pixels);
+        protected abstract void Sample(ImageBase source, int width, int height, int startY, int endY, byte[] pixels);
     }
 }

@@ -13,9 +13,9 @@ namespace Nine.Imaging.Filtering
     /// <summary>
     /// Bilinear image resizer, which resizes the image with the bilinear interpolation.
     /// </summary>
-    public class BilinearResizer : ParallelImageResizer
+    public class BilinearSampler : ParallelImageSampler
     {
-        protected override void Resize(ImageBase source, int width, int height, int startY, int endY, byte[] pixels)
+        protected override void Sample(ImageBase source, int width, int height, int startY, int endY, byte[] pixels)
         {
             byte[] sourcePixels = source.Pixels;
 
