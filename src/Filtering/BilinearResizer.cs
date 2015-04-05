@@ -22,8 +22,10 @@ namespace Nine.Imaging.Filtering
             double factorX = (double)source.PixelWidth / width;
             double factorY = (double)source.PixelHeight / height;
 
-            double fractionX, oneMinusX, l, r;
-            double fractionY, oneMinusY, t, b;
+            double fractionX, oneMinusX;
+            double fractionY, oneMinusY;
+
+            int b, t, l, r;
 
             byte c1, c2, c3, c4, b1, b2;
 
@@ -42,9 +44,12 @@ namespace Nine.Imaging.Filtering
 
                 oneMinusY = 1.0 - fractionY;
 
+                b *= source.PixelWidth;
+                t *= source.PixelWidth;
+
                 for (int x = 0; x < width; x++)
                 {
-                    int dstOffset = (y * width + x) * 4;
+                    int dstOffset = (y * width + x) << 2;
 
                     l = (int)Math.Floor(x * factorX);
 
@@ -59,23 +64,18 @@ namespace Nine.Imaging.Filtering
 
                     oneMinusX = 1.0 - fractionX;
 
-                    var function = new Func<int, byte>(offset =>
-                        {
-                            c1 = sourcePixels[(int)((t * source.PixelWidth + l) * 4 + offset)];
-                            c2 = sourcePixels[(int)((t * source.PixelWidth + r) * 4 + offset)];
-                            c3 = sourcePixels[(int)((b * source.PixelWidth + l) * 4 + offset)];
-                            c4 = sourcePixels[(int)((b * source.PixelWidth + r) * 4 + offset)];
+                    for (int c = 0; c < 4; c++)
+                    {
+                        c1 = sourcePixels[((t + l) << 2) + c];
+                        c2 = sourcePixels[((t + r) << 2) + c];
+                        c3 = sourcePixels[((b + l) << 2) + c];
+                        c4 = sourcePixels[((b + r) << 2) + c];
 
-                            b1 = (byte)(oneMinusX * c1 + fractionX * c2);
-                            b2 = (byte)(oneMinusX * c3 + fractionX * c4);
+                        b1 = (byte)(oneMinusX * c1 + fractionX * c2);
+                        b2 = (byte)(oneMinusX * c3 + fractionX * c4);
 
-                            return (byte)(oneMinusY * b1 + fractionY * b2);
-                        });
-
-                    pixels[dstOffset + 0] = function(0);
-                    pixels[dstOffset + 1] = function(1);
-                    pixels[dstOffset + 2] = function(2);
-                    pixels[dstOffset + 3] = 255;
+                        pixels[dstOffset + c] = (byte)(oneMinusY * b1 + fractionY * b2);
+                    }
                 }
             }
         }
