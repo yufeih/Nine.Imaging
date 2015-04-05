@@ -139,12 +139,12 @@ namespace Nine.Imaging.Filtering
             if (source.PixelWidth > source.PixelHeight && ratio > 0)
             {
                 width = size;
-                height = (int)(width / ratio);
+                height = (int)Math.Round(width / ratio);
             }
             else
             {
                 height = size;
-                width = (int)(height * ratio);
+                width = (int)Math.Round(height * ratio);
             }
 
             return PerformAction(source, false, (sourceImage, targetImage) => resizer.Sample(sourceImage, targetImage, width, height));

@@ -10,12 +10,13 @@
     {
         public static readonly TheoryData<string, int, int?, IImageSampler> Resizers = new TheoryData<string, int, int?, IImageSampler>();
 
+        // TODO: Test alpha image
         static ImageSamplerTest()
         {
             Resizers.Add("Car.bmp", 200, null, new NearestNeighborSampler());
             Resizers.Add("Backdrop.jpg", 1000, null, new BilinearSampler());
             //Resizers.Add(new BicubicResizer());
-            //Resizers.Add(new SuperSamplingResizer());
+            Resizers.Add("Car.bmp", 200, null, new SuperSamplingSampler());
         }
 
         [Theory]
