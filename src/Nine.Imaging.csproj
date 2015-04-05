@@ -181,7 +181,6 @@
     <Compile Include="Image.cs" />
     <Compile Include="Filtering\ImageFiltering.cs" />
     <Compile Include="Filtering\BilinearSampler.cs" />
-    <Compile Include="Filtering\BinarizerMode.cs" />
     <Compile Include="Filtering\BlendingFilter.cs" />
     <Compile Include="Filtering\Brightness.cs" />
     <Compile Include="Filtering\Contrast.cs" />
