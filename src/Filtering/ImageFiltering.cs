@@ -100,7 +100,6 @@ namespace Nine.Imaging.Filtering
         /// <param name="source">The width of the new image. Must be greater than zero.</param>
         /// <param name="width">The width of the new image. Must be greater than zero.</param>
         /// <param name="height">The height of the new image. Must be greater than zero.</param>
-        /// <param name="resizer">The resizer, which should resize the image.</param>
         /// <returns>The new image.</returns>
         /// <exception cref="ArgumentNullException">
         /// 	<para><paramref name="resizer"/> is null (Nothing in Visual Basic).</para>
@@ -112,9 +111,10 @@ namespace Nine.Imaging.Filtering
         /// 	<para>- or -</para>
         /// 	<para><paramref name="height"/> is negative.</para>
         /// </exception>
-        public static Image Resize(this Image source, int width, int height, ParallelImageResampler resizer)
+        public static Image Resize(this Image source, int width, int height, IImageResampler resampler = null)
         {
-            return PerformAction(source, false, (sourceImage, targetImage) => resizer.Sample(sourceImage, targetImage, width, height));
+            resampler = resampler ?? new SuperSamplingResampler();
+            return PerformAction(source, false, (sourceImage, targetImage) => resampler.Sample(sourceImage, targetImage, width, height));
         }
 
         /// <summary>
@@ -124,12 +124,11 @@ namespace Nine.Imaging.Filtering
         /// </summary>
         /// <param name="source">The source image to resize.</param>
         /// <param name="size">The maximum size of the image in x and y direction.</param>
-        /// <param name="resizer">The resizer, which should resize the image.</param>
         /// <returns>The resized image.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null
         /// (Nothing in Visual Basic).</exception>
         /// <exception cref="ArgumentException"><paramref name="size"/> is negative.</exception>
-        public static Image Resize(this Image source, int size, ParallelImageResampler resizer)
+        public static Image Resize(this Image source, int size, IImageResampler resampler = null)
         {
             int width = 0;
             int height = 0;
@@ -147,7 +146,8 @@ namespace Nine.Imaging.Filtering
                 width = (int)Math.Round(height * ratio);
             }
 
-            return PerformAction(source, false, (sourceImage, targetImage) => resizer.Sample(sourceImage, targetImage, width, height));
+            resampler = resampler ?? new SuperSamplingResampler();
+            return PerformAction(source, false, (sourceImage, targetImage) => resampler.Sample(sourceImage, targetImage, width, height));
         }
         
         private static Image PerformAction(Image source, bool clone, Action<ImageBase, ImageBase> action)

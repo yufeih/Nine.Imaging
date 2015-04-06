@@ -13,10 +13,11 @@
         // TODO: Test alpha image
         static ImageResamplerTest()
         {
-            //Resizers.Add("Car.bmp", 200, null, new NearestNeighborSampler());
-            //Resizers.Add("Backdrop.jpg", 1000, null, new BilinearSampler());
-            Resizers.Add("Car.bmp", 1200, null, new BicubicResampler());
-            //Resizers.Add("Car.bmp", 200, null, new SuperSamplingSampler());
+            Resizers.Add("Car.bmp", 1200, null, new NearestNeighborResampler());
+            Resizers.Add("Backdrop.jpg", 1000, null, new BilinearResampler());
+            Resizers.Add("Car.bmp", 1200, null, new BilinearResampler());
+            Resizers.Add("Car.bmp", 200, null, new SuperSamplingResampler());
+            Resizers.Add("Car.bmp", 1200, null, new SuperSamplingResampler());
         }
 
         [Theory]

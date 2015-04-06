@@ -2,8 +2,23 @@
 {
     using System;
 
-    public sealed class SuperSamplingResampler : ParallelImageResampler
+    public class SuperSamplingResampler : ParallelImageResampler
     {
+        private readonly BilinearResampler bilinear = new BilinearResampler();
+
+        public override void Sample(ImageBase source, ImageBase target, int width, int height)
+        {
+            if (width < source.PixelWidth && height < source.PixelHeight)
+            {
+                // Use super sampling only in case of minification
+                base.Sample(source, target, width, height);
+            }
+            else
+            {
+                bilinear.Sample(source, target, width, height);
+            }
+        }
+
         protected override void Sample(ImageBase source, int width, int height, int startY, int endY, byte[] pixels)
         {
             byte[] sourcePixels = source.Pixels;

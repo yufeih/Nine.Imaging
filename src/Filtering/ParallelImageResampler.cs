@@ -10,7 +10,7 @@
         /// </summary>
         public int Parallelism { get; set; } = Environment.ProcessorCount;
 
-        public void Sample(ImageBase source, ImageBase target, int width, int height)
+        public virtual void Sample(ImageBase source, ImageBase target, int width, int height)
         {
             byte[] pixels = new byte[width * height * 4];
 
