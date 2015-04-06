@@ -11,7 +11,7 @@ namespace Nine.Imaging.Filtering
     /// <summary>
     /// Interface for all image resizing algorithms.
     /// </summary>
-    public interface IImageSampler
+    public interface IImageResampler
     {
         /// <summary>
         /// Resizes the specified source image by creating a new image with

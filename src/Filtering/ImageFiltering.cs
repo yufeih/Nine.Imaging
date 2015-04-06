@@ -93,7 +93,7 @@ namespace Nine.Imaging.Filtering
         }
 
         /// <summary>
-        /// Resizes the specified image by using the specified <see cref="IImageSampler"/> and
+        /// Resizes the specified image by using the specified <see cref="ParallelImageResampler"/> and
         /// return a new image with
         /// the spezified size which is a resized version of the passed image.
         /// </summary>
@@ -112,13 +112,13 @@ namespace Nine.Imaging.Filtering
         /// 	<para>- or -</para>
         /// 	<para><paramref name="height"/> is negative.</para>
         /// </exception>
-        public static Image Resize(this Image source, int width, int height, IImageSampler resizer)
+        public static Image Resize(this Image source, int width, int height, ParallelImageResampler resizer)
         {
             return PerformAction(source, false, (sourceImage, targetImage) => resizer.Sample(sourceImage, targetImage, width, height));
         }
 
         /// <summary>
-        /// Resizes the specified image by using the specified <see cref="IImageSampler"/> and
+        /// Resizes the specified image by using the specified <see cref="ParallelImageResampler"/> and
         /// returns new image which has the specified maximum
         /// extension in x and y direction.
         /// </summary>
@@ -129,7 +129,7 @@ namespace Nine.Imaging.Filtering
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null
         /// (Nothing in Visual Basic).</exception>
         /// <exception cref="ArgumentException"><paramref name="size"/> is negative.</exception>
-        public static Image Resize(this Image source, int size, IImageSampler resizer)
+        public static Image Resize(this Image source, int size, ParallelImageResampler resizer)
         {
             int width = 0;
             int height = 0;

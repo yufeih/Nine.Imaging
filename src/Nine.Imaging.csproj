@@ -84,10 +84,10 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Barcode\BarcodeResult.cs" />
     <Compile Include="Barcode\BarcodeResultFormat.cs" />
-    <Compile Include="Filtering\ParallelImageSampler.cs" />
+    <Compile Include="Filtering\ParallelImageResampler.cs" />
     <Compile Include="HsbColor.cs" />
-    <Compile Include="Filtering\SuperSamplingSampler.cs" />
-    <Compile Include="Filtering\BicubicSampler.cs" />
+    <Compile Include="Filtering\SuperSamplingResampler.cs" />
+    <Compile Include="Filtering\BicubicResampler.cs" />
     <Compile Include="Filtering\ParallelImageFilter.cs" />
     <Compile Include="Filtering\Tint.cs" />
     <Compile Include="Encoding\ImageIOExtensions.cs" />
@@ -180,7 +180,7 @@
     <Compile Include="Point.cs" />
     <Compile Include="Image.cs" />
     <Compile Include="Filtering\ImageFiltering.cs" />
-    <Compile Include="Filtering\BilinearSampler.cs" />
+    <Compile Include="Filtering\BilinearResampler.cs" />
     <Compile Include="Filtering\BlendingFilter.cs" />
     <Compile Include="Filtering\Brightness.cs" />
     <Compile Include="Filtering\Contrast.cs" />
@@ -188,7 +188,7 @@
     <Compile Include="Filtering\Grayscale.cs" />
     <Compile Include="Filtering\Inverter.cs" />
     <Compile Include="Filtering\MatrixFilter.cs" />
-    <Compile Include="Filtering\NearestNeighborSampler.cs" />
+    <Compile Include="Filtering\NearestNeighborResampler.cs" />
     <Compile Include="Filtering\PrewittX.cs" />
     <Compile Include="Filtering\PrewittY.cs" />
     <Compile Include="Filtering\Sepia.cs" />
@@ -199,7 +199,7 @@
     <Compile Include="Helpers\Guard.cs" />
     <Compile Include="Barcode\IBarcodeReader.cs" />
     <Compile Include="Filtering\IImageFilter.cs" />
-    <Compile Include="Filtering\IImageSampler.cs" />
+    <Compile Include="Filtering\IImageResampler.cs" />
     <Compile Include="ImageBase.cs" />
     <Compile Include="ImageBase_Operations.cs" />
     <Compile Include="ImageFormatException.cs" />

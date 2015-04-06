@@ -1,20 +1,12 @@
-﻿// ===============================================================================
-// BilinearResizer.cs
-// .NET Image Tools
-// ===============================================================================
-// Copyright (c) .NET Image Tools Development Group. 
-// All rights reserved.
-// ===============================================================================
-
-namespace Nine.Imaging.Filtering
+﻿namespace Nine.Imaging.Filtering
 {
     using System;
 
-    /// <summary>
-    /// Bilinear image resizer, which resizes the image with the bilinear interpolation.
-    /// </summary>
-    public class BilinearSampler : ParallelImageSampler
+    public class BicubicResampler : ParallelImageResampler
     {
+        private double CubeClamped(double x) => x >= 0 ? x * x * x : 0;
+        private double R(double x) => (CubeClamped(x + 2) - (4 * CubeClamped(x + 1)) + (6 * CubeClamped(x)) - (4 * CubeClamped(x - 1))) / 6;
+
         protected override void Sample(ImageBase source, int width, int height, int startY, int endY, byte[] pixels)
         {
             byte[] sourcePixels = source.Pixels;

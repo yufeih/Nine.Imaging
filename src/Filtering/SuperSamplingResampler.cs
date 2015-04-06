@@ -2,7 +2,7 @@
 {
     using System;
 
-    public sealed class SuperSamplingSampler : ParallelImageSampler
+    public sealed class SuperSamplingResampler : ParallelImageResampler
     {
         protected override void Sample(ImageBase source, int width, int height, int startY, int endY, byte[] pixels)
         {

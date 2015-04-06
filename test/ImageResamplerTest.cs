@@ -6,22 +6,22 @@
     using Nine.Imaging.Filtering;
     using System.Diagnostics;
 
-    public class ImageSamplerTest
+    public class ImageResamplerTest
     {
-        public static readonly TheoryData<string, int, int?, IImageSampler> Resizers = new TheoryData<string, int, int?, IImageSampler>();
+        public static readonly TheoryData<string, int, int?, ParallelImageResampler> Resizers = new TheoryData<string, int, int?, ParallelImageResampler>();
 
         // TODO: Test alpha image
-        static ImageSamplerTest()
+        static ImageResamplerTest()
         {
-            Resizers.Add("Car.bmp", 200, null, new NearestNeighborSampler());
-            Resizers.Add("Backdrop.jpg", 1000, null, new BilinearSampler());
-            //Resizers.Add(new BicubicResizer());
-            Resizers.Add("Car.bmp", 200, null, new SuperSamplingSampler());
+            //Resizers.Add("Car.bmp", 200, null, new NearestNeighborSampler());
+            //Resizers.Add("Backdrop.jpg", 1000, null, new BilinearSampler());
+            Resizers.Add("Car.bmp", 1200, null, new BicubicResampler());
+            //Resizers.Add("Car.bmp", 200, null, new SuperSamplingSampler());
         }
 
         [Theory]
         [MemberData("Resizers")]
-        public void resize_image_using_sampler(string filename, int width, int? height, IImageSampler resizer)
+        public void resize_image_using_resampler(string filename, int width, int? height, ParallelImageResampler resizer)
         {
             if (!Directory.Exists("Resized")) Directory.CreateDirectory("Resized");
 
