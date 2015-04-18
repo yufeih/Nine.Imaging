@@ -69,6 +69,7 @@ namespace Nine.Imaging.Filtering
         public static Image Invert(this Image source) => source.ApplyFilters(new Inverter());
         public static Image Brightness(this Image source, int amount) => source.ApplyFilters(new Brightness(amount));
         public static Image Contrast(this Image source, int amount) => source.ApplyFilters(new Contrast(amount));
+        public static Image CropCircle(this Image source, double radius = -1) => source.ApplyFilters(new CropCircle { Radius = radius });
 
         /// <summary>
         /// Cuts the image with the specified rectangle and returns a new image.

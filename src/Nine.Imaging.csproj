@@ -85,6 +85,7 @@
     <Compile Include="Barcode\BarcodeResult.cs" />
     <Compile Include="Barcode\BarcodeResultFormat.cs" />
     <Compile Include="Filtering\ParallelImageResampler.cs" />
+    <Compile Include="Filtering\CropCircle.cs" />
     <Compile Include="HsbColor.cs" />
     <Compile Include="Filtering\SuperSamplingResampler.cs" />
     <Compile Include="Filtering\BicubicResampler.cs" />

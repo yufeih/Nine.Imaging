@@ -29,6 +29,7 @@
             Filters.Add("Brightness--128", new Brightness(-128));
             Filters.Add("GaussianBlur-2", new GaussianBlur { Variance = 2 });
             Filters.Add("GaussianBlur-5", new GaussianBlur { Variance = 5 });
+            Filters.Add(nameof(CropCircle), new CropCircle());
         }
 
         [Theory]
