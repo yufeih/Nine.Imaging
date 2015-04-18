@@ -63,6 +63,13 @@ namespace Nine.Imaging.Filtering
             return source;
         }
 
+        public static Image GaussianBlur(this Image source, double amount) => source.ApplyFilters(new GaussianBlur { Variance = amount });
+        public static Image Tint(this Image source, Color tint, bool hsb = false) => source.ApplyFilters(new Tint { TintColor = tint, UseHsbSpace = hsb });
+        public static Image Grayscale(this Image source) => source.ApplyFilters(new Grayscale());
+        public static Image Invert(this Image source) => source.ApplyFilters(new Inverter());
+        public static Image Brightness(this Image source, int amount) => source.ApplyFilters(new Brightness(amount));
+        public static Image Contrast(this Image source, int amount) => source.ApplyFilters(new Contrast(amount));
+
         /// <summary>
         /// Cuts the image with the specified rectangle and returns a new image.
         /// </summary>
