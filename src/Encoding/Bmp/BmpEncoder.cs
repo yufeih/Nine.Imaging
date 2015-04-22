@@ -124,9 +124,9 @@ namespace Nine.Imaging.Encoding
                 {
                     offset = (y * image.PixelWidth + x) * 4;
 
-                    writer.Write(data[offset + 2]);
-                    writer.Write(data[offset + 1]);
                     writer.Write(data[offset + 0]);
+                    writer.Write(data[offset + 1]);
+                    writer.Write(data[offset + 2]);
                 }
 
                 for (int i = 0; i < amount; i++)

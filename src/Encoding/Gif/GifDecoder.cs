@@ -358,9 +358,9 @@ namespace Nine.Imaging.Encoding
                         _graphicsControl.TransparencyFlag == false ||
                         _graphicsControl.TransparencyIndex != index)
                     {
-                        _currentFrame[offset * 4 + 0] = colorTable[index * 3 + 0];
+                        _currentFrame[offset * 4 + 0] = colorTable[index * 3 + 2];
                         _currentFrame[offset * 4 + 1] = colorTable[index * 3 + 1];
-                        _currentFrame[offset * 4 + 2] = colorTable[index * 3 + 2];
+                        _currentFrame[offset * 4 + 2] = colorTable[index * 3 + 0];
                         _currentFrame[offset * 4 + 3] = (byte)255;
                     }
 

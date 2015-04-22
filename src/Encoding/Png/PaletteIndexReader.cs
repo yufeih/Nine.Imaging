@@ -66,9 +66,9 @@ namespace Nine.Imaging.Png
 
                     offset = (_row * header.Width + i) * 4;
 
-                    pixels[offset + 0] = _palette[index * 3];
+                    pixels[offset + 0] = _palette[index * 3 + 2];
                     pixels[offset + 1] = _palette[index * 3 + 1];
-                    pixels[offset + 2] = _palette[index * 3 + 2];
+                    pixels[offset + 2] = _palette[index * 3 + 0];
                     pixels[offset + 3] = _paletteAlpha.Length > index ? _paletteAlpha[index] : (byte)255;
                 }
             }
@@ -80,9 +80,9 @@ namespace Nine.Imaging.Png
 
                     offset = (_row * header.Width + i) * 4;
 
-                    pixels[offset + 0] = _palette[index * 3];
+                    pixels[offset + 0] = _palette[index * 3 + 2];
                     pixels[offset + 1] = _palette[index * 3 + 1];
-                    pixels[offset + 2] = _palette[index * 3 + 2];
+                    pixels[offset + 2] = _palette[index * 3 + 0];
                     pixels[offset + 3] = (byte)255;
                 }
             }

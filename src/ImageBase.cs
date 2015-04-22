@@ -84,15 +84,15 @@ namespace Nine.Imaging
             {
                 int start = (y * PixelWidth + x) * 4;
 
-                return new Color(_pixels[start + 3], _pixels[start + 0], _pixels[start + 1], _pixels[start + 2]);
+                return new Color(_pixels[start + 3], _pixels[start + 2], _pixels[start + 1], _pixels[start + 0]);
             }
             set
             {
                 int start = (y * PixelWidth + x) * 4;
 
-                _pixels[start + 0] = value.R;
+                _pixels[start + 0] = value.B;
                 _pixels[start + 1] = value.G;
-                _pixels[start + 2] = value.B;
+                _pixels[start + 2] = value.R;
                 _pixels[start + 3] = value.A;
             }
         }

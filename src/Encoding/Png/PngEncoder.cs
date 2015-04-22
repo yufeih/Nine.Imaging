@@ -292,18 +292,18 @@ namespace Nine.Imaging.Encoding
                     // Calculate the offset for the original pixel array.
                     int pixelOffset = (y * _image.PixelWidth + x) * 4;
 
-                    data[dataOffset + 0] = pixels[pixelOffset + 0];
+                    data[dataOffset + 0] = pixels[pixelOffset + 2];
                     data[dataOffset + 1] = pixels[pixelOffset + 1];
-                    data[dataOffset + 2] = pixels[pixelOffset + 2];
+                    data[dataOffset + 2] = pixels[pixelOffset + 0];
                     data[dataOffset + 3] = pixels[pixelOffset + 3];
 
                     if (y > 0)
                     {
                         int lastOffset = ((y - 1) * _image.PixelWidth + x) * 4;
 
-                        data[dataOffset + 0] -= pixels[lastOffset + 0];
+                        data[dataOffset + 0] -= pixels[lastOffset + 2];
                         data[dataOffset + 1] -= pixels[lastOffset + 1];
-                        data[dataOffset + 2] -= pixels[lastOffset + 2];
+                        data[dataOffset + 2] -= pixels[lastOffset + 0];
                         data[dataOffset + 3] -= pixels[lastOffset + 3];
                     }
                 }

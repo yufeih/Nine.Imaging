@@ -54,7 +54,15 @@ namespace Nine.Imaging.Png
 
             if (_useAlpha)
             {
-                Array.Copy(newScanline, 0, pixels, _row * header.Width * 4, newScanline.Length);
+                for (int x = 0; x < newScanline.Length; x += 4)
+                {
+                    offset = (_row * header.Width + (x >> 2)) * 4;
+
+                    pixels[offset + 0] = newScanline[x + 2];
+                    pixels[offset + 1] = newScanline[x + 1];
+                    pixels[offset + 2] = newScanline[x + 0];
+                    pixels[offset + 3] = newScanline[x + 3];
+                }
             }
             else
             {
@@ -62,9 +70,9 @@ namespace Nine.Imaging.Png
                 {
                     offset = (_row * header.Width + x) * 4;
 
-                    pixels[offset + 0] = newScanline[x * 3];
+                    pixels[offset + 0] = newScanline[x * 3 + 2];
                     pixels[offset + 1] = newScanline[x * 3 + 1];
-                    pixels[offset + 2] = newScanline[x * 3 + 2];
+                    pixels[offset + 2] = newScanline[x * 3 + 0];
                     pixels[offset + 3] = (byte)255;
                 }
             }

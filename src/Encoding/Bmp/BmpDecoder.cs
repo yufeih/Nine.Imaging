@@ -249,9 +249,9 @@ namespace Nine.Imaging.Encoding
                         int colorIndex = ((data[offset]) >> (8 - bits - (shift * bits))) & mask;
 
                         arrayOffset = (row * width + (colOffset + shift)) * 4;
-                        imageData[arrayOffset + 0] = colors[colorIndex * 4 + 2];
+                        imageData[arrayOffset + 0] = colors[colorIndex * 4 + 0];
                         imageData[arrayOffset + 1] = colors[colorIndex * 4 + 1];
-                        imageData[arrayOffset + 2] = colors[colorIndex * 4 + 0];
+                        imageData[arrayOffset + 2] = colors[colorIndex * 4 + 2];
 
                         imageData[arrayOffset + 3] = (byte)255;
 
@@ -290,9 +290,9 @@ namespace Nine.Imaging.Encoding
                     b = (byte)(((temp & Rgb16BMask)) * scaleR);
 
                     arrayOffset = (row * width + x) * 4;
-                    imageData[arrayOffset + 0] = r;
+                    imageData[arrayOffset + 0] = b;
                     imageData[arrayOffset + 1] = g;
-                    imageData[arrayOffset + 2] = b;
+                    imageData[arrayOffset + 2] = r;
 
                     imageData[arrayOffset + 3] = (byte)255;
                 }
@@ -318,9 +318,9 @@ namespace Nine.Imaging.Encoding
                     offset = rowOffset + x * 3;
 
                     arrayOffset = (row * width + x) * 4;
-                    imageData[arrayOffset + 0] = data[offset + 2];
+                    imageData[arrayOffset + 0] = data[offset + 0];
                     imageData[arrayOffset + 1] = data[offset + 1];
-                    imageData[arrayOffset + 2] = data[offset + 0];
+                    imageData[arrayOffset + 2] = data[offset + 2];
 
                     imageData[arrayOffset + 3] = (byte)255;
                 }
@@ -346,9 +346,9 @@ namespace Nine.Imaging.Encoding
                     offset = rowOffset + x * 4;
 
                     arrayOffset = (row * width + x) * 4;
-                    imageData[arrayOffset + 0] = data[offset + 2];
+                    imageData[arrayOffset + 0] = data[offset + 0];
                     imageData[arrayOffset + 1] = data[offset + 1];
-                    imageData[arrayOffset + 2] = data[offset + 0];
+                    imageData[arrayOffset + 2] = data[offset + 2];
 
                     imageData[arrayOffset + 3] = (byte)255;
                 }

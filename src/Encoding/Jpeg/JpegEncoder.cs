@@ -102,9 +102,9 @@ namespace Nine.Imaging.Encoding
                     int start = x * 3;
                     int source = (y * pixelWidth + x) * 4;
 
-                    samples[start] = sourcePixels[source];
+                    samples[start] = sourcePixels[source + 2];
                     samples[start + 1] = sourcePixels[source + 1];
-                    samples[start + 2] = sourcePixels[source + 2];
+                    samples[start + 2] = sourcePixels[source];
                 }
 
                 rows[y] = new SampleRow(samples, pixelWidth, 8, 3);

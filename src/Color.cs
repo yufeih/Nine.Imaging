@@ -12,7 +12,7 @@
 
         private uint _packedValue;
 
-        public byte A
+        public byte B
         {
             get
             {
@@ -27,7 +27,7 @@
             }
         }
 
-        public byte R
+        public byte G
         {
             get
             {
@@ -42,7 +42,7 @@
             }
         }
         
-        public byte G
+        public byte R
         {
             get
             {
@@ -57,7 +57,7 @@
             }
         }
         
-        public byte B
+        public byte A
         {
             get
             {
@@ -72,11 +72,11 @@
             }
         }
         
-        public Color(int argb)
+        public Color(int bgra)
         {
             unchecked
             {
-                _packedValue = (uint)argb;
+                _packedValue = (uint)bgra;
             }
         }
 
@@ -84,7 +84,7 @@
         {
             unchecked
             {
-                _packedValue = (uint)(0xFF << 24 | r << 16 | g << 8 | b);
+                _packedValue = (uint)(b << 24 | g << 16 | r << 8 | 0xFF);
             }
         }
 
@@ -92,14 +92,9 @@
         {
             unchecked
             {
-                _packedValue = (uint)(a << 24 | r << 16 | g << 8 | b);
+                _packedValue = (uint)(b << 24 | g << 16 | r << 8 | a);
             }
         }
-
-        //public Color(int alpha, Color baseColor)
-        //{
-
-        //}
 
         public float Brightness
         {

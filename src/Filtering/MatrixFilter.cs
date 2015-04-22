@@ -69,9 +69,9 @@ namespace Nine.Imaging.Filtering
                         {
                             int sourceStart = ((baseX + filterX) % width + imageY) << 2;
 
-                            byte tr = pixels[sourceStart];
+                            byte tb = pixels[sourceStart];
                             byte tg = pixels[sourceStart + 1];
-                            byte tb = pixels[sourceStart + 2];
+                            byte tr = pixels[sourceStart + 2];
 
                             double multiplier = _filter[filterStart + filterX];
 

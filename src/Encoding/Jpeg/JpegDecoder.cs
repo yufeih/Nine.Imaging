@@ -140,20 +140,12 @@ namespace Nine.Imaging.Encoding
                 for (int x = 0; x < pixelWidth; x++)
                 {
                     Sample sample = row.GetAt(x);
-
-                    byte r = 0;
-                    byte g = 0;
-                    byte b = 0;
-
-                    r = (byte)sample[0];
-                    g = (byte)sample[1];
-                    b = (byte)sample[2];
-
+                    
                     int offset = (y * pixelWidth + x) * 4;
 
-                    pixels[offset + 0] = r;
-                    pixels[offset + 1] = g;
-                    pixels[offset + 2] = b;
+                    pixels[offset + 0] = (byte)sample[2];
+                    pixels[offset + 1] = (byte)sample[1];
+                    pixels[offset + 2] = (byte)sample[0];
                     pixels[offset + 3] = (byte)255;
                 }
             }
