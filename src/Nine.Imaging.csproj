@@ -84,6 +84,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Barcode\BarcodeResult.cs" />
     <Compile Include="Barcode\BarcodeResultFormat.cs" />
+    <Compile Include="NinePatchImage.cs" />
     <Compile Include="Filtering\ParallelImageResampler.cs" />
     <Compile Include="Filtering\CropCircle.cs" />
     <Compile Include="HsbColor.cs" />

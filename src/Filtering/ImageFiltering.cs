@@ -157,7 +157,7 @@ namespace Nine.Imaging.Filtering
             resampler = resampler ?? new SuperSamplingResampler();
             return PerformAction(source, false, (sourceImage, targetImage) => resampler.Sample(sourceImage, targetImage, width, height));
         }
-        
+
         private static Image PerformAction(Image source, bool clone, Action<ImageBase, ImageBase> action)
         {
             Image transformedImage = clone ? new Image(source) : new Image();

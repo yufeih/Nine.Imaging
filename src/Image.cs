@@ -12,7 +12,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Nine.Imaging;
 using Nine.Imaging.Encoding;
 
 namespace Nine.Imaging
@@ -24,7 +23,7 @@ namespace Nine.Imaging
     /// <remarks>The image data is alway stored in RGBA format, where the red, the blue, the
     /// alpha values are simple bytes.</remarks>
     [DebuggerDisplay("Image: {PixelWidth}x{PixelHeight}")]
-    public sealed partial class Image : ImageBase
+    public class Image : ImageBase
     {
         #region Constants
 
