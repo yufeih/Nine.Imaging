@@ -81,7 +81,7 @@ namespace Nine.Imaging.Filtering
         /// (Nothing in Visual Basic).</exception>
         public static Image Crop(this Image source, Rectangle bounds)
         {
-            return PerformAction(source, false, (sourceImage, targetImage) => ImageBase.Crop(sourceImage, targetImage, bounds));
+            return PerformAction(source, false, (sourceImage, targetImage) => ImageBaseOperations.Crop(sourceImage, targetImage, bounds));
         }
 
         /// <summary>
@@ -97,7 +97,7 @@ namespace Nine.Imaging.Filtering
         /// (Nothing in Visual Basic).</exception>
         public static Image Transform(this Image source, RotationType rotationType, FlippingType flippingType)
         {
-            return PerformAction(source, false, (sourceImage, targetImage) => ImageBase.Transform(sourceImage, targetImage, rotationType, flippingType));
+            return PerformAction(source, false, (sourceImage, targetImage) => ImageBaseOperations.Transform(sourceImage, targetImage, rotationType, flippingType));
         }
 
         /// <summary>

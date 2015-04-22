@@ -195,19 +195,17 @@
     <Compile Include="Filtering\Sepia.cs" />
     <Compile Include="Filtering\SobelX.cs" />
     <Compile Include="Filtering\SobelY.cs" />
-    <Compile Include="FlippingType.cs" />
+    <Compile Include="Filtering\FlippingType.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\Guard.cs" />
     <Compile Include="Barcode\IBarcodeReader.cs" />
     <Compile Include="Filtering\IImageFilter.cs" />
     <Compile Include="Filtering\IImageResampler.cs" />
     <Compile Include="ImageBase.cs" />
-    <Compile Include="ImageBase_Operations.cs" />
+    <Compile Include="Filtering\ImageBaseOperations.cs" />
     <Compile Include="ImageFormatException.cs" />
     <Compile Include="ImageFrame.cs" />
-    <Compile Include="ImageFrameCollection.cs" />
     <Compile Include="ImageProperty.cs" />
-    <Compile Include="ImagePropertyCollection.cs" />
     <Compile Include="Encoding\Bmp\BmpCompression.cs" />
     <Compile Include="Encoding\Bmp\BmpDecoder.cs" />
     <Compile Include="Encoding\Bmp\BmpEncoder.cs" />
@@ -222,7 +220,7 @@
     <Compile Include="Encoding\IImageDecoder.cs" />
     <Compile Include="Encoding\IImageEncoder.cs" />
     <Compile Include="Rectangle.cs" />
-    <Compile Include="RotationType.cs" />
+    <Compile Include="Filtering\RotationType.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Nine.Imaging.nuspec" />

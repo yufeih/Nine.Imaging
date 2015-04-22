@@ -153,22 +153,22 @@ namespace Nine.Imaging
             get { return _frames.Count > 0; }
         }
 
-        private ImageFrameCollection _frames = new ImageFrameCollection();
+        private IList<ImageFrame> _frames = new List<ImageFrame>();
         /// <summary>
         /// Get the other frames for the animation.
         /// </summary>
         /// <value>The list of frame images.</value>
-        public ImageFrameCollection Frames
+        public IList<ImageFrame> Frames
         {
             get { return _frames; }
         }
 
-        private ImagePropertyCollection _properties = new ImagePropertyCollection();
+        private IList<ImageProperty> _properties = new List<ImageProperty>();
         /// <summary>
         /// Gets the list of properties for storing meta information about this image.
         /// </summary>
         /// <value>A list of image properties.</value>
-        public ImagePropertyCollection Properties
+        public IList<ImageProperty> Properties
         {
             get { return _properties; }
         }

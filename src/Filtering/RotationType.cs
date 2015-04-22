@@ -1,29 +1,33 @@
 ﻿// ===============================================================================
-// FlippingType.cs
+// RotationType.cs
 // .NET Image Tools
 // ===============================================================================
 // Copyright (c) .NET Image Tools Development Group. 
 // All rights reserved.
 // ===============================================================================
 
-namespace Nine.Imaging
+namespace Nine.Imaging.Filtering
 {
     /// <summary>
-    /// Defines how a image should be flipped.
+    /// Defines how the image should be rotated.
     /// </summary>
-    public enum FlippingType
+    public enum RotationType
     {
         /// <summary>
-        /// Dont flip the image.
+        /// Do not rotate the image.
         /// </summary>
         None,
         /// <summary>
-        /// Flip the image horizontally.
+        /// Rotate the image by 90 degrees clockwise.
         /// </summary>
-        Horizontal,
+        Rotate90,
         /// <summary>
-        /// Flip the image vertically.
+        /// Rotate the image by 180 degrees clockwise.
         /// </summary>
-        Vertical,
+        Rotate180,
+        /// <summary>
+        /// Rotate the image by 270 degrees clockwise.
+        /// </summary>
+        Rotate270
     }
 }

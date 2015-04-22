@@ -8,9 +8,9 @@
 
 using System;
 
-namespace Nine.Imaging
+namespace Nine.Imaging.Filtering
 {
-    partial class ImageBase
+    static class ImageBaseOperations
     {
         /// <summary>
         /// Transforms the specified image by flipping and rotating it. First the image
