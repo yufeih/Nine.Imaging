@@ -1,13 +1,18 @@
 ﻿namespace Nine.Imaging
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
+    using Nine.Imaging.Filtering;
+
 
     /// <summary>
     /// Represents a nine patch image from an android nine patch image format (http://developer.android.com/tools/help/draw9patch.html).
     /// </summary>
     public class NinePatchImage : ImageBase
     {
+        private readonly Lazy<IReadOnlyList<ImageBase>> patches;
+
         public int Left { get; private set; }
         public int Right { get; private set; }
         public int Top { get; private set; }
@@ -17,6 +22,8 @@
         public int PaddingRight { get; private set; }
         public int PaddingTop { get; private set; }
         public int PaddingBottom { get; private set; }
+
+        public IReadOnlyList<ImageBase> Patches => patches.Value;
 
         public NinePatchImage(Stream stream) : this(new Image(stream))
         { }
@@ -52,6 +59,33 @@
             }
 
             SetPixels(w, h, pixels);
+
+            patches = new Lazy<IReadOnlyList<ImageBase>>(CreatePatches);
+        }
+
+        private IReadOnlyList<ImageBase> CreatePatches()
+        {
+            return new ImageBase[9]
+            {
+                Patch(0, 0, Left, Top),
+                Patch(Left, 0, PixelWidth - Left - Right, Top),
+                Patch(PixelWidth - Right, 0, Right, Top),
+
+                Patch(0, Top, Left, PixelHeight - Top - Bottom),
+                Patch(Left, Top, PixelWidth - Left - Right, PixelHeight - Top - Bottom),
+                Patch(PixelWidth - Right, Top, Right, PixelHeight - Top - Bottom),
+
+                Patch(0, PixelHeight - Top, Left, Bottom),
+                Patch(Left, PixelHeight - Top, PixelWidth - Left - Right, Bottom),
+                Patch(PixelWidth - Right, PixelHeight - Top, Right, Bottom),
+            };
+        }
+
+        private ImageBase Patch(int x, int y, int w, int h)
+        {
+            var image = new Image();
+            ImageBaseOperations.Crop(this, image, new Rectangle(x, y, w, h));
+            return image;
         }
     }
 }

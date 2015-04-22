@@ -36,6 +36,16 @@
             {
                 img.SaveAsPng(output);
             }
+
+            for (int i = 0; i < img.Patches.Count; i++)
+            {
+                var patch = $"NinePatch/{ Path.GetFileNameWithoutExtension(file) }.{ i }.png";
+
+                using (var output = File.OpenWrite(patch))
+                {
+                    img.Patches[i].SaveAsPng(output);
+                }
+            }
         }
     }
 }
