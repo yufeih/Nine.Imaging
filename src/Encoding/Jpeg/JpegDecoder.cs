@@ -130,7 +130,7 @@ namespace Nine.Imaging.Encoding
 
             if (!(jpg.Colorspace == Colorspace.RGB && jpg.BitsPerComponent == 8))
             {
-                throw new UnsupportedImageFormatException();
+                throw new NotSupportedException("JpegDecoder only support RGB color space.");
             }
 
             for (int y = 0; y < pixelHeight; y++)

@@ -291,7 +291,7 @@ namespace Nine.Imaging
                     stringBuilder.AppendLine("-" + decoder);
                 }
 
-                throw new UnsupportedImageFormatException(stringBuilder.ToString());
+                throw new NotSupportedException(stringBuilder.ToString());
             }
             finally
             {

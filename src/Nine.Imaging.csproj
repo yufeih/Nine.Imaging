@@ -221,7 +221,6 @@
     <Compile Include="Encoding\Gif\LZWDecoder.cs" />
     <Compile Include="Encoding\IImageDecoder.cs" />
     <Compile Include="Encoding\IImageEncoder.cs" />
-    <Compile Include="Encoding\UnsupportedImageFormatException.cs" />
     <Compile Include="Rectangle.cs" />
     <Compile Include="RotationType.cs" />
   </ItemGroup>
