@@ -77,7 +77,7 @@
 
             if (scale != 1)
             {
-                var resampler = new SuperSamplingResampler();
+                var resampler = new SuperSamplingSampler();
                 var inner = new Image();
                 inner.SetPixels(w, h, pixels);
 

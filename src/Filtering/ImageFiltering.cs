@@ -101,7 +101,7 @@ namespace Nine.Imaging.Filtering
         }
 
         /// <summary>
-        /// Resizes the specified image by using the specified <see cref="ParallelImageResampler"/> and
+        /// Resizes the specified image by using the specified <see cref="ParallelImageSampler"/> and
         /// return a new image with
         /// the spezified size which is a resized version of the passed image.
         /// </summary>
@@ -119,14 +119,14 @@ namespace Nine.Imaging.Filtering
         /// 	<para>- or -</para>
         /// 	<para><paramref name="height"/> is negative.</para>
         /// </exception>
-        public static Image Resize(this Image source, int width, int height, IImageResampler resampler = null)
+        public static Image Resize(this Image source, int width, int height, IImageSampler resampler = null)
         {
-            resampler = resampler ?? new SuperSamplingResampler();
+            resampler = resampler ?? new SuperSamplingSampler();
             return PerformAction(source, false, (sourceImage, targetImage) => resampler.Sample(sourceImage, targetImage, width, height));
         }
 
         /// <summary>
-        /// Resizes the specified image by using the specified <see cref="ParallelImageResampler"/> and
+        /// Resizes the specified image by using the specified <see cref="ParallelImageSampler"/> and
         /// returns new image which has the specified maximum
         /// extension in x and y direction.
         /// </summary>
@@ -136,7 +136,7 @@ namespace Nine.Imaging.Filtering
         /// <exception cref="ArgumentNullException"><paramref name="source"/> is null
         /// (Nothing in Visual Basic).</exception>
         /// <exception cref="ArgumentException"><paramref name="size"/> is negative.</exception>
-        public static Image Resize(this Image source, int size, IImageResampler resampler = null)
+        public static Image Resize(this Image source, int size, IImageSampler resampler = null)
         {
             int width = 0;
             int height = 0;
@@ -154,7 +154,7 @@ namespace Nine.Imaging.Filtering
                 width = (int)Math.Round(height * ratio);
             }
 
-            resampler = resampler ?? new SuperSamplingResampler();
+            resampler = resampler ?? new SuperSamplingSampler();
             return PerformAction(source, false, (sourceImage, targetImage) => resampler.Sample(sourceImage, targetImage, width, height));
         }
 

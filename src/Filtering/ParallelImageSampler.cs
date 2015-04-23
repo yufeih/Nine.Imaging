@@ -3,7 +3,7 @@
     using System;
     using System.Threading.Tasks;
 
-    public abstract class ParallelImageResampler : IImageResampler
+    public abstract class ParallelImageSampler : IImageSampler
     {
         /// <summary>
         /// Gets or sets the count of workers to run the filter in parallel.

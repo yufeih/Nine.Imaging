@@ -37,7 +37,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="ImageResamplerTest.cs" />
+    <Compile Include="ImageSamplerTest.cs" />
     <Compile Include="NinePatchImageTest.cs" />
     <Compile Include="ImageTransformTest.cs" />
     <Compile Include="ImageFilterTest.cs" />

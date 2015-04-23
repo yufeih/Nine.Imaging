@@ -2,9 +2,9 @@
 {
     using System;
 
-    public class SuperSamplingResampler : ParallelImageResampler
+    public class SuperSamplingSampler : ParallelImageSampler
     {
-        private readonly BilinearResampler bilinear = new BilinearResampler();
+        private readonly BilinearSampler bilinear = new BilinearSampler();
 
         public override void Sample(ImageBase source, ImageBase target, int width, int height)
         {
