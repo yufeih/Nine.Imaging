@@ -5,7 +5,6 @@
     using System.IO;
     using Nine.Imaging.Filtering;
 
-
     /// <summary>
     /// Represents a nine patch image from an android nine patch image format (http://developer.android.com/tools/help/draw9patch.html).
     /// </summary>
@@ -25,11 +24,14 @@
 
         public IReadOnlyList<ImageBase> Patches => patches.Value;
 
-        public NinePatchImage(Stream stream) : this(new Image(stream))
+        public NinePatchImage(Stream stream, double scale = 1) : this(new Image(stream), scale)
         { }
 
-        public NinePatchImage(ImageBase source)
+        public NinePatchImage(ImageBase source, double scale = 1)
         {
+            if (source.PixelWidth < 3) throw new ArgumentOutOfRangeException(nameof(PixelWidth));
+            if (source.PixelHeight < 3) throw new ArgumentOutOfRangeException(nameof(PixelHeight));
+
             var maxX = source.PixelWidth - 1;
             var maxY = source.PixelHeight - 1;
 
@@ -49,6 +51,19 @@
             for (var y = 1; y <= maxY; y++) if (source[maxX, y].A > 0) { PaddingTop = y - 1; break; }
             for (var y = 1; y <= maxY; y++) if (source[maxX, maxY - y].A > 0) { PaddingBottom = y - 1; break; }
 
+            if (scale != 1)
+            {
+                Left = Math.Max(1, (int)Math.Round(Left * scale));
+                Right = Math.Max(1, (int)Math.Round(Right * scale));
+                Top = Math.Max(1, (int)Math.Round(Top * scale));
+                Bottom = Math.Max(1, (int)Math.Round(Bottom * scale));
+
+                PaddingLeft = Math.Max(1, (int)Math.Round(PaddingLeft * scale));
+                PaddingRight = Math.Max(1, (int)Math.Round(PaddingRight * scale));
+                PaddingTop = Math.Max(1, (int)Math.Round(PaddingTop * scale));
+                PaddingBottom = Math.Max(1, (int)Math.Round(PaddingBottom * scale));
+            }
+
             var w = source.PixelWidth - 2;
             var h = source.PixelHeight - 2;
             var pixels = new byte[w * h * 4];
@@ -59,6 +74,18 @@
             }
 
             SetPixels(w, h, pixels);
+
+            if (scale != 1)
+            {
+                var resampler = new SuperSamplingResampler();
+                var inner = new Image();
+                inner.SetPixels(w, h, pixels);
+
+                w = Math.Max(3, (int)Math.Round((source.PixelWidth - 1) * scale));
+                h = Math.Max(3, (int)Math.Round((source.PixelHeight - 1) * scale));
+
+                resampler.Sample(inner, this, w, h);
+            }
 
             patches = new Lazy<IReadOnlyList<ImageBase>>(CreatePatches);
         }
