@@ -17,7 +17,7 @@
         [InlineData("Foo=10&height=20&width=12", "w12h20")]
         [InlineData("str&str=ordinalIgnoreCase&str=1", "CurrentCultureOrdinalIgnoreCaseCurrentCultureIgnoreCase")]
         [InlineData("foo=10  &height\t  =20 &width= 12&\nBar&width=2&height= 4&bar=xyz", "w12h20xyz")]
-        public void decode_then_encode_image_from_stream_should_succeed(string instruction, string expected)
+        public void invoke_url_commands(string instruction, string expected)
         {
             Assert.Equal(this, invoker.Invoke(this, instruction));
             Assert.Equal(expected, Text.ToString());
