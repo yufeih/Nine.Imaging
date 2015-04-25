@@ -1,5 +1,6 @@
-﻿namespace System
+﻿namespace Nine.Imaging
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Reflection;
@@ -44,23 +45,34 @@
         {
             string defaultValue = null;
             MethodInfo method = null, current;
+            List<ParameterInfo> methodParams = null;
             List<KeyValuePair<string, string>> args = new List<KeyValuePair<string, string>>();
 
             foreach (var param in parameters)
             {
-                if (!methods.TryGetValue(param.Key, out current))
+                if (methods.TryGetValue(param.Key, out current))
+                {
+                    var existing = methodParams?.FirstOrDefault(p => p != null && string.Equals(p.Name, param.Key, StringComparison.OrdinalIgnoreCase));
+                    if (existing != null)
+                    {
+                        args.Add(param);
+                        methodParams.Remove(existing);
+                    }
+                    else
+                    {
+                        target = Invoke(target, method, defaultValue, args);
+                        defaultValue = param.Value;
+                        method = current;
+                        methodParams = current.GetParameters().ToList();
+                        args.Clear();
+                    }
+                }
+                else
                 {
                     if (method != null)
                     {
                         args.Add(param);
                     }
-                }
-                else
-                {
-                    target = Invoke(target, method, defaultValue, args);
-                    defaultValue = param.Value;
-                    method = current;
-                    args.Clear();
                 }
             }
 
@@ -107,6 +119,7 @@
             if (type == typeof(byte)) return byte.Parse(value);
             if (type == typeof(float)) return float.Parse(value);
             if (type == typeof(double)) return double.Parse(value);
+            if (type == typeof(Color)) return Color.Parse(value);
             if (type.GetTypeInfo().IsEnum) return Enum.Parse(type, value, true);
 
             return null;
