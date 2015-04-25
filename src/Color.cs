@@ -213,7 +213,56 @@
 
             return sb.ToString();
         }
-        
+
+        public static Color Parse(string value)
+        {
+            byte a = 255, r, g, b;
+
+            if (value.Contains(","))
+            {
+                var argb = value.Split(',');
+                var i = argb.Length > 3 ? 1 : 0;
+
+                if (i == 1) a = (byte)int.Parse(argb[0]);
+                r = (byte)int.Parse(argb[i + 0]);
+                g = (byte)int.Parse(argb[i + 1]);
+                b = (byte)int.Parse(argb[i + 2]);
+            }
+            else
+            {
+                var i = value.StartsWith("#") ? 1 : 0;
+
+                if (value.Length - i == 3)
+                {
+                    r = g = b = (byte)(Hex(value[i + 0]) * 16 + Hex(value[i + 1]));
+                }
+                else if (value.Length - i == 6)
+                {
+                    r = (byte)(Hex(value[i + 0]) * 16 + Hex(value[i + 1]));
+                    g = (byte)(Hex(value[i + 2]) * 16 + Hex(value[i + 3]));
+                    b = (byte)(Hex(value[i + 4]) * 16 + Hex(value[i + 5]));
+                }
+                else
+                {
+                    a = (byte)(Hex(value[i + 0]) * 16 + Hex(value[i + 1]));
+                    r = (byte)(Hex(value[i + 2]) * 16 + Hex(value[i + 3]));
+                    g = (byte)(Hex(value[i + 4]) * 16 + Hex(value[i + 5]));
+                    b = (byte)(Hex(value[i + 6]) * 16 + Hex(value[i + 7]));
+                }
+            }
+
+            return new Color(a, r, g, b);
+        }
+
+        private static int Hex(char c)
+        {
+            if (c >= 'A' && c <= 'Z') return c - 'A' + 10;
+            if (c >= 'a' && c <= 'z') return c - 'a' + 10;
+            if (c >= '0' && c <= '9') return c - '0';
+
+            throw new ArgumentOutOfRangeException($"{ c } is not a valid for hex number");
+        }
+
         public static bool operator ==(Color a, Color b)
         {
             return a._packedValue == b._packedValue;

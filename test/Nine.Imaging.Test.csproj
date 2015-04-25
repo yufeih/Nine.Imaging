@@ -40,6 +40,7 @@
     <Compile Include="..\src\Helpers\ExtensionMethodInvoker.cs">
       <Link>ExtensionMethodInvoker.cs</Link>
     </Compile>
+    <Compile Include="ColorTest.cs" />
     <Compile Include="ExtensionMethodInvokerTest.cs" />
     <Compile Include="ImageSamplerTest.cs" />
     <Compile Include="NinePatchImageTest.cs" />
