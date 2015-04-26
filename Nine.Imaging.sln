@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.22609.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Imaging", "src\Nine.Imaging.csproj", "{4AABA076-63EA-409D-8B50-A65D7E10ABF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Imaging", "src\Portable\Nine.Imaging.csproj", "{4AABA076-63EA-409D-8B50-A65D7E10ABF2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Imaging.Test", "test\Nine.Imaging.Test.csproj", "{5B3F9589-BF9A-4D95-BC54-45FB727D7DEA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nine.Imaging.Http", "src\Http\Nine.Imaging.Http.csproj", "{8A4FE921-B616-48A1-84E6-28084B166F95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{5B3F9589-BF9A-4D95-BC54-45FB727D7DEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B3F9589-BF9A-4D95-BC54-45FB727D7DEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B3F9589-BF9A-4D95-BC54-45FB727D7DEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A4FE921-B616-48A1-84E6-28084B166F95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A4FE921-B616-48A1-84E6-28084B166F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A4FE921-B616-48A1-84E6-28084B166F95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A4FE921-B616-48A1-84E6-28084B166F95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
