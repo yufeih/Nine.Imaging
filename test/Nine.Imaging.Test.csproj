@@ -37,7 +37,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\src\Http\ExtensionMethodInvoker.cs">
+    <Compile Include="..\src\Helpers\ExtensionMethodInvoker.cs">
       <Link>ExtensionMethodInvoker.cs</Link>
     </Compile>
     <Compile Include="ColorTest.cs" />
@@ -75,11 +75,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\src\Http\Nine.Imaging.Http.csproj">
-      <Project>{8a4fe921-b616-48a1-84e6-28084b166f95}</Project>
-      <Name>Nine.Imaging.Http</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\src\Portable\Nine.Imaging.csproj">
+    <ProjectReference Include="..\src\Nine.Imaging.csproj">
       <Project>{4aaba076-63ea-409d-8b50-a65d7e10abf2}</Project>
       <Name>Nine.Imaging</Name>
     </ProjectReference>
