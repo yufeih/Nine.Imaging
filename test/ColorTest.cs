@@ -1,5 +1,6 @@
 ﻿namespace Nine.Imaging.Test
 {
+    using System;
     using Xunit;
 
     public class ColorTest
@@ -20,6 +21,31 @@
             Assert.Equal(r, c.R);
             Assert.Equal(g, c.G);
             Assert.Equal(b, c.B);
+        }
+
+        [Fact]
+        public void convert_between_hsb_and_rgb()
+        {
+            foreach (var c in new[] { Color.Transparent, Color.White, Color.Black, Color.Red, Color.Green, Color.Black, new Color(123, 123, 123) })
+            {
+                Assert.Equal(c, Color.FromHsb(c.ToHsb()));
+            }
+
+            var random = new Random(0);
+            for (var i = 0; i < 1000; i++)
+            {
+                var c = new Color((byte)random.Next(255), (byte)random.Next(255), (byte)random.Next(255));
+                var hsb = c.ToHsb();
+                Assert.Equal(c, Color.FromHsb(hsb.H, hsb.S, hsb.B));
+            }
+        }
+
+        [Fact]
+        public void hsb_color_is_using_hsv_cylinder()
+        {
+            // http://stackoverflow.com/questions/4106363/converting-rgb-to-hsb-colors
+            // http://en.wikipedia.org/wiki/HSL_and_HSV
+            Assert.Equal(Color.Red, Color.FromHsb(0, 1, 1));
         }
     }
 }

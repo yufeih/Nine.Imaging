@@ -7,8 +7,13 @@
     {
         public static readonly Color Empty = new Color();
         public static readonly Color Transparent = new Color(0, 255, 255, 255);
+
         public static readonly Color Black = new Color(255, 0, 0, 0);
         public static readonly Color White = new Color(255, 255, 255, 255);
+
+        public static readonly Color Red = new Color(255, 255, 0, 0);
+        public static readonly Color Green = new Color(255, 0, 255, 0);
+        public static readonly Color Blue = new Color(255, 0, 0, 255);
 
         private uint _packedValue;
 
@@ -96,109 +101,11 @@
             }
         }
 
-        public float Brightness
+        public HsbColor ToHsb() => HsbColor.FromRgb(this);
+        public static Color FromHsb(HsbColor hsb) => hsb.ToRgb();
+        public static Color FromHsb(float hue, float saturation, float brightness)
         {
-            get
-            {
-                float r = (float)R / 255.0f;
-                float g = (float)G / 255.0f;
-                float b = (float)B / 255.0f;
-
-                float max, min;
-
-                max = r; min = r;
-
-                if (g > max) max = g;
-                if (b > max) max = b;
-
-                if (g < min) min = g;
-                if (b < min) min = b;
-
-                return (max + min) / 2;
-            }
-        }
-        
-        public float Hue
-        {
-            get
-            {
-                if (R == G && G == B)
-                    return 0;
-
-                float r = (float)R / 255.0f;
-                float g = (float)G / 255.0f;
-                float b = (float)B / 255.0f;
-
-                float max, min;
-                float delta;
-                float hue = 0.0f;
-
-                max = r; min = r;
-
-                if (g > max) max = g;
-                if (b > max) max = b;
-
-                if (g < min) min = g;
-                if (b < min) min = b;
-
-                delta = max - min;
-
-                if (r == max)
-                {
-                    hue = (g - b) / delta;
-                }
-                else if (g == max)
-                {
-                    hue = 2 + (b - r) / delta;
-                }
-                else if (b == max)
-                {
-                    hue = 4 + (r - g) / delta;
-                }
-                hue *= 60;
-
-                if (hue < 0.0f)
-                {
-                    hue += 360.0f;
-                }
-                return hue;
-            }
-        }
-        
-        public float Saturation
-        {
-            get
-            {
-                float r = (float)R / 255.0f;
-                float g = (float)G / 255.0f;
-                float b = (float)B / 255.0f;
-
-                float max, min;
-                float l, s = 0;
-
-                max = r; min = r;
-
-                if (g > max) max = g;
-                if (b > max) max = b;
-
-                if (g < min) min = g;
-                if (b < min) min = b;
-                
-                if (max != min)
-                {
-                    l = (max + min) / 2;
-
-                    if (l <= .5)
-                    {
-                        s = (max - min) / (max + min);
-                    }
-                    else
-                    {
-                        s = (max - min) / (2 - max - min);
-                    }
-                }
-                return s;
-            }
+            return new HsbColor { H = hue, S = saturation, B = brightness, A = 1.0f }.ToRgb();
         }
 
         public override string ToString()

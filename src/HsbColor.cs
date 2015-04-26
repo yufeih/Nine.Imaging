@@ -1,14 +1,17 @@
-﻿namespace Nine.Imaging.Filtering
+﻿namespace Nine.Imaging
 {
     using System;
 
-    struct HsbColor
+    /// <summary>
+    /// Presents color in HSV color cylinder (http://en.wikipedia.org/wiki/HSL_and_HSV).
+    /// </summary>
+    public struct HsbColor
     {
-        public double A;
-        public double H;
-        public double S;
-        public double B;
-
+        public float A;
+        public float H;
+        public float S;
+        public float B;
+        
         public static HsbColor FromRgb(Color rgb)
         {
             var hsb = new HsbColor();
@@ -16,25 +19,23 @@
             var r = (int)rgb.R;
             var g = (int)rgb.G;
             var b = (int)rgb.B;
-            var a = (int)rgb.A;
-            
-            double min = Math.Min(Math.Min(r, g), b);
-            double max = Math.Max(Math.Max(r, g), b);
-            double delta = max - min;
+
+            hsb.A = rgb.A / 255.0f;
+
+            float min = Math.Min(Math.Min(r, g), b);
+            float max = Math.Max(Math.Max(r, g), b);
+            float delta = max - min;
             
             if (max == 0.0)
             {
-                hsb.H = 0.0;
-                hsb.S = 0.0;
-                hsb.B = 0.0;
-                hsb.A = a;
+                hsb.H = 0.0f;
+                hsb.S = 0.0f;
+                hsb.B = 0.0f;
                 return hsb;
             }
-            
-            var alpha = (double)a;
-            hsb.A = alpha / 255;
-            
-            if (r == max) hsb.H = (g - b) / delta;
+
+            if (delta == 0.0) hsb.H = 0;
+            else if (r == max) hsb.H = (g - b) / delta;
             else if (g == max) hsb.H = 2 + (b - r) / delta;
             else if (b == max) hsb.H = 4 + (r - g) / delta;
             hsb.H *= 60;
@@ -61,11 +62,11 @@
             var i = (int)(Math.Truncate(h));
             var f = h - i;
 
-            var p = this.B * (1.0 - this.S);
-            var q = this.B * (1.0 - (this.S * f));
-            var t = this.B * (1.0 - (this.S * (1.0 - f)));
+            var p = this.B * (1.0f - this.S);
+            var q = this.B * (1.0f - (this.S * f));
+            var t = this.B * (1.0f - (this.S * (1.0f - f)));
 
-            double r, g, b;
+            float r, g, b;
             switch (i)
             {
                 case 0:
@@ -106,10 +107,40 @@
             }
 
             return new Color(
-                (byte)(this.A * 255),
-                (byte)(r * 255),
-                (byte)(g * 255),
-                (byte)(b * 255));
+                (byte)(Math.Round(this.A * 255)),
+                (byte)(Math.Round(r * 255)),
+                (byte)(Math.Round(g * 255)),
+                (byte)(Math.Round(b * 255)));
+        }
+
+        public static bool operator ==(HsbColor a, HsbColor b)
+        {
+            return a.A == b.A && a.H == b.H && a.S == b.S && a.B == b.B;
+        }
+
+        public static bool operator !=(HsbColor a, HsbColor b)
+        {
+            return !(a.A == b.A && a.H == b.H && a.S == b.S && a.B == b.B);
+        }
+
+        public override int GetHashCode()
+        {
+            return H.GetHashCode() ^ S.GetHashCode() ^ B.GetHashCode() ^ A.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return ((obj is HsbColor) && this.Equals((HsbColor)obj));
+        }
+
+        public bool Equals(HsbColor other)
+        {
+            return A == other.A && H == other.H && S == other.S && B == other.B;
+        }
+
+        public override string ToString()
+        {
+            return $"Hue: { H }, Saturation: { S }, Brightness: { B }, Alpha: { A }";
         }
     }
 }
