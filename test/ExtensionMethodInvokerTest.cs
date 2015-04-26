@@ -1,4 +1,4 @@
-﻿namespace Nine.Imaging
+﻿namespace Nine.Imaging.Http
 {
     using Xunit;
     using System;
