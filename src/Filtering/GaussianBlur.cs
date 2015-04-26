@@ -1,12 +1,4 @@
-﻿// ===============================================================================
-// GaussianBlur.cs
-// .NET Image Tools
-// ===============================================================================
-// Copyright (c) .NET Image Tools Development Group. 
-// All rights reserved.
-// ===============================================================================
-
-namespace Nine.Imaging.Filtering
+﻿namespace Nine.Imaging.Filtering
 {
     using System;
 
@@ -15,25 +7,22 @@ namespace Nine.Imaging.Filtering
     /// </summary>
     public class GaussianBlur : MatrixFilter
     {
-        private double _oldVariance;
+        private double[] filter;
+        private double oldVariance;
 
-        /// <summary>
-        /// Gets or sets the variance that is used to calculate the filter matrix.
-        /// </summary>
-        /// <value>The variance to calculate the filter matrix.</value>
         public double Variance { get; set; }
 
-        /// <summary>
-        /// This method is called before the filter is applied to prepare the filter
-        /// matrix. Only calculate a new matrix, when the properties has been changed.
-        /// </summary>
-        protected override void PrepareFilter()
-        {
-            if (_oldVariance != Variance && Variance > 0)
-            {
-                int filterSize = (int)(2 * Variance) * 2 + 1;
+        public override double[] Kernel => filter;
 
-                double[] filter = new double[filterSize * filterSize];
+        protected override void OnApply()
+        {
+            var varience = Math.Max(1, this.Variance);
+
+            if (filter == null || oldVariance != varience)
+            {
+                int filterSize = (int)(2 * varience) * 2 + 1;
+
+                filter = new double[filterSize * filterSize];
 
                 for (int y = 0; y < filterSize; y++)
                 {
@@ -42,7 +31,7 @@ namespace Nine.Imaging.Filtering
                         int filterX = x - (filterSize / 2);
                         int filterY = y - (filterSize / 2);
 
-                        double v2 = Variance * Variance;
+                        double v2 = varience * varience;
 
                         int x2 = filterX * filterX;
                         int y2 = filterY * filterY;
@@ -54,9 +43,7 @@ namespace Nine.Imaging.Filtering
                     }
                 }
 
-                Initialize(filter, filterSize);
-
-                _oldVariance = Variance;
+                oldVariance = varience;
             }
         }
     }

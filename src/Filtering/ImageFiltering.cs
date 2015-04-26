@@ -18,6 +18,8 @@
         public static Image Rotate270(this Image source) => Transform(source, RotationType.Rotate270, FlippingType.None);
 
         // Resize
+        public static Image Crop(this Image source, Rectangle bounds) => PerformAction(source, false, (sourceImage, targetImage) => ImageBaseOperations.Crop(sourceImage, targetImage, bounds));
+
         public static Image Width(this Image source, int width, int height = -1, StretchMode mode = StretchMode.Fill, IImageSampler sampler = null) => Resize(source, width, height, mode, sampler);
         public static Image Height(this Image source, int height, int width = -1, StretchMode mode = StretchMode.Fill, IImageSampler sampler = null) => Resize(source, width, height, mode, sampler);
 
@@ -61,7 +63,10 @@
         public static Image Brightness(this Image source, int amount) => source.Filter(new Brightness(amount));
         public static Image Contrast(this Image source, int amount) => source.Filter(new Contrast(amount));
         public static Image Circle(this Image source, double radius = -1) => source.Filter(new CropCircle { Radius = radius });
-        public static Image Crop(this Image source, Rectangle bounds) => PerformAction(source, false, (sourceImage, targetImage) => ImageBaseOperations.Crop(sourceImage, targetImage, bounds));
+
+        // Edge detection
+        public static Image Prewitt(this Image source) => source.Filter(new Prewitt());
+        public static Image Sobel(this Image source) => source.Filter(new Sobel());
 
         public static Image Filter(this Image source, params IImageFilter[] filters) => Filter(source, source.Bounds, filters);
         public static Image Filter(this Image source, Rectangle rectangle, params IImageFilter[] filters)

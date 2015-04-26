@@ -13,11 +13,11 @@
         /// <summary>
         /// This method is called before the filter is applied to prepare the filter.
         /// </summary>
-        protected virtual void PrepareFilter() { }
+        protected virtual void OnApply() { }
 
         public void Apply(ImageBase target, ImageBase source, Rectangle rectangle)
         {
-            PrepareFilter();
+            OnApply();
 
             if (Parallelism > 1)
             {

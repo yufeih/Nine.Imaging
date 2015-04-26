@@ -19,45 +19,6 @@ namespace Nine.Imaging
     static class Guard
     {
         /// <summary>
-        /// Verifies that the specified value is between a lower and a upper value
-        /// and throws an exception, if not.
-        /// </summary>
-        /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="target">The target value, which should be validated.</param>
-        /// <param name="lower">The lower value.</param>
-        /// <param name="upper">The upper value.</param>
-        /// <param name="parameterName">Name of the parameter, which should will be checked.</param>
-        /// <exception cref="ArgumentException"><paramref name="target"/> is not between
-        /// the lower and the upper value.</exception>
-        public static void Between<TValue>(TValue target, TValue lower, TValue upper, string parameterName) where TValue : IComparable
-        {
-            if (!target.IsBetween(lower, upper))
-            {
-                throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, "Value must be between {0} and {1}", lower, upper), parameterName);
-            }
-        }
-
-        /// <summary>
-        /// Verifies that the specified value is between a lower and a upper value
-        /// and throws an exception with the passed message, if not.
-        /// </summary>
-        /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="target">The target value, which should be validated.</param>
-        /// <param name="lower">The lower value.</param>
-        /// <param name="upper">The upper value.</param>
-        /// <param name="parameterName">Name of the parameter, which should will be checked.</param>
-        /// <param name="message">The message for the exception.</param>
-        /// <exception cref="ArgumentException"><paramref name="target"/> is not between
-        /// the lower and the upper value.</exception>
-        public static void Between<TValue>(TValue target, TValue lower, TValue upper, string parameterName, string message) where TValue : IComparable
-        {
-            if (!target.IsBetween(lower, upper))
-            {
-                throw new ArgumentException(message, parameterName);
-            }
-        }
-
-        /// <summary>
         /// Verifies that the specified value is greater than a lower value
         /// and throws an exception, if not.
         /// </summary>

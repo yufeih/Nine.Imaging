@@ -6,14 +6,16 @@
     /// Defines an abstract base filter that uses a matrix a factor and a bias value to 
     /// change the color of a matrix.
     /// </summary>
-    public abstract class MatrixFilter : ParallelImageFilter
+    public abstract class Matrix2DFilter : ParallelImageFilter
     {
-        public abstract double[] Kernel { get; }
+        public abstract double[] KernelX { get; }
+        public abstract double[] KernelY { get; }
 
         protected override void Apply(ImageBase target, ImageBase source, Rectangle rectangle, int startY, int endY)
         {
-            double[] filter = Kernel;
-            int filterSize = (int)Math.Sqrt(filter.Length);
+            double[] kernelX = KernelX;
+            double[] kernelY = KernelY;
+            int filterSize = (int)Math.Sqrt(kernelX.Length);
 
             int width = rectangle.Width;
             int height = rectangle.Height;
@@ -30,7 +32,8 @@
 
                 for (int x = rectangle.X; x < right; x++)
                 {
-                    double r = 0, g = 0, b = 0;
+                    double rX = 0, gX = 0, bX = 0;
+                    double rY = 0, gY = 0, bY = 0;
 
                     int baseX = x - halfFilterSize + width;
 
@@ -47,18 +50,24 @@
                             byte tg = pixels[sourceStart + 1];
                             byte tr = pixels[sourceStart + 2];
 
-                            double multiplier = filter[filterStart + filterX];
+                            double multiplierX = kernelX[filterStart + filterX];
 
-                            r += tr * multiplier;
-                            g += tg * multiplier;
-                            b += tb * multiplier;
+                            rX += tr * multiplierX;
+                            gX += tg * multiplierX;
+                            bX += tb * multiplierX;
+
+                            double multiplierY = kernelY[filterStart + filterX];
+
+                            rY += tr * multiplierY;
+                            gY += tg * multiplierY;
+                            bY += tb * multiplierY;
                         }
                     }
 
                     target[x, y] = new Color(
-                        (byte)r.RemainBetween(0, 255),
-                        (byte)g.RemainBetween(0, 255),
-                        (byte)b.RemainBetween(0, 255));
+                        (byte)((Math.Sqrt(rX * rX + rY * rY)).RemainBetween(0, 255)),
+                        (byte)((Math.Sqrt(gX * gX + gY * gY)).RemainBetween(0, 255)),
+                        (byte)((Math.Sqrt(bX * bX + bY * bY)).RemainBetween(0, 255)));
                 }
             }
         }

@@ -84,6 +84,7 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Barcode\BarcodeResult.cs" />
     <Compile Include="Barcode\BarcodeResultFormat.cs" />
+    <Compile Include="Filtering\Matrix2DFilter.cs" />
     <Compile Include="Filtering\StretchMode.cs" />
     <Compile Include="Helpers\ExtensionMethodInvoker.cs" />
     <Compile Include="NinePatchImage.cs" />
@@ -193,11 +194,9 @@
     <Compile Include="Filtering\Inverter.cs" />
     <Compile Include="Filtering\MatrixFilter.cs" />
     <Compile Include="Filtering\NearestNeighborSampler.cs" />
-    <Compile Include="Filtering\PrewittX.cs" />
-    <Compile Include="Filtering\PrewittY.cs" />
+    <Compile Include="Filtering\Prewitt.cs" />
     <Compile Include="Filtering\Sepia.cs" />
-    <Compile Include="Filtering\SobelX.cs" />
-    <Compile Include="Filtering\SobelY.cs" />
+    <Compile Include="Filtering\Sobel.cs" />
     <Compile Include="Filtering\FlippingType.cs" />
     <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\Guard.cs" />

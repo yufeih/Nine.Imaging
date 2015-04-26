@@ -17,10 +17,8 @@
             Filters.Add("GrayscaleBT709", new Grayscale { Coefficients = Grayscale.BT709 });
             Filters.Add("GrayscaleRMY", new Grayscale { Coefficients = Grayscale.RMY });
             Filters.Add(typeof(Sepia).Name, new Sepia());
-            Filters.Add(typeof(SobelX).Name, new SobelX());
-            Filters.Add(typeof(SobelY).Name, new SobelY());
-            Filters.Add(typeof(PrewittX).Name, new PrewittX());
-            Filters.Add(typeof(PrewittY).Name, new PrewittY());
+            Filters.Add(typeof(Sobel).Name, new Sobel());
+            Filters.Add(typeof(Prewitt).Name, new Prewitt());
             Filters.Add("Tint-yellow", new Tint { TintColor = new Color(255, 223, 119) });
             Filters.Add("Tint-yellow-hsb", new Tint { TintColor = new Color(255, 223, 119), UseHsbSpace = true });
             Filters.Add("Contrast-128", new Contrast(128));
