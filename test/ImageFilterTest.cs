@@ -47,10 +47,10 @@
 
             Trace.WriteLine($"{ name }: { watch.ElapsedMilliseconds}ms");
 
-            var outputFilename = "Filtered/" + name + ".jpg";
+            var outputFilename = "Filtered/" + name + ".png";
             using (var output = File.OpenWrite(outputFilename))
             {
-                image.SaveAsJpeg(output);
+                image.SaveAsPng(output);
             }
         }
     }

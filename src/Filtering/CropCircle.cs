@@ -40,9 +40,9 @@
                     {
                         color = new Color(
                             (byte)(a * color.A),
-                            (byte)(a * color.R), 
-                            (byte)(a * color.G),
-                            (byte)(a * color.B));
+                            (byte)(color.R), 
+                            (byte)(color.G),
+                            (byte)(color.B));
                     }
 
                     target[x, y] = color;
