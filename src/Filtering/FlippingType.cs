@@ -1,12 +1,4 @@
-﻿// ===============================================================================
-// FlippingType.cs
-// .NET Image Tools
-// ===============================================================================
-// Copyright (c) .NET Image Tools Development Group. 
-// All rights reserved.
-// ===============================================================================
-
-namespace Nine.Imaging.Filtering
+﻿namespace Nine.Imaging.Filtering
 {
     /// <summary>
     /// Defines how a image should be flipped.

@@ -11,40 +11,19 @@
         public static readonly Point Zero = new Point();
         public static readonly Point One = new Point(1, 1);
 
-        public override bool Equals(object obj)
-        {
-            if (obj == null)
-            {
-                return false;
-            }
+        public bool Equals(Point other) => X == other.X && Y == other.Y;
+        public override bool Equals(object obj) => obj is Point && Equals((Point)obj);
+        public override int GetHashCode() => (X << 16) ^ Y;
 
-            bool result = false;
-            if (obj is Point)
-            {
-                result = Equals((Point)obj);
-            }
+        public static bool operator ==(Point left, Point right) => left.Equals(right);
+        public static bool operator !=(Point left, Point right) => !left.Equals(right);
 
-            return result;
-        }
+        public override string ToString() => $"{ X }, { Y }";
 
-        public bool Equals(Point other)
+        public static Point Parse(string text)
         {
-            return X == other.X && Y == other.Y;
-        }
-        
-        public override int GetHashCode()
-        {
-            return (X << 16) ^ Y;
-        }
-
-        public static bool operator ==(Point left, Point right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(Point left, Point right)
-        {
-            return !left.Equals(right);
+            var parts = text.Split(',');
+            return new Point(int.Parse(parts[0]), int.Parse(parts[1]));
         }
     }
 }

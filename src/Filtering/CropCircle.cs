@@ -2,7 +2,7 @@
 {
     using System;
 
-    public sealed class CropCircle : ParallelImageFilter
+    public class CropCircle : ParallelImageFilter
     {
         private static readonly double[] offsetsX = new[] { 0.0, 0.0, 0.5, 1.0, 1.0 };
         private static readonly double[] offsetsY = new[] { 0.0, 1.0, 0.5, 1.0, 0.0 };

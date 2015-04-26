@@ -43,7 +43,7 @@
 
             var watch = Stopwatch.StartNew();
 
-            image = image.ApplyFilters(filter);
+            image = image.Filter(filter);
 
             Trace.WriteLine($"{ name }: { watch.ElapsedMilliseconds}ms");
 
