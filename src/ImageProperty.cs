@@ -16,7 +16,7 @@ namespace Nine.Imaging
     /// the copyright information, the date, where the image was created
     /// or some other information.
     /// </summary>
-    public sealed class ImageProperty : IEquatable<ImageProperty>
+    public class ImageProperty : IEquatable<ImageProperty>
     {
         #region Properties
 

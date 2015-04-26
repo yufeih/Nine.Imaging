@@ -13,7 +13,7 @@ namespace Nine.Imaging.Filtering
     /// <summary>
     /// Implements the prewitt filter for detection of vertical edges.
     /// </summary>
-    public sealed class PrewittY : MatrixFilter
+    public class PrewittY : MatrixFilter
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PrewittY"/> class.

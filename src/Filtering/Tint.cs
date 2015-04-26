@@ -1,6 +1,6 @@
 ﻿namespace Nine.Imaging.Filtering
 {
-    public sealed class Tint : ParallelImageFilter
+    public class Tint : ParallelImageFilter
     {
         public bool UseHsbSpace { get; set; } = false;
         public Color TintColor { get; set; } = Color.White;

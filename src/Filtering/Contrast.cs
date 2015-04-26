@@ -11,7 +11,7 @@ namespace Nine.Imaging.Filtering
     /// <summary>
     /// An <see cref="IImageFilter"/> to change the contrast of an <see cref="Image"/>.
     /// </summary>
-    public sealed class Contrast : ParallelImageFilter
+    public class Contrast : ParallelImageFilter
     {
         public int Value { get; set; }
 

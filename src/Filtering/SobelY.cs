@@ -11,7 +11,7 @@ namespace Nine.Imaging.Filtering
     /// <summary>
     /// Implements the sobel filter for detection of vertical edges.
     /// </summary>
-    public sealed class SobelY : MatrixFilter
+    public class SobelY : MatrixFilter
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SobelY"/> class.

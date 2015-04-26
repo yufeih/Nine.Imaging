@@ -13,7 +13,7 @@ namespace Nine.Imaging.Filtering
     /// <summary>
     /// Implements a gaussian blur filter using a filter matrix.
     /// </summary>
-    public sealed class GaussianBlur : MatrixFilter
+    public class GaussianBlur : MatrixFilter
     {
         private double _oldVariance;
 

@@ -13,7 +13,7 @@ namespace Nine.Imaging.Filtering
     /// of the overlay is respected, so an alpha value of 255 in the overlay image pixel means that the original image pixel
     /// is fully replaced. A value of 0 means that the original image pixel is not changed at all.
     /// </summary>
-    public sealed class BlendingFilter : ParallelImageFilter
+    public class BlendingFilter : ParallelImageFilter
     {
         #region Fields
 

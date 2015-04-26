@@ -11,7 +11,7 @@ namespace Nine.Imaging.Filtering
     /// <summary>
     /// An <see cref="IImageFilter"/> for changing the brightness of an <see cref="Image"/>.
     /// </summary>
-    public sealed class Brightness : ParallelImageFilter
+    public class Brightness : ParallelImageFilter
     {
         public int Value { get; set; }
 

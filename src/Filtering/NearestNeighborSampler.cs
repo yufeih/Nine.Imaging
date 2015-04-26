@@ -12,7 +12,7 @@ namespace Nine.Imaging.Filtering
     /// Default image resizer, which resizes the image with the fast known method,
     /// without optimizing the quality of the image. Uses the nearest neighbor interpolation.
     /// </summary>
-    public sealed class NearestNeighborSampler : ParallelImageSampler
+    public class NearestNeighborSampler : ParallelImageSampler
     {
         protected override void Sample(ImageBase source, int width, int height, int startY, int endY, byte[] pixels)
         {

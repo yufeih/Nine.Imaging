@@ -11,7 +11,7 @@ namespace Nine.Imaging.Filtering
     /// <summary>
     /// Implements the sobel filter for detection of horizontal edges.
     /// </summary>
-    public sealed class SobelX : MatrixFilter
+    public class SobelX : MatrixFilter
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="SobelX"/> class.

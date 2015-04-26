@@ -13,7 +13,7 @@ namespace Nine.Imaging.Filtering
     /// <summary>
     /// Implements the prewitt filter for detection of horizontal edges.
     /// </summary>
-    public sealed class PrewittX : MatrixFilter
+    public class PrewittX : MatrixFilter
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="PrewittX"/> class.
