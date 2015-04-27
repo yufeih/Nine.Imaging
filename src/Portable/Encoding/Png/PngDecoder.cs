@@ -40,6 +40,8 @@ namespace Nine.Imaging.Encoding
     {
         #region Fields
 
+        public static int MaxChunkSize = 1024 * 1024;
+
         private static readonly Dictionary<int, PngColorTypeInformation> _colorTypes = new Dictionary<int, PngColorTypeInformation>();
         private Image _image;
         private Stream _stream;
@@ -198,7 +200,13 @@ namespace Nine.Imaging.Encoding
                         isEndChunckReached = true;
                     }
                 }
-                
+
+                if (_header.Width > ImageBase.MaxWidth || _header.Height > ImageBase.MaxHeight)
+                {
+                    throw new ArgumentOutOfRangeException(
+                        $"The input bitmap '{ _header.Width }x{ _header.Height }' is bigger then the max allowed size '{ ImageBase.MaxWidth }x{ ImageBase.MaxHeight }'");
+                }
+
                 byte[] pixels = new byte[_header.Width * _header.Height * 4];
 
                 PngColorTypeInformation colorTypeInformation = _colorTypes[_header.ColorType];
@@ -453,6 +461,11 @@ namespace Nine.Imaging.Encoding
 
         private void ReadChunkData(PngChunk chunk)
         {
+            if (chunk.Length > MaxChunkSize)
+            {
+                throw new ArgumentOutOfRangeException($"Png chunk size '{ chunk.Length }' excceeds the '{ MaxChunkSize }'");
+            }
+
             chunk.Data = new byte[chunk.Length];
 
             _stream.Read(chunk.Data, 0, chunk.Length);
