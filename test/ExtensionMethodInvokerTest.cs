@@ -21,6 +21,7 @@
         [InlineData("Foo=10&width=1&width=2&height=3&height=4", "w1h0w2h3w0h4")]
         [InlineData("width=1&width=2&height=3", "w2h3")]
         [InlineData("width=1&width=2&width=4&height=3", "w2h0w4h3")]
+        [InlineData("Point=1%2C2", "x1y2")]
         public void invoke_url_commands(string instruction, string expected)
         {
             Assert.Equal(this, invoker.Invoke(this, instruction));
@@ -66,6 +67,11 @@
         public static void Str(this ExtensionMethodInvokerTest self, StringComparison cmp)
         {
             self.Text.Append(cmp.ToString());
+        }
+
+        public static void Point(this ExtensionMethodInvokerTest self, Point value)
+        {
+            self.Text.Append($"x{ value.X }y{ value.Y }");
         }
     }
 }

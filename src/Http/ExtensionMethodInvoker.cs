@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net;
     using System.Reflection;
     using System.Runtime.CompilerServices;
 
@@ -38,7 +39,7 @@
         {
             var parts = part.Split('=');
             if (parts.Length <= 0) return default(KeyValuePair<string, string>);
-            return new KeyValuePair<string, string>(parts[0].Trim(), parts.Length > 1 ? parts[1] : null);
+            return new KeyValuePair<string, string>(parts[0].Trim(), parts.Length > 1 ? WebUtility.UrlDecode(parts[1]) : null);
         }
 
         public object Invoke(object target, IEnumerable<KeyValuePair<string, string>> parameters)
