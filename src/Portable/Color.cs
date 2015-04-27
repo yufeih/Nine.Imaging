@@ -1,8 +1,10 @@
 ﻿namespace Nine.Imaging
 {
     using System;
+    using System.Runtime.InteropServices;
     using System.Text;
 
+    [StructLayout(LayoutKind.Explicit)]
     public struct Color : IEquatable<Color>
     {
         public static readonly Color Empty = new Color();
@@ -15,91 +17,21 @@
         public static readonly Color Green = new Color(255, 0, 255, 0);
         public static readonly Color Blue = new Color(255, 0, 0, 255);
 
-        private uint _packedValue;
+        [FieldOffset(0)]
+        private int bgra;
 
-        public byte B
-        {
-            get
-            {
-                unchecked
-                {
-                    return (byte)(this._packedValue >> 24);
-                }
-            }
-            set
-            {
-                this._packedValue = (this._packedValue & 0x00ffffff) | ((uint)value << 24);
-            }
-        }
+        [FieldOffset(0)]
+        public byte B;
+        [FieldOffset(1)]
+        public byte G;
+        [FieldOffset(2)]
+        public byte R;
+        [FieldOffset(3)]
+        public byte A;
 
-        public byte G
-        {
-            get
-            {
-                unchecked
-                {
-                    return (byte)(this._packedValue >> 16);
-                }
-            }
-            set
-            {
-                this._packedValue = (this._packedValue & 0xff00ffff) | ((uint)value << 16);
-            }
-        }
-        
-        public byte R
-        {
-            get
-            {
-                unchecked
-                {
-                    return (byte)(this._packedValue >> 8);
-                }
-            }
-            set
-            {
-                this._packedValue = (this._packedValue & 0xffff00ff) | ((uint)value << 8);
-            }
-        }
-        
-        public byte A
-        {
-            get
-            {
-                unchecked
-                {
-                    return (byte)this._packedValue;
-                }
-            }
-            set
-            {
-                this._packedValue = (this._packedValue & 0xffffff00) | value;
-            }
-        }
-        
-        public Color(int bgra)
-        {
-            unchecked
-            {
-                _packedValue = (uint)bgra;
-            }
-        }
-
-        public Color(byte r, byte g, byte b)
-        {
-            unchecked
-            {
-                _packedValue = (uint)(b << 24 | g << 16 | r << 8 | 0xFF);
-            }
-        }
-
-        public Color(byte a, byte r, byte g, byte b)
-        {
-            unchecked
-            {
-                _packedValue = (uint)(b << 24 | g << 16 | r << 8 | a);
-            }
-        }
+        public Color(int bgra) : this() { this.bgra = bgra; }
+        public Color(byte r, byte g, byte b) : this() { R = r; G = g; B = b; A = 255; }
+        public Color(byte a, byte r, byte g, byte b) : this() { R = r; G = g; B = b; A = a; }
 
         public HsbColor ToHsb() => HsbColor.FromRgb(this);
         public static Color FromHsb(HsbColor hsb) => hsb.ToRgb();
@@ -172,17 +104,17 @@
 
         public static bool operator ==(Color a, Color b)
         {
-            return a._packedValue == b._packedValue;
+            return a.bgra == b.bgra;
         }
         
         public static bool operator !=(Color a, Color b)
         {
-            return a._packedValue != b._packedValue;
+            return a.bgra != b.bgra;
         }
         
         public override int GetHashCode()
         {
-            return this._packedValue.GetHashCode();
+            return this.bgra.GetHashCode();
         }
         
         public override bool Equals(object obj)
@@ -192,7 +124,7 @@
 
         public bool Equals(Color other)
         {
-            return _packedValue == other._packedValue;
+            return bgra == other.bgra;
         }
     }
 }
