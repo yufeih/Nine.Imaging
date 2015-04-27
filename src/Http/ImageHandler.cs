@@ -77,14 +77,14 @@
                 var ms = new MemoryStream();
                 image.SaveAsPng(ms);
                 ms.Seek(0, SeekOrigin.Begin);
-                return ms.GetBuffer();
+                return ms.ToArray();
             }
 
             var stream = result as Stream;
             if (stream != null)
             {
                 var ms = stream as MemoryStream;
-                if (ms != null) return ms.GetBuffer();
+                if (ms != null) return ms.ToArray();
 
                 var buffer = new byte[stream.Length];
                 stream.Read(buffer, 0, (int)stream.Length);

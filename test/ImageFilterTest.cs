@@ -32,7 +32,7 @@
 
         [Theory]
         [MemberData("Filters")]
-        public void decode_then_encode_image_from_stream_should_succeed(string name, IImageFilter filter)
+        public void filter_image(string name, IImageFilter filter)
         {
             var stream = File.OpenRead("TestImages/Backdrop.jpg");
             var image = new Image(stream);
