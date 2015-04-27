@@ -161,7 +161,7 @@ namespace Nine.Imaging.Encoding
                 {
                     if (colorMapSize > 255 * 4)
                     {
-                        throw new ImageFormatException($"Invalid colorMapSize '{ colorMapSize }'");
+                        throw new ImageFormatException($"Invalid bmp colormap size '{ colorMapSize }'");
                     }
 
                     palette = new byte[colorMapSize];

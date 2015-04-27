@@ -17,6 +17,8 @@ namespace Nine.Imaging.Encoding
     /// </summary>
     public class GifDecoder : IImageDecoder
     {
+        public static int MaxCommentLength = 1024 * 8;
+
         #region Constants
 
         private const byte ExtensionIntroducer = 0x21;
@@ -35,7 +37,7 @@ namespace Nine.Imaging.Encoding
 
         private Image _image;
         private Stream _stream;
-        private GifLogicalScreenDescriptor _logicalScreenDescriptor;
+        private GifLogicalScreenDescriptor _descriptor;
         private byte[] _globalColorTable;
         private byte[] _currentFrame;
         private GifGraphicsControlExtension _graphicsControl;
@@ -125,9 +127,9 @@ namespace Nine.Imaging.Encoding
 
             ReadLogicalScreenDescriptor();
 
-            if (_logicalScreenDescriptor.GlobalColorTableFlag == true)
+            if (_descriptor.GlobalColorTableFlag == true)
             {
-                _globalColorTable = new byte[_logicalScreenDescriptor.GlobalColorTableSize * 3];
+                _globalColorTable = new byte[_descriptor.GlobalColorTableSize * 3];
 
                 // Read the global color table from the stream
                 stream.Read(_globalColorTable, 0, _globalColorTable.Length);
@@ -210,12 +212,23 @@ namespace Nine.Imaging.Encoding
 
             byte packed = buffer[4];
 
-            _logicalScreenDescriptor = new GifLogicalScreenDescriptor();
-            _logicalScreenDescriptor.Width = BitConverter.ToInt16(buffer, 0);
-            _logicalScreenDescriptor.Height = BitConverter.ToInt16(buffer, 2);
-            _logicalScreenDescriptor.Background = buffer[5];
-            _logicalScreenDescriptor.GlobalColorTableFlag = ((packed & 0x80) >> 7) == 1;
-            _logicalScreenDescriptor.GlobalColorTableSize = 2 << (packed & 0x07);
+            _descriptor = new GifLogicalScreenDescriptor();
+            _descriptor.Width = BitConverter.ToInt16(buffer, 0);
+            _descriptor.Height = BitConverter.ToInt16(buffer, 2);
+            _descriptor.Background = buffer[5];
+            _descriptor.GlobalColorTableFlag = ((packed & 0x80) >> 7) == 1;
+            _descriptor.GlobalColorTableSize = 2 << (packed & 0x07);
+
+            if (_descriptor.GlobalColorTableSize > 255 * 4)
+            {
+                throw new ImageFormatException($"Invalid gif colormap size '{ _descriptor.GlobalColorTableSize }'");
+            }
+
+            if (_descriptor.Width > ImageBase.MaxWidth || _descriptor.Height > ImageBase.MaxHeight)
+            {
+                throw new ArgumentOutOfRangeException(
+                    $"The input bitmap '{ _descriptor.Width }x{ _descriptor.Height }' is bigger then the max allowed size '{ ImageBase.MaxWidth }x{ ImageBase.MaxHeight }'");
+            }
         }
 
         private void Skip(int length)
@@ -236,6 +249,11 @@ namespace Nine.Imaging.Encoding
 
             while ((flag = _stream.ReadByte()) != 0)
             {
+                if (flag > MaxCommentLength)
+                {
+                    throw new ImageFormatException($"Gif comment length '{ flag }' excceeds max '{ MaxCommentLength }'");
+                }
+
                 byte[] buffer = new byte[flag]; 
                 
                 _stream.Read(buffer, 0, flag);
@@ -287,8 +305,8 @@ namespace Nine.Imaging.Encoding
 
         private void ReadFrameColors(byte[] indices, byte[] colorTable, GifImageDescriptor descriptor)
         {
-            int imageWidth  = _logicalScreenDescriptor.Width;
-            int imageHeight = _logicalScreenDescriptor.Height;
+            int imageWidth  = _descriptor.Width;
+            int imageHeight = _descriptor.Height;
 
             if (_currentFrame == null)
             {
