@@ -16,6 +16,9 @@
         [InlineData("testimages/car.bmp?height=100")]
         [InlineData("testimages/car.bmp?width=100&height=100")]
 
+        [InlineData("testimages/portrait.png?flipx")]
+        [InlineData("testimages/portrait.png?tint=CCC&hsb=true")]
+
         [InlineData("testimages/car.bmp?jpg")]
         [InlineData("testimages/car.bmp?width=100&height=100&jpg=20")]
 

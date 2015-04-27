@@ -19,21 +19,8 @@ namespace Nine.Imaging.Encoding
     /// </summary>
     public class PngEncoder : IImageEncoder
     {
-        #region Constants
-
         private const int MaxBlockSize = 0xFFFF;
-
-        #endregion
-
-        #region Fields
-
-        private Stream _stream;
-        private ImageBase _image;
-
-        #endregion
-
-        #region IImageEncoder Members
-
+        
         /// <summary>
         /// Gets or sets a value indicating whether this encoder
         /// will write the image uncompressed the stream.
@@ -116,10 +103,6 @@ namespace Nine.Imaging.Encoding
         {
             Guard.NotNull(image, "image");
             Guard.NotNull(stream, "stream");
-            
-            _image = image;
-
-            _stream = stream;
 
             // Write the png header.
             stream.Write(
@@ -138,27 +121,27 @@ namespace Nine.Imaging.Encoding
             header.CompressionMethod = 0;
             header.InterlaceMethod = 0;
 
-            WriteHeaderChunk(header);
+            WriteHeaderChunk(stream, header);
 
-            WritePhysicsChunk();
-            WriteGammaChunk();
+            WritePhysicsChunk(stream, image);
+            WriteGammaChunk(stream);
 
             if (IsWritingUncompressed)
             {
-                WriteDataChunksFast();
+                WriteDataChunksFast(stream, image);
             }
             else
             {
-                WriteDataChunks();
+                WriteDataChunks(stream, image);
             }
-            WriteEndChunk();
+            WriteEndChunk(stream);
 
             stream.Flush();
         }
 
-        private void WritePhysicsChunk()
+        private void WritePhysicsChunk(Stream stream, ImageBase imageBase)
         {
-            var image = _image as Image;
+            var image = imageBase as Image;
             if (image != null && image.DensityX > 0 && image.DensityY > 0)
             {
                 int dpmX = (int)Math.Round(image.DensityX * 39.3700787d);
@@ -171,11 +154,11 @@ namespace Nine.Imaging.Encoding
 
                 chunkData[8] = 1;
 
-                WriteChunk(PngChunkTypes.Physical, chunkData);
+                WriteChunk(stream, PngChunkTypes.Physical, chunkData);
             }
         }
 
-        private void WriteGammaChunk()
+        private void WriteGammaChunk(Stream stream)
         {
             if (IsWritingGamma)
             {
@@ -186,26 +169,26 @@ namespace Nine.Imaging.Encoding
                 byte[] size = BitConverter.GetBytes(gammeValue);
                 fourByteData[0] = size[3]; fourByteData[1] = size[2]; fourByteData[2] = size[1]; fourByteData[3] = size[0];
 
-                WriteChunk(PngChunkTypes.Gamma, fourByteData);
+                WriteChunk(stream, PngChunkTypes.Gamma, fourByteData);
             }
         }
 
-        private void WriteDataChunksFast()
+        private void WriteDataChunksFast(Stream stream, ImageBase image)
         {
-            byte[] pixels = _image.Pixels;
+            byte[] pixels = image.Pixels;
 
             // Convert the pixel array to a new array for adding
             // the filter byte.
             // --------------------------------------------------
-            byte[] data = new byte[_image.PixelWidth * _image.PixelHeight * 4 + _image.PixelHeight];
+            byte[] data = new byte[image.PixelWidth * image.PixelHeight * 4 + image.PixelHeight];
 
-            int rowLength = _image.PixelWidth * 4 + 1;
+            int rowLength = image.PixelWidth * 4 + 1;
 
-            for (int y = 0; y < _image.PixelHeight; y++)
+            for (int y = 0; y < image.PixelHeight; y++)
             {
                 data[y * rowLength] = 0;
 
-                Array.Copy(pixels, y * _image.PixelWidth * 4, data, y * rowLength + 1, _image.PixelWidth * 4);
+                Array.Copy(pixels, y * image.PixelWidth * 4, data, y * rowLength + 1, image.PixelWidth * 4);
             }
             // --------------------------------------------------
 
@@ -263,19 +246,19 @@ namespace Nine.Imaging.Encoding
                 byte[] zipData = new byte[tempStream.Length];
                 tempStream.Read(zipData, 0, (int)tempStream.Length);
 
-                WriteChunk(PngChunkTypes.Data, zipData);
+                WriteChunk(stream, PngChunkTypes.Data, zipData);
             }
         }
 
-        private void WriteDataChunks()
+        private void WriteDataChunks(Stream stream, ImageBase image)
         {
-            byte[] pixels = _image.Pixels;
+            byte[] pixels = image.Pixels;
 
-            byte[] data = new byte[_image.PixelWidth * _image.PixelHeight * 4 + _image.PixelHeight];
+            byte[] data = new byte[image.PixelWidth * image.PixelHeight * 4 + image.PixelHeight];
 
-            int rowLength = _image.PixelWidth * 4 + 1;
+            int rowLength = image.PixelWidth * 4 + 1;
 
-            for (int y = 0; y < _image.PixelHeight; y++)
+            for (int y = 0; y < image.PixelHeight; y++)
             {
                 byte compression = 0;
                 if (y > 0)
@@ -284,13 +267,13 @@ namespace Nine.Imaging.Encoding
                 }
                 data[y * rowLength] = compression;
 
-                for (int x = 0; x < _image.PixelWidth; x++)
+                for (int x = 0; x < image.PixelWidth; x++)
                 {
                     // Calculate the offset for the new array.
                     int dataOffset = y * rowLength + x * 4 + 1;
                     
                     // Calculate the offset for the original pixel array.
-                    int pixelOffset = (y * _image.PixelWidth + x) * 4;
+                    int pixelOffset = (y * image.PixelWidth + x) * 4;
 
                     data[dataOffset + 0] = pixels[pixelOffset + 2];
                     data[dataOffset + 1] = pixels[pixelOffset + 1];
@@ -299,7 +282,7 @@ namespace Nine.Imaging.Encoding
 
                     if (y > 0)
                     {
-                        int lastOffset = ((y - 1) * _image.PixelWidth + x) * 4;
+                        int lastOffset = ((y - 1) * image.PixelWidth + x) * 4;
 
                         data[dataOffset + 0] -= pixels[lastOffset + 2];
                         data[dataOffset + 1] -= pixels[lastOffset + 1];
@@ -351,16 +334,16 @@ namespace Nine.Imaging.Encoding
                     length = MaxBlockSize;
                 }
 
-                WriteChunk(PngChunkTypes.Data, buffer, i * MaxBlockSize, length);
+                WriteChunk(stream, PngChunkTypes.Data, buffer, i * MaxBlockSize, length);
             }
         }
 
-        private void WriteEndChunk()
+        private void WriteEndChunk(Stream stream)
         {
-            WriteChunk(PngChunkTypes.End, null);
+            WriteChunk(stream, PngChunkTypes.End, null);
         }
 
-        private void WriteHeaderChunk(PngHeader header)
+        private void WriteHeaderChunk(Stream stream, PngHeader header)
         {
             byte[] chunkData = new byte[13];
 
@@ -373,17 +356,17 @@ namespace Nine.Imaging.Encoding
             chunkData[11] = header.FilterMethod;
             chunkData[12] = header.InterlaceMethod;
 
-            WriteChunk(PngChunkTypes.Header, chunkData);
+            WriteChunk(stream, PngChunkTypes.Header, chunkData);
         }
 
-        private void WriteChunk(string type, byte[] data)
+        private void WriteChunk(Stream stream, string type, byte[] data)
         {
-            WriteChunk(type, data, 0, data != null ? data.Length : 0);
+            WriteChunk(stream, type, data, 0, data != null ? data.Length : 0);
         }
 
-        private void WriteChunk(string type, byte[] data, int offset, int length)
+        private void WriteChunk(Stream stream, string type, byte[] data, int offset, int length)
         {
-            WriteInteger(_stream, length);
+            WriteInteger(stream, length);
 
             byte[] typeArray = new byte[4];
             typeArray[0] = (byte)type[0];
@@ -391,11 +374,11 @@ namespace Nine.Imaging.Encoding
             typeArray[2] = (byte)type[2];
             typeArray[3] = (byte)type[3];
 
-            _stream.Write(typeArray, 0, 4);
+            stream.Write(typeArray, 0, 4);
 
             if (data != null)
             {
-                _stream.Write(data, offset, length);
+                stream.Write(data, offset, length);
             }
 
             Crc32 crc32 = new Crc32();
@@ -406,7 +389,7 @@ namespace Nine.Imaging.Encoding
                 crc32.Update(data, offset, length);
             }
 
-            WriteInteger(_stream, (uint)crc32.Value);
+            WriteInteger(stream, (uint)crc32.Value);
         }
 
         private static void WriteInteger(byte[] data, int offset, int value)
@@ -434,7 +417,5 @@ namespace Nine.Imaging.Encoding
 
             stream.Write(buffer, 0, 4);
         }
-
-        #endregion
     }
 }

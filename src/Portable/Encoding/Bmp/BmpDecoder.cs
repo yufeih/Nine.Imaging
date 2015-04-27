@@ -1,15 +1,6 @@
-﻿// ===============================================================================
-// BmpDecoder.cs
-// .NET Image Tools
-// ===============================================================================
-// Copyright (c) .NET Image Tools Development Group. 
-// All rights reserved.
-// ===============================================================================
-
-namespace Nine.Imaging.Encoding
+﻿namespace Nine.Imaging.Encoding
 {
     using System;
-    using System.Globalization;
     using System.IO;
     using Nine.Imaging.Bmp;
 
@@ -31,81 +22,17 @@ namespace Nine.Imaging.Encoding
     /// </remarks>
     public class BmpDecoder : IImageDecoder
     {
-        #region Constants
+        public int HeaderSize => 2;
 
-        /// <summary>
-        /// The mask for the red part of the color for 16 bit rgb bitmaps.
-        /// </summary>
-        private const int Rgb16RMask = 0x00007C00;
-        /// <summary>
-        /// The mask for the green part of the color for 16 bit rgb bitmaps.
-        /// </summary>
-        private const int Rgb16GMask = 0x000003E0;
-        /// <summary>
-        /// The mask for the blue part of the color for 16 bit rgb bitmaps.
-        /// </summary>
-        private const int Rgb16BMask = 0x0000001F;
-
-        #endregion
-
-        #region Fields
-
-        private Stream _stream;
-        private BmpFileHeader _fileHeader;
-        private BmpInfoHeader _infoHeader;
-
-        #endregion
-
-        #region IImageDecoder Members
-
-        /// <summary>
-        /// Gets the size of the header for this image type.
-        /// </summary>
-        /// <value>The size of the header.</value>
-        public int HeaderSize
-        {
-            get { return 2; }
-        }
-
-        /// <summary>
-        /// Indicates if the image decoder supports the specified
-        /// file extension.
-        /// </summary>
-        /// <param name="extension">The file extension.</param>
-        /// <returns>
-        /// 	<c>true</c>, if the decoder supports the specified
-        /// extensions; otherwise <c>false</c>.
-        /// </returns>
-        /// <remarks>For example, the <see cref="Nine.Imaging.Bmp.BmpDecoder"/>
-        /// supports BMP or DIP as file extension.</remarks>
-        /// <exception cref="ArgumentNullException"><paramref name="extension"/>
-        /// is null (Nothing in Visual Basic).</exception>
-        /// <exception cref="ArgumentException"><paramref name="extension"/> is a string
-        /// of length zero or contains only blanks.</exception>
         public bool IsSupportedFileExtension(string extension)
         {
-            Guard.NotNullOrEmpty(extension, "extension");
-
             if (extension.StartsWith(".")) extension = extension.Substring(1);
             return extension.Equals("BMP", StringComparison.OrdinalIgnoreCase) ||
                    extension.Equals("DIP", StringComparison.OrdinalIgnoreCase);
         }
-
-        /// <summary>
-        /// Indicates if the image decoder supports the specified
-        /// file header.
-        /// </summary>
-        /// <param name="header">The file header.</param>
-        /// <returns>
-        /// 	<c>true</c>, if the decoder supports the specified
-        /// file header; otherwise <c>false</c>.
-        /// </returns>
-        /// <exception cref="ArgumentNullException"><paramref name="header"/>
-        /// is null (Nothing in Visual Basic).</exception>
+        
         public bool IsSupportedFileFormat(byte[] header)
         {
-            Guard.NotNull(header, "header");
-
             bool isBmp = false;
             if (header.Length >= 2)
             {
@@ -117,323 +44,358 @@ namespace Nine.Imaging.Encoding
             return isBmp;
         }
 
-        /// <summary>
-        /// Decodes the image from the specified _stream and sets
-        /// the data to image.
-        /// </summary>
-        /// <param name="image">The image, where the data should be set to.
-        /// Cannot be null (Nothing in Visual Basic).</param>
-        /// <param name="stream">The _stream, where the image should be
-        /// decoded from. Cannot be null (Nothing in Visual Basic).</param>
-        /// <exception cref="ArgumentNullException">
-        /// 	<para><paramref name="image"/> is null (Nothing in Visual Basic).</para>
-        /// 	<para>- or -</para>
-        /// 	<para><paramref name="stream"/> is null (Nothing in Visual Basic).</para>
-        /// </exception>
         public void Decode(Image image, Stream stream)
         {
-            _stream = stream;
-
-            try
-            {
-                ReadFileHeader();
-                ReadInfoHeader();
-
-                int colorMapSize = -1;
-
-                if (_infoHeader.ClrUsed == 0)
-                {
-                    if (_infoHeader.BitsPerPixel == 1 ||
-                        _infoHeader.BitsPerPixel == 4 ||
-                        _infoHeader.BitsPerPixel == 8)
-                    {
-                        colorMapSize = (int)Math.Pow(2, _infoHeader.BitsPerPixel) * 4;
-                    }
-                }
-                else
-                {
-                    colorMapSize = _infoHeader.ClrUsed * 4;
-                }
-
-                byte[] palette = null;
-
-                if (colorMapSize > 0)
-                {
-                    if (colorMapSize > 255 * 4)
-                    {
-                        throw new ImageFormatException($"Invalid bmp colormap size '{ colorMapSize }'");
-                    }
-
-                    palette = new byte[colorMapSize];
-
-                    _stream.Read(palette, 0, colorMapSize);
-                }
-
-                if (_infoHeader.Width > ImageBase.MaxWidth || _infoHeader.Height > ImageBase.MaxHeight)
-                {
-                    throw new ArgumentOutOfRangeException(
-                        $"The input bitmap '{ _infoHeader.Width }x{ _infoHeader.Height }' is bigger then the max allowed size '{ ImageBase.MaxWidth }x{ ImageBase.MaxHeight }'");
-                }
-
-                byte[] imageData = new byte[_infoHeader.Width * _infoHeader.Height * 4];
-
-                switch (_infoHeader.Compression)
-                {
-                    case BmpCompression.RGB:
-                        if (_infoHeader.HeaderSize != 40)
-                        {
-                            throw new ImageFormatException(
-                                $"Header Size value '{_infoHeader.HeaderSize}' is not valid.");
-                        }
-
-                        if (_infoHeader.BitsPerPixel == 32)
-                        {
-                            ReadRgb32(imageData, _infoHeader.Width, _infoHeader.Height);
-                        }
-                        else if (_infoHeader.BitsPerPixel == 24)
-                        {
-                            ReadRgb24(imageData, _infoHeader.Width, _infoHeader.Height);
-                        }
-                        else if (_infoHeader.BitsPerPixel == 16)
-                        {
-                            ReadRgb16(imageData, _infoHeader.Width, _infoHeader.Height);
-                        }
-                        else if (_infoHeader.BitsPerPixel <= 8)
-                        {
-                            ReadRgbPalette(imageData, palette,
-                                _infoHeader.Width,
-                                _infoHeader.Height,
-                                _infoHeader.BitsPerPixel);
-                        }
-                        break;
-                    default:
-                        throw new NotSupportedException("Does not support this kind of bitmap files.");
-                }
-
-                image.SetPixels(_infoHeader.Width, _infoHeader.Height, imageData);
-            }
-            catch (IndexOutOfRangeException e)
-            {
-                throw new ImageFormatException("Bitmap does not have a valid format.", e);
-            }
+            new BmpDecoderCore().Decode(image, stream);
         }
 
-        private void ReadRgbPalette(byte[] imageData, byte[] colors, int width, int height, int bits)
+        class BmpDecoderCore
         {
-            // Pixels per byte (bits per pixel)
-            int ppb = 8 / bits;
+            #region Constants
 
-            int arrayWidth = (width + ppb - 1) / ppb;
+            /// <summary>
+            /// The mask for the red part of the color for 16 bit rgb bitmaps.
+            /// </summary>
+            private const int Rgb16RMask = 0x00007C00;
+            /// <summary>
+            /// The mask for the green part of the color for 16 bit rgb bitmaps.
+            /// </summary>
+            private const int Rgb16GMask = 0x000003E0;
+            /// <summary>
+            /// The mask for the blue part of the color for 16 bit rgb bitmaps.
+            /// </summary>
+            private const int Rgb16BMask = 0x0000001F;
 
-            // Bit mask
-            int mask = (0xFF >> (8 - bits));
+            #endregion
 
-            byte[] data = new byte[(arrayWidth * height)];
+            #region Fields
 
-            _stream.Read(data, 0, data.Length);
+            private Stream _stream;
+            private BmpFileHeader _fileHeader;
+            private BmpInfoHeader _infoHeader;
 
-            // Rows are aligned on 4 byte boundaries
-            int alignment = arrayWidth % 4;
-            if (alignment != 0)
+            #endregion
+
+            #region IImageDecoder Members
+
+            /// <summary>
+            /// Decodes the image from the specified _stream and sets
+            /// the data to image.
+            /// </summary>
+            /// <param name="image">The image, where the data should be set to.
+            /// Cannot be null (Nothing in Visual Basic).</param>
+            /// <param name="stream">The _stream, where the image should be
+            /// decoded from. Cannot be null (Nothing in Visual Basic).</param>
+            /// <exception cref="ArgumentNullException">
+            /// 	<para><paramref name="image"/> is null (Nothing in Visual Basic).</para>
+            /// 	<para>- or -</para>
+            /// 	<para><paramref name="stream"/> is null (Nothing in Visual Basic).</para>
+            /// </exception>
+            public void Decode(Image image, Stream stream)
             {
-                alignment = 4 - alignment;
+                _stream = stream;
+
+                try
+                {
+                    ReadFileHeader();
+                    ReadInfoHeader();
+
+                    int colorMapSize = -1;
+
+                    if (_infoHeader.ClrUsed == 0)
+                    {
+                        if (_infoHeader.BitsPerPixel == 1 ||
+                            _infoHeader.BitsPerPixel == 4 ||
+                            _infoHeader.BitsPerPixel == 8)
+                        {
+                            colorMapSize = (int)Math.Pow(2, _infoHeader.BitsPerPixel) * 4;
+                        }
+                    }
+                    else
+                    {
+                        colorMapSize = _infoHeader.ClrUsed * 4;
+                    }
+
+                    byte[] palette = null;
+
+                    if (colorMapSize > 0)
+                    {
+                        if (colorMapSize > 255 * 4)
+                        {
+                            throw new ImageFormatException($"Invalid bmp colormap size '{ colorMapSize }'");
+                        }
+
+                        palette = new byte[colorMapSize];
+
+                        _stream.Read(palette, 0, colorMapSize);
+                    }
+
+                    if (_infoHeader.Width > ImageBase.MaxWidth || _infoHeader.Height > ImageBase.MaxHeight)
+                    {
+                        throw new ArgumentOutOfRangeException(
+                            $"The input bitmap '{ _infoHeader.Width }x{ _infoHeader.Height }' is bigger then the max allowed size '{ ImageBase.MaxWidth }x{ ImageBase.MaxHeight }'");
+                    }
+
+                    byte[] imageData = new byte[_infoHeader.Width * _infoHeader.Height * 4];
+
+                    switch (_infoHeader.Compression)
+                    {
+                        case BmpCompression.RGB:
+                            if (_infoHeader.HeaderSize != 40)
+                            {
+                                throw new ImageFormatException(
+                                    $"Header Size value '{_infoHeader.HeaderSize}' is not valid.");
+                            }
+
+                            if (_infoHeader.BitsPerPixel == 32)
+                            {
+                                ReadRgb32(imageData, _infoHeader.Width, _infoHeader.Height);
+                            }
+                            else if (_infoHeader.BitsPerPixel == 24)
+                            {
+                                ReadRgb24(imageData, _infoHeader.Width, _infoHeader.Height);
+                            }
+                            else if (_infoHeader.BitsPerPixel == 16)
+                            {
+                                ReadRgb16(imageData, _infoHeader.Width, _infoHeader.Height);
+                            }
+                            else if (_infoHeader.BitsPerPixel <= 8)
+                            {
+                                ReadRgbPalette(imageData, palette,
+                                    _infoHeader.Width,
+                                    _infoHeader.Height,
+                                    _infoHeader.BitsPerPixel);
+                            }
+                            break;
+                        default:
+                            throw new NotSupportedException("Does not support this kind of bitmap files.");
+                    }
+
+                    image.SetPixels(_infoHeader.Width, _infoHeader.Height, imageData);
+                }
+                catch (IndexOutOfRangeException e)
+                {
+                    throw new ImageFormatException("Bitmap does not have a valid format.", e);
+                }
             }
 
-            int offset, row, rowOffset, colOffset, arrayOffset;
-
-            for (int y = 0; y < height; y++)
+            private void ReadRgbPalette(byte[] imageData, byte[] colors, int width, int height, int bits)
             {
-                rowOffset = y * (arrayWidth + alignment);
+                // Pixels per byte (bits per pixel)
+                int ppb = 8 / bits;
 
-                for (int x = 0; x < arrayWidth; x++)
+                int arrayWidth = (width + ppb - 1) / ppb;
+
+                // Bit mask
+                int mask = (0xFF >> (8 - bits));
+
+                byte[] data = new byte[(arrayWidth * height)];
+
+                _stream.Read(data, 0, data.Length);
+
+                // Rows are aligned on 4 byte boundaries
+                int alignment = arrayWidth % 4;
+                if (alignment != 0)
                 {
-                    offset = rowOffset + x;
+                    alignment = 4 - alignment;
+                }
+
+                int offset, row, rowOffset, colOffset, arrayOffset;
+
+                for (int y = 0; y < height; y++)
+                {
+                    rowOffset = y * (arrayWidth + alignment);
+
+                    for (int x = 0; x < arrayWidth; x++)
+                    {
+                        offset = rowOffset + x;
+
+                        // Revert the y value, because bitmaps are saved from down to top
+                        row = Invert(y, height);
+
+                        colOffset = x * ppb;
+
+                        for (int shift = 0; shift < ppb && (colOffset + shift) < width; shift++)
+                        {
+                            int colorIndex = ((data[offset]) >> (8 - bits - (shift * bits))) & mask;
+
+                            arrayOffset = (row * width + (colOffset + shift)) * 4;
+                            imageData[arrayOffset + 0] = colors[colorIndex * 4 + 0];
+                            imageData[arrayOffset + 1] = colors[colorIndex * 4 + 1];
+                            imageData[arrayOffset + 2] = colors[colorIndex * 4 + 2];
+
+                            imageData[arrayOffset + 3] = (byte)255;
+
+                        }
+                    }
+                }
+            }
+
+            private void ReadRgb16(byte[] imageData, int width, int height)
+            {
+                byte r, g, b;
+
+                int scaleR = 256 / 32;
+                int scaleG = 256 / 64;
+
+                int alignment = 0;
+                byte[] data = GetImageArray(width, height, 2, ref alignment);
+
+                int offset, row, rowOffset, arrayOffset;
+
+                for (int y = 0; y < height; y++)
+                {
+                    rowOffset = y * (width * 2 + alignment);
 
                     // Revert the y value, because bitmaps are saved from down to top
                     row = Invert(y, height);
 
-                    colOffset = x * ppb;
-
-                    for (int shift = 0; shift < ppb && (colOffset + shift) < width; shift++)
+                    for (int x = 0; x < width; x++)
                     {
-                        int colorIndex = ((data[offset]) >> (8 - bits - (shift * bits))) & mask;
+                        offset = rowOffset + x * 2;
 
-                        arrayOffset = (row * width + (colOffset + shift)) * 4;
-                        imageData[arrayOffset + 0] = colors[colorIndex * 4 + 0];
-                        imageData[arrayOffset + 1] = colors[colorIndex * 4 + 1];
-                        imageData[arrayOffset + 2] = colors[colorIndex * 4 + 2];
+                        short temp = BitConverter.ToInt16(data, offset);
+
+                        r = (byte)(((temp & Rgb16RMask) >> 11) * scaleR);
+                        g = (byte)(((temp & Rgb16GMask) >> 5) * scaleG);
+                        b = (byte)(((temp & Rgb16BMask)) * scaleR);
+
+                        arrayOffset = (row * width + x) * 4;
+                        imageData[arrayOffset + 0] = b;
+                        imageData[arrayOffset + 1] = g;
+                        imageData[arrayOffset + 2] = r;
 
                         imageData[arrayOffset + 3] = (byte)255;
-
                     }
                 }
             }
-        }
 
-        private void ReadRgb16(byte[] imageData, int width, int height)
-        {
-            byte r, g, b;
-
-            int scaleR = 256 / 32;
-            int scaleG = 256 / 64;
-
-            int alignment = 0;
-            byte[] data = GetImageArray(width, height, 2, ref alignment);
-
-            int offset, row, rowOffset, arrayOffset;
-
-            for (int y = 0; y < height; y++)
+            private void ReadRgb24(byte[] imageData, int width, int height)
             {
-                rowOffset = y * (width * 2 + alignment);
+                int alignment = 0;
+                byte[] data = GetImageArray(width, height, 3, ref alignment);
 
-                // Revert the y value, because bitmaps are saved from down to top
-                row = Invert(y, height);
+                int offset, row, rowOffset, arrayOffset;
 
-                for (int x = 0; x < width; x++)
+                for (int y = 0; y < height; y++)
                 {
-                    offset = rowOffset + x * 2;
+                    rowOffset = y * (width * 3 + alignment);
 
-                    short temp = BitConverter.ToInt16(data, offset);
+                    // Revert the y value, because bitmaps are saved from down to top
+                    row = Invert(y, height);
 
-                    r = (byte)(((temp & Rgb16RMask) >> 11) * scaleR);
-                    g = (byte)(((temp & Rgb16GMask) >> 5) * scaleG);
-                    b = (byte)(((temp & Rgb16BMask)) * scaleR);
+                    for (int x = 0; x < width; x++)
+                    {
+                        offset = rowOffset + x * 3;
 
-                    arrayOffset = (row * width + x) * 4;
-                    imageData[arrayOffset + 0] = b;
-                    imageData[arrayOffset + 1] = g;
-                    imageData[arrayOffset + 2] = r;
+                        arrayOffset = (row * width + x) * 4;
+                        imageData[arrayOffset + 0] = data[offset + 0];
+                        imageData[arrayOffset + 1] = data[offset + 1];
+                        imageData[arrayOffset + 2] = data[offset + 2];
 
-                    imageData[arrayOffset + 3] = (byte)255;
+                        imageData[arrayOffset + 3] = (byte)255;
+                    }
                 }
             }
-        }
 
-        private void ReadRgb24(byte[] imageData, int width, int height)
-        {
-            int alignment = 0;
-            byte[] data = GetImageArray(width, height, 3, ref alignment);
-
-            int offset, row, rowOffset, arrayOffset;
-
-            for (int y = 0; y < height; y++)
+            private void ReadRgb32(byte[] imageData, int width, int height)
             {
-                rowOffset = y * (width * 3 + alignment);
+                int alignment = 0;
+                byte[] data = GetImageArray(width, height, 4, ref alignment);
 
-                // Revert the y value, because bitmaps are saved from down to top
-                row = Invert(y, height);
+                int offset, row, rowOffset, arrayOffset;
 
-                for (int x = 0; x < width; x++)
+                for (int y = 0; y < height; y++)
                 {
-                    offset = rowOffset + x * 3;
+                    rowOffset = y * (width * 4 + alignment);
 
-                    arrayOffset = (row * width + x) * 4;
-                    imageData[arrayOffset + 0] = data[offset + 0];
-                    imageData[arrayOffset + 1] = data[offset + 1];
-                    imageData[arrayOffset + 2] = data[offset + 2];
+                    // Revert the y value, because bitmaps are saved from down to top
+                    row = Invert(y, height);
 
-                    imageData[arrayOffset + 3] = (byte)255;
+                    for (int x = 0; x < width; x++)
+                    {
+                        offset = rowOffset + x * 4;
+
+                        arrayOffset = (row * width + x) * 4;
+                        imageData[arrayOffset + 0] = data[offset + 0];
+                        imageData[arrayOffset + 1] = data[offset + 1];
+                        imageData[arrayOffset + 2] = data[offset + 2];
+
+                        imageData[arrayOffset + 3] = (byte)255;
+                    }
                 }
             }
-        }
 
-        private void ReadRgb32(byte[] imageData, int width, int height)
-        {
-            int alignment = 0;
-            byte[] data = GetImageArray(width, height, 4, ref alignment);
-
-            int offset, row, rowOffset, arrayOffset;
-
-            for (int y = 0; y < height; y++)
+            private static int Invert(int y, int height)
             {
-                rowOffset = y * (width * 4 + alignment);
+                int row = 0;
 
-                // Revert the y value, because bitmaps are saved from down to top
-                row = Invert(y, height);
-
-                for (int x = 0; x < width; x++)
+                if (height > 0)
                 {
-                    offset = rowOffset + x * 4;
-
-                    arrayOffset = (row * width + x) * 4;
-                    imageData[arrayOffset + 0] = data[offset + 0];
-                    imageData[arrayOffset + 1] = data[offset + 1];
-                    imageData[arrayOffset + 2] = data[offset + 2];
-
-                    imageData[arrayOffset + 3] = (byte)255;
+                    row = (height - y - 1);
                 }
+                else
+                {
+                    row = y;
+                }
+
+                return row;
             }
-        }
 
-        private static int Invert(int y, int height)
-        {
-            int row = 0;
-
-            if (height > 0)
+            private byte[] GetImageArray(int width, int height, int bytes, ref int alignment)
             {
-                row = (height - y - 1);
+                int dataWidth = width;
+
+                alignment = (width * bytes) % 4;
+
+                if (alignment != 0)
+                {
+                    alignment = 4 - alignment;
+                }
+
+                int size = (dataWidth * bytes + alignment) * height;
+
+                byte[] data = new byte[size];
+
+                _stream.Read(data, 0, size);
+
+                return data;
             }
-            else
+
+            private void ReadInfoHeader()
             {
-                row = y;
+                byte[] data = new byte[BmpInfoHeader.Size];
+
+                _stream.Read(data, 0, BmpInfoHeader.Size);
+
+                _infoHeader = new BmpInfoHeader();
+                _infoHeader.HeaderSize = BitConverter.ToInt32(data, 0);
+                _infoHeader.Width = BitConverter.ToInt32(data, 4);
+                _infoHeader.Height = BitConverter.ToInt32(data, 8);
+                _infoHeader.Planes = BitConverter.ToInt16(data, 12);
+                _infoHeader.BitsPerPixel = BitConverter.ToInt16(data, 14);
+                _infoHeader.ImageSize = BitConverter.ToInt32(data, 20);
+                _infoHeader.XPelsPerMeter = BitConverter.ToInt32(data, 24);
+                _infoHeader.YPelsPerMeter = BitConverter.ToInt32(data, 28);
+                _infoHeader.ClrUsed = BitConverter.ToInt32(data, 32);
+                _infoHeader.ClrImportant = BitConverter.ToInt32(data, 36);
+                _infoHeader.Compression = (BmpCompression)BitConverter.ToInt32(data, 16);
             }
 
-            return row;
-        }
-
-        private byte[] GetImageArray(int width, int height, int bytes, ref int alignment)
-        {
-            int dataWidth = width;
-
-            alignment = (width * bytes) % 4;
-
-            if (alignment != 0)
+            private void ReadFileHeader()
             {
-                alignment = 4 - alignment;
+                byte[] data = new byte[BmpFileHeader.Size];
+
+                _stream.Read(data, 0, BmpFileHeader.Size);
+
+                _fileHeader = new BmpFileHeader();
+                _fileHeader.Type = BitConverter.ToInt16(data, 0);
+                _fileHeader.FileSize = BitConverter.ToInt32(data, 2);
+                _fileHeader.Reserved = BitConverter.ToInt32(data, 6);
+                _fileHeader.Offset = BitConverter.ToInt32(data, 10);
             }
 
-            int size = (dataWidth * bytes + alignment) * height;
-
-            byte[] data = new byte[size];
-
-            _stream.Read(data, 0, size);
-
-            return data;
+            #endregion
         }
-
-        private void ReadInfoHeader()
-        {
-            byte[] data = new byte[BmpInfoHeader.Size];
-
-            _stream.Read(data, 0, BmpInfoHeader.Size);
-
-            _infoHeader = new BmpInfoHeader();
-            _infoHeader.HeaderSize = BitConverter.ToInt32(data, 0);
-            _infoHeader.Width = BitConverter.ToInt32(data, 4);
-            _infoHeader.Height = BitConverter.ToInt32(data, 8);
-            _infoHeader.Planes = BitConverter.ToInt16(data, 12);
-            _infoHeader.BitsPerPixel = BitConverter.ToInt16(data, 14);
-            _infoHeader.ImageSize = BitConverter.ToInt32(data, 20);
-            _infoHeader.XPelsPerMeter = BitConverter.ToInt32(data, 24);
-            _infoHeader.YPelsPerMeter = BitConverter.ToInt32(data, 28);
-            _infoHeader.ClrUsed = BitConverter.ToInt32(data, 32);
-            _infoHeader.ClrImportant = BitConverter.ToInt32(data, 36);
-            _infoHeader.Compression = (BmpCompression)BitConverter.ToInt32(data, 16);
-        }
-
-        private void ReadFileHeader()
-        {
-            byte[] data = new byte[BmpFileHeader.Size];
-
-            _stream.Read(data, 0, BmpFileHeader.Size);
-
-            _fileHeader = new BmpFileHeader();
-            _fileHeader.Type = BitConverter.ToInt16(data, 0);
-            _fileHeader.FileSize = BitConverter.ToInt32(data, 2);
-            _fileHeader.Reserved = BitConverter.ToInt32(data, 6);
-            _fileHeader.Offset = BitConverter.ToInt32(data, 10);
-        }
-
-        #endregion
     }
 }
