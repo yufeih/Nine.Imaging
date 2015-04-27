@@ -52,6 +52,15 @@
         {
             if (mode != StretchMode.Fill) throw new NotImplementedException();
 
+            if (width <= 0) throw new ArgumentOutOfRangeException(nameof(width));
+            if (height <= 0) throw new ArgumentOutOfRangeException(nameof(height));
+
+            if (width > ImageBase.MaxWidth || width > ImageBase.MaxHeight)
+            {
+                throw new ArgumentOutOfRangeException(
+                    $"Target size '{ width }x{ width }' is bigger then the max allowed size '{ ImageBase.MaxWidth }x{ ImageBase.MaxHeight }'");
+            }
+
             sampler = sampler ?? defaultSampler;
             return PerformAction(source, false, (sourceImage, targetImage) => sampler.Sample(sourceImage, targetImage, width, height));
         }
