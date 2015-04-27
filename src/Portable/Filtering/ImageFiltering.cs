@@ -1,6 +1,7 @@
 ﻿namespace Nine.Imaging.Filtering
 {
     using System;
+    using System.IO;
 
     public static class ImageFiltering
     {
@@ -68,6 +69,18 @@
         public static Image Prewitt(this Image source) => source.Filter(new Prewitt());
         public static Image Sobel(this Image source) => source.Filter(new Sobel());
 
+        // Formatting
+        public static Stream Jpg(this Image source, int quality = 80) => FillStream(ms => source.SaveAsJpeg(ms, quality));
+        public static Stream Png(this Image source) => FillStream(ms => source.SaveAsPng(ms));
+
+        private static Stream FillStream(Action<Stream> fill)
+        {
+            var ms = new MemoryStream();
+            fill(ms);
+            ms.Seek(0, SeekOrigin.Begin);
+            return ms;
+        }
+
         public static Image Filter(this Image source, params IImageFilter[] filters) => Filter(source, source.Bounds, filters);
         public static Image Filter(this Image source, Rectangle rectangle, params IImageFilter[] filters)
         {
@@ -81,7 +94,7 @@
         private static Image PerformAction(Image source, bool clone, Action<ImageBase, ImageBase> action)
         {
             Image transformedImage = clone ? new Image(source) : new Image();
-            
+
             action(source, transformedImage);
 
             foreach (ImageFrame frame in source.Frames)

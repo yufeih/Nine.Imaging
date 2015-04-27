@@ -11,9 +11,14 @@
         [Theory]
         [InlineData("testimages/car.bmp")]
         [InlineData("testimages/car.bmp?")]
+
         [InlineData("testimages/car.bmp?width=100")]
         [InlineData("testimages/car.bmp?height=100")]
         [InlineData("testimages/car.bmp?width=100&height=100")]
+
+        [InlineData("testimages/car.bmp?jpg")]
+        [InlineData("testimages/car.bmp?width=100&height=100&jpg=20")]
+
         [InlineData("testimages/car.bmp?width=100&height=100&blur=2")]
         public async Task image_handler_rest_api_test(string url)
         {
