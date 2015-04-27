@@ -18,8 +18,8 @@
 
         public double PixelRatio => (double)PixelWidth / PixelHeight;
 
-        public static int MaxWidth { get; set; } = 5000;
-        public static int MaxHeight { get; set; } = 5000;
+        public static int MaxWidth { get; set; } = int.MaxValue;
+        public static int MaxHeight { get; set; } = int.MaxValue;
         
         public Color this[int x, int y]
         {

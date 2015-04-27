@@ -15,6 +15,7 @@
 
         public ImageHandler(Func<Type, string, object> convert = null, params Type[] declaredTypes)
         {
+            ImageBase.MaxWidth = ImageBase.MaxHeight = 5000;
             this.invoker = new ExtensionMethodInvoker(convert, new[] { typeof(ImageFiltering) }.Concat(declaredTypes).ToArray());
         }
 
