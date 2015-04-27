@@ -204,7 +204,7 @@ namespace Nine.Imaging.Encoding
                 if (_header.Width > ImageBase.MaxWidth || _header.Height > ImageBase.MaxHeight)
                 {
                     throw new ArgumentOutOfRangeException(
-                        $"The input bitmap '{ _header.Width }x{ _header.Height }' is bigger then the max allowed size '{ ImageBase.MaxWidth }x{ ImageBase.MaxHeight }'");
+                        $"The input png '{ _header.Width }x{ _header.Height }' is bigger then the max allowed size '{ ImageBase.MaxWidth }x{ ImageBase.MaxHeight }'");
                 }
 
                 byte[] pixels = new byte[_header.Width * _header.Height * 4];

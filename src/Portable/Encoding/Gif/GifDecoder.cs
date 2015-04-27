@@ -227,7 +227,7 @@ namespace Nine.Imaging.Encoding
             if (_descriptor.Width > ImageBase.MaxWidth || _descriptor.Height > ImageBase.MaxHeight)
             {
                 throw new ArgumentOutOfRangeException(
-                    $"The input bitmap '{ _descriptor.Width }x{ _descriptor.Height }' is bigger then the max allowed size '{ ImageBase.MaxWidth }x{ ImageBase.MaxHeight }'");
+                    $"The input gif '{ _descriptor.Width }x{ _descriptor.Height }' is bigger then the max allowed size '{ ImageBase.MaxWidth }x{ ImageBase.MaxHeight }'");
             }
         }
 

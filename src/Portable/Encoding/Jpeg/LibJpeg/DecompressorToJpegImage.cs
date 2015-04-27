@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Nine.Imaging;
 
 namespace BitMiracle.LibJpeg
 {
@@ -24,6 +25,12 @@ namespace BitMiracle.LibJpeg
 
         public void SetImageAttributes(LoadedImageAttributes parameters)
         {
+            if (parameters.Width > ImageBase.MaxWidth || parameters.Height > ImageBase.MaxHeight)
+            {
+                throw new ArgumentOutOfRangeException(
+                    $"The input jpg '{ parameters.Width }x{ parameters.Height }' is bigger then the max allowed size '{ ImageBase.MaxWidth }x{ ImageBase.MaxHeight }'");
+            }
+
             m_jpegImage.Width = parameters.Width;
             m_jpegImage.Height = parameters.Height;
             m_jpegImage.BitsPerComponent = 8;
