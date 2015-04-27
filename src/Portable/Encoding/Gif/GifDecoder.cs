@@ -29,7 +29,7 @@
 
         public void Decode(Image image, Stream stream)
         {
-            new GifDecoder().Decode(image, stream);
+            new GifDecoderCore().Decode(image, stream);
         }
 
         class GifDecoderCore
