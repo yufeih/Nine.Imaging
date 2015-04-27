@@ -13,10 +13,12 @@
     {
         private readonly ExtensionMethodInvoker invoker;
         private readonly IImageLoader[] loaders;
+        private readonly IImageCache cache;
         private readonly string baseRoute;
 
-        public ImageHandler(string baseRoute, params IImageLoader[] loaders) : this(baseRoute, loaders, null) { }
-        public ImageHandler(string baseRoute, IImageLoader[] loaders, Func<Type, string, object> convert = null, params Type[] declaredTypes)
+        public ImageHandler(string baseRoute, params IImageLoader[] loaders) : this(baseRoute, new MemoryImageCache(), loaders, null) { }
+        public ImageHandler(string baseRoute, IImageCache cache, params IImageLoader[] loaders) : this(baseRoute, cache, loaders, null) { }
+        public ImageHandler(string baseRoute, IImageCache cache, IImageLoader[] loaders, Func<Type, string, object> convert = null, params Type[] declaredTypes)
         {
             if (loaders == null) throw new ArgumentNullException(nameof(loaders));
 
@@ -24,6 +26,7 @@
             if (baseRoute != "" && !baseRoute.EndsWith("/")) baseRoute += "/";
 
             this.baseRoute = "/" + baseRoute;
+            this.cache = cache;
             this.loaders = loaders.ToArray();
             this.invoker = new ExtensionMethodInvoker(convert, new[] { typeof(ImageFiltering) }.Concat(declaredTypes).ToArray());
 
@@ -39,6 +42,14 @@
             }
 
             id = id.Substring(baseRoute.Length);
+
+            var cacheKey = request.RequestUri.PathAndQuery;
+            var cached = await cache?.Get(cacheKey);
+            if (cached != null)
+            {
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(cached) };
+            }
+
             var target = await LoadImage(id);
             if (target == null)
             {
@@ -47,29 +58,46 @@
 
             var query = request.RequestUri.Query;
             var result = string.IsNullOrEmpty(query) ? target : invoker.Invoke(target, query.Substring(1));
+            
+            var bytes = GetBytes(result);
+            if (bytes != null)
+            {
+                await cache.Put(cacheKey, bytes);
+                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(bytes) };
+            }
 
+            return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+        }
+
+        private byte[] GetBytes(object result)
+        {
             var image = result as Image;
             if (image != null)
             {
                 var ms = new MemoryStream();
                 image.SaveAsPng(ms);
                 ms.Seek(0, SeekOrigin.Begin);
-                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(ms) };
+                return ms.GetBuffer();
             }
 
             var stream = result as Stream;
             if (stream != null)
             {
-                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new StreamContent(stream) };
+                var ms = stream as MemoryStream;
+                if (ms != null) return ms.GetBuffer();
+
+                var buffer = new byte[stream.Length];
+                stream.Read(buffer, 0, (int)stream.Length);
+                return buffer;
             }
 
             var bytes = result as byte[];
             if (bytes != null)
             {
-                return new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(bytes) };
+                return bytes;
             }
 
-            return new HttpResponseMessage(HttpStatusCode.InternalServerError);
+            return null;
         }
 
         private async Task<Image> LoadImage(string id)
