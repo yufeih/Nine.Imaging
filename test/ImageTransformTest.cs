@@ -24,8 +24,6 @@
         [MemberData("Transforms")]
         public void transform_images(RotationType rotate, FlippingType flip)
         {
-            if (!Directory.Exists("Transformed")) Directory.CreateDirectory("Transformed");
-            
             var image = new Image(File.OpenRead("TestImages/Backdrop.jpg"));
             var watch = Stopwatch.StartNew();
 
@@ -33,11 +31,7 @@
 
             Trace.WriteLine($"{ rotate }-{ flip }: { watch.ElapsedMilliseconds}ms");
 
-            var outputFilename = $"Transformed/{ rotate }-{ flip }.jpg";
-            using (var output = File.OpenWrite(outputFilename))
-            {
-                image.SaveAsJpeg(output);
-            }
+            image.VerifyAndSave($"Transformed/{ rotate }-{ flip }.jpg");
         }
     }
 }

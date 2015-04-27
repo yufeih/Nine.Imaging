@@ -57,17 +57,8 @@
         [InlineData(100)]
         public void jpeg_quality(int quality)
         {
-            if (!Directory.Exists("Jpeg")) Directory.CreateDirectory("Jpeg");
-            
             var image = new Image(File.OpenRead("TestImages/Backdrop.jpg"));
-
-            using (var output = File.OpenWrite($"Jpeg/{ quality }.jpg"))
-            {
-                image.SaveAsJpeg(output, quality);
-                output.Flush();
-
-                Trace.WriteLine($"{ quality }: { output.Length }");
-            }
+            image.VerifyAndSave($"Jpeg/{ quality }.jpg", output => image.SaveAsJpeg(output, quality));
         }
     }
 }

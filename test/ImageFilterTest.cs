@@ -34,8 +34,6 @@
         [MemberData("Filters")]
         public void decode_then_encode_image_from_stream_should_succeed(string name, IImageFilter filter)
         {
-            if (!Directory.Exists("Filtered")) Directory.CreateDirectory("Filtered");
-
             var stream = File.OpenRead("TestImages/Backdrop.jpg");
             var image = new Image(stream);
 
@@ -45,11 +43,7 @@
 
             Trace.WriteLine($"{ name }: { watch.ElapsedMilliseconds}ms");
 
-            var outputFilename = "Filtered/" + name + ".png";
-            using (var output = File.OpenWrite(outputFilename))
-            {
-                image.SaveAsPng(output);
-            }
+            image.VerifyAndSave("Filtered/" + name + ".png");
         }
     }
 }
