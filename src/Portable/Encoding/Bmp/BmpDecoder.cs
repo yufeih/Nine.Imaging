@@ -159,9 +159,20 @@ namespace Nine.Imaging.Encoding
 
                 if (colorMapSize > 0)
                 {
+                    if (colorMapSize > 255 * 4)
+                    {
+                        throw new ImageFormatException($"Invalid colorMapSize '{ colorMapSize }'");
+                    }
+
                     palette = new byte[colorMapSize];
 
                     _stream.Read(palette, 0, colorMapSize);
+                }
+
+                if (_infoHeader.Width > ImageBase.MaxWidth || _infoHeader.Height > ImageBase.MaxHeight)
+                {
+                    throw new ArgumentOutOfRangeException(
+                        $"The input bitmap '{ _infoHeader.Width }x{ _infoHeader.Height }' is bigger then the max allowed size '{ ImageBase.MaxWidth }x{ ImageBase.MaxHeight }'");
                 }
 
                 byte[] imageData = new byte[_infoHeader.Width * _infoHeader.Height * 4];
@@ -172,8 +183,7 @@ namespace Nine.Imaging.Encoding
                         if (_infoHeader.HeaderSize != 40)
                         {
                             throw new ImageFormatException(
-                                string.Format(CultureInfo.CurrentCulture,
-                                    "Header Size value '{0}' is not valid.", _infoHeader.HeaderSize));
+                                $"Header Size value '{_infoHeader.HeaderSize}' is not valid.");
                         }
 
                         if (_infoHeader.BitsPerPixel == 32)
