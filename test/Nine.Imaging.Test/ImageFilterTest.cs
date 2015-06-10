@@ -43,7 +43,7 @@
 
             Trace.WriteLine($"{ name }: { watch.ElapsedMilliseconds}ms");
 
-            image.VerifyAndSave("Filtered/" + name + ".png");
+            image.VerifyAndSave("TestResult/Filtered/" + name + ".png");
         }
     }
 }

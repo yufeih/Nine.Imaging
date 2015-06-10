@@ -41,7 +41,7 @@
             height = height ?? width;
 
             
-            var outputFile = $"Resized/{ Path.GetFileNameWithoutExtension(filename) }.{ mode }.{ sampler.GetType().Name }.{ width }x{ height }.jpg";
+            var outputFile = $"TestResult/Resized/{ Path.GetFileNameWithoutExtension(filename) }.{ mode }.{ sampler.GetType().Name }.{ width }x{ height }.jpg";
             image.VerifyAndSave(outputFile);
         }
     }

@@ -152,25 +152,6 @@ namespace Nine.Imaging
         /// <para>- or -</para>
         /// <para><paramref name="elements"/> is null.</para>
         /// </exception>
-        public static void AddRange<TItem>(this ObservableCollection<TItem> target, IEnumerable<TItem> elements)
-        {
-            foreach (TItem item in elements)
-            {
-                target.Add(item);
-            }
-        }
-
-        /// <summary>
-        /// Adds the the specified elements to the target collection object.
-        /// </summary>
-        /// <typeparam name="TItem">The type of the items in the source and target.</typeparam>
-        /// <param name="target">The target, where the items should be inserted to. Cannot be null.</param>
-        /// <param name="elements">The elements to add to the collection. Cannot be null.</param>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="target"/> is null.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="elements"/> is null.</para>
-        /// </exception>
         public static void AddRange<TItem>(this Collection<TItem> target, IEnumerable<TItem> elements)
         {
             foreach (TItem item in elements)

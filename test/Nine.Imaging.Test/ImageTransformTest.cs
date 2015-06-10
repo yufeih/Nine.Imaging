@@ -31,7 +31,7 @@
 
             Trace.WriteLine($"{ rotate }-{ flip }: { watch.ElapsedMilliseconds}ms");
 
-            image.VerifyAndSave($"Transformed/{ rotate }-{ flip }.jpg");
+            image.VerifyAndSave($"TestResult/Transformed/{ rotate }-{ flip }.jpg");
         }
     }
 }
