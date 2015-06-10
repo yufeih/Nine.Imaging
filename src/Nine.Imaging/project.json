@@ -28,19 +28,21 @@
         "System.Reflection.Extensions": "4.0.0-beta-22816",
         "System.Threading": "4.0.10-beta-22816",
         "Microsoft.CSharp": "4.0.0-beta-22816"
-      },
-      ".NETPortable,Version=v4.5,Profile=Profile78": {
-        "frameworkAssemblies": {
-          "System.Linq": "",
-          "System.Runtime": "",
-          "System.Runtime.Extensions": "",
-          "System.Globalization": "",
-          "System.Reflection": "",
-          "System.Threading": "",
-          "System.Threading.Tasks": "",
-          "System.Collections": "",
-          "System.Reflection.Extensions": ""
-        }
+      }
+    },
+    ".NETPortable,Version=v4.5,Profile=Profile78": {
+      "frameworkAssemblies": {
+        "System.Linq": "",
+        "System.Runtime": "",
+        "System.IO": "",
+        "System.Diagnostics.Debug": "",
+        "System.Runtime.Extensions": "",
+        "System.Globalization": "",
+        "System.Reflection": "",
+        "System.Threading": "",
+        "System.Threading.Tasks": "",
+        "System.Collections": "",
+        "System.Reflection.Extensions": ""
       }
     }
   }
