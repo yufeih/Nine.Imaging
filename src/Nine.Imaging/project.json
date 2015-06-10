@@ -14,35 +14,36 @@
   "frameworks": {
     "dnx451": {
       "frameworkAssemblies": {
-        "System.Runtime": "4.0.10.0",
-        "System.IO": "4.0.0.0"
+        "System.IO": "4.0.0.0",
+        "System.Runtime": "4.0.10.0"
       }
     },
     "dnxcore50": {
       "dependencies": {
-        "System.Runtime.Extensions": "4.0.10-beta-22816",
+        "Microsoft.CSharp": "4.0.0-beta-22816",
         "System.Collections": "4.0.10-beta-22816",
-        "System.Globalization": "4.0.10-beta-22816",
         "System.Diagnostics.Debug": "4.0.10-beta-22816",
+        "System.Globalization": "4.0.10-beta-22816",
         "System.Linq": "4.0.0-beta-22816",
         "System.Reflection.Extensions": "4.0.0-beta-22816",
-        "System.Threading": "4.0.10-beta-22816",
-        "Microsoft.CSharp": "4.0.0-beta-22816"
+        "System.Runtime.Extensions": "4.0.10-beta-22816",
+        "System.Threading": "4.0.10-beta-22816"
       }
     },
     ".NETPortable,Version=v4.5,Profile=Profile78": {
       "frameworkAssemblies": {
-        "System.Linq": "",
-        "System.Runtime": "",
-        "System.IO": "",
-        "System.Diagnostics.Debug": "",
-        "System.Runtime.Extensions": "",
-        "System.Globalization": "",
-        "System.Reflection": "",
-        "System.Threading": "",
-        "System.Threading.Tasks": "",
         "System.Collections": "",
-        "System.Reflection.Extensions": ""
+        "System.Diagnostics.Debug": "",
+        "System.Globalization": "",
+        "System.IO": "",
+        "System.Linq": "",
+        "System.Reflection": "",
+        "System.Reflection.Extensions": "",
+        "System.Runtime": "",
+        "System.Runtime.Extensions": "",
+        "System.Text.Encoding": "",
+        "System.Threading": "",
+        "System.Threading.Tasks": ""
       }
     }
   }
