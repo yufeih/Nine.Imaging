@@ -32,7 +32,7 @@
             var content = await response.EnsureSuccessStatusCode().Content.ReadAsStreamAsync();
 
             var image = new Image(content);
-            image.VerifyAndSave($"Http/{ Uri.EscapeDataString(url) }.png");
+            image.VerifyAndSave($"TestResult/Http/{ Uri.EscapeDataString(url) }.png");
         }
     }
 }

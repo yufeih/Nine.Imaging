@@ -1,0 +1,47 @@
+﻿{
+  "version": "1.1.0-alpha-*",
+  "description": "A portable image processing library",
+  "authors": [ "Yufei Huang" ],
+  "tags": [ "PCL", "Portable", "Image", "Processing", "Filtering", "Encoding", "Decoding", "Blur", "PNG", "JPG", "GIF" ],
+  "iconUrl": "https://avatars3.githubusercontent.com/u/9212229?s=64",
+  "projectUrl": "https://github.com/studio-nine/Nine.Imaging",
+  "licenseUrl": "https://github.com/studio-nine/Nine.Imaging/blob/master/LICENSE",
+
+  "dependencies": {
+    "SharpZipLib.Portable": "0.86.0.2"
+  },
+
+  "frameworks": {
+    "dnx451": {
+      "frameworkAssemblies": {
+        "System.Runtime": "4.0.10.0",
+        "System.IO": "4.0.0.0"
+      }
+    },
+    "dnxcore50": {
+      "dependencies": {
+        "System.Runtime.Extensions": "4.0.10-beta-22816",
+        "System.Collections": "4.0.10-beta-22816",
+        "System.Globalization": "4.0.10-beta-22816",
+        "System.Diagnostics.Debug": "4.0.10-beta-22816",
+        "System.Linq": "4.0.0-beta-22816",
+        "System.Reflection.Extensions": "4.0.0-beta-22816",
+        "System.Threading": "4.0.10-beta-22816",
+        "Microsoft.CSharp": "4.0.0-beta-22816"
+      },
+      ".NETPortable,Version=v4.5,Profile=Profile78": {
+        "frameworkAssemblies": {
+          "System.Linq": "",
+          "System.Runtime": "",
+          "System.Runtime.Extensions": "",
+          "System.Globalization": "",
+          "System.Reflection": "",
+          "System.Threading": "",
+          "System.Threading.Tasks": "",
+          "System.Collections": "",
+          "System.Reflection.Extensions": ""
+        }
+      }
+    }
+  }
+}
