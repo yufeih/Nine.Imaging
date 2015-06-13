@@ -51,7 +51,7 @@ namespace Nine.Imaging.Png
             int offset = 0;
 
             byte[] newScanline = scanline.ToArrayByBitsLength(header.BitDepth);
-
+            
             if (_useAlpha)
             {
                 for (int x = 0; x < newScanline.Length; x += 4)
@@ -66,14 +66,29 @@ namespace Nine.Imaging.Png
             }
             else
             {
-                for (int x = 0; x < newScanline.Length / 3; x++)
+                if (header.BitDepth == 8)
                 {
-                    offset = (_row * header.Width + x) * 4;
+                    for (int x = 0; x < newScanline.Length / 3; x++)
+                    {
+                        offset = (_row * header.Width + x) * 4;
 
-                    pixels[offset + 0] = newScanline[x * 3 + 2];
-                    pixels[offset + 1] = newScanline[x * 3 + 1];
-                    pixels[offset + 2] = newScanline[x * 3 + 0];
-                    pixels[offset + 3] = (byte)255;
+                        pixels[offset + 0] = newScanline[x * 3 + 2];
+                        pixels[offset + 1] = newScanline[x * 3 + 1];
+                        pixels[offset + 2] = newScanline[x * 3 + 0];
+                        pixels[offset + 3] = (byte)255;
+                    }
+                }
+                else
+                {
+                    for (int x = 0; x < newScanline.Length / 6; x++)
+                    {
+                        offset = (_row * header.Width + x) * 4;
+
+                        pixels[offset + 0] = newScanline[(x * 6 + 4)];
+                        pixels[offset + 1] = newScanline[(x * 6 + 2)];
+                        pixels[offset + 2] = newScanline[(x * 6 + 0)];
+                        pixels[offset + 3] = (byte)255;
+                    }
                 }
             }
 

@@ -72,7 +72,7 @@ namespace Nine.Imaging.Encoding
                         (p, a) => new GrayscaleReader(false)));
 
                 _colorTypes.Add(2,
-                    new PngColorTypeInformation(3, new int[] { 8 },
+                    new PngColorTypeInformation(3, new int[] { 8, 16 },
                         (p, a) => new TrueColorReader(false)));
 
                 _colorTypes.Add(3,
@@ -341,12 +341,12 @@ namespace Nine.Imaging.Encoding
             {
                 if (!_colorTypes.ContainsKey(_header.ColorType))
                 {
-                    throw new ImageFormatException("Color type is not supported or not valid.");
+                    throw new ImageFormatException($"Color type '{ _header.ColorType }' is not supported or not valid.");
                 }
 
                 if (!_colorTypes[_header.ColorType].SupportedBitDepths.Contains(_header.BitDepth))
                 {
-                    throw new ImageFormatException("Bit depth is not supported or not valid.");
+                    throw new ImageFormatException($"Bit depth '{ _header.BitDepth }' is not supported or not valid for color type { _header.ColorType }.");
                 }
 
                 if (_header.FilterMethod != 0)

@@ -10,6 +10,7 @@
         [Theory]
         [InlineData("TestImages/Car.bmp")]
         [InlineData("TestImages/Portrait.png")]
+        [InlineData("TestImages/Logo.png")]
         [InlineData("TestImages/Backdrop.jpg")]
         [InlineData("TestImages/Windmill.gif")]
         public void decode_then_encode_image_from_stream_should_succeed(string filename)
