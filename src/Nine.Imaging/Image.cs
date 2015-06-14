@@ -68,7 +68,7 @@ namespace Nine.Imaging
         }
 
         #endregion
-        
+
         #region Fields
 
         private readonly object _lockObject = new object();
@@ -251,51 +251,44 @@ namespace Nine.Imaging
 
         private void Load(Stream stream, IList<IImageDecoder> decoders)
         {
-            try
+            if (!stream.CanRead)
             {
-                if (!stream.CanRead)
-                {
-                    throw new NotSupportedException("Cannot read from the stream.");
-                }
+                throw new NotSupportedException("Cannot read from the stream.");
+            }
 
-                if (!stream.CanSeek)
-                {
-                    throw new NotSupportedException("The stream does not support seeking.");
-                }
+            if (!stream.CanSeek)
+            {
+                throw new NotSupportedException("The stream does not support seeking.");
+            }
 
-                if (decoders.Count > 0)
+            if (decoders.Count > 0)
+            {
+                int maxHeaderSize = decoders.Max(x => x.HeaderSize);
+                if (maxHeaderSize > 0)
                 {
-                    int maxHeaderSize = decoders.Max(x => x.HeaderSize);
-                    if (maxHeaderSize > 0)
+                    byte[] header = new byte[maxHeaderSize];
+
+                    stream.Read(header, 0, maxHeaderSize);
+                    stream.Position = 0;
+
+                    var decoder = decoders.FirstOrDefault(x => x.IsSupportedFileFormat(header));
+                    if (decoder != null)
                     {
-                        byte[] header = new byte[maxHeaderSize];
-
-                        stream.Read(header, 0, maxHeaderSize);
-                        stream.Position = 0;
-
-                        var decoder = decoders.FirstOrDefault(x => x.IsSupportedFileFormat(header));
-                        if (decoder != null)
-                        {
-                            decoder.Decode(this, stream);
-                            return;
-                        }
+                        decoder.Decode(this, stream);
+                        return;
                     }
                 }
-
-                StringBuilder stringBuilder = new StringBuilder();
-                stringBuilder.AppendLine("Image cannot be loaded. Available decoders:");
-
-                foreach (IImageDecoder decoder in decoders)
-                {
-                    stringBuilder.AppendLine("-" + decoder);
-                }
-
-                throw new NotSupportedException(stringBuilder.ToString());
             }
-            finally
+
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine("Image cannot be loaded. Available decoders:");
+
+            foreach (IImageDecoder decoder in decoders)
             {
-                stream.Dispose();
+                stringBuilder.AppendLine("-" + decoder);
             }
+
+            throw new NotSupportedException(stringBuilder.ToString());
         }
 
         #endregion Methods
