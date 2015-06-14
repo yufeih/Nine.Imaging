@@ -269,7 +269,9 @@ namespace Nine.Imaging.Encoding
                                 column = -1;
                                 row++;
 
-                                Extensions.Swap(ref currScanline, ref lastScanline);
+                                var tmp = currScanline;
+                                currScanline = lastScanline;
+                                lastScanline = tmp;
                             }
                         }
                     }

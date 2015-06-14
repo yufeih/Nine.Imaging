@@ -11,7 +11,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-
 namespace Nine.Imaging
 {
     /// <summary>
@@ -62,105 +61,6 @@ namespace Nine.Imaging
         }
         
         /// <summary>
-        /// Multiplies the values of the specified rectangle by the factor.
-        /// </summary>
-        /// <param name="rectangle">The rectangle to multiply with the factor.</param>
-        /// <param name="factor">The factor.</param>
-        /// <returns>The new rectangle.</returns>
-        public static Rectangle Multiply(Rectangle rectangle, double factor)
-        {
-            rectangle.X = (int)(rectangle.X * factor);
-            rectangle.Y = (int)(rectangle.Y * factor);
-
-            rectangle.Width  = (int)(rectangle.Width * factor);
-            rectangle.Height = (int)(rectangle.Height * factor);
-
-            return rectangle;
-        }
-
-        /// <summary>
-        /// Determines whether the specified value is a valid number.
-        /// </summary>
-        /// <param name="value">The number to check.</param>
-        /// <returns>A flag indicating whether the specified value is a number.</returns>
-        public static bool IsNumber(this double value)
-        {
-            return !double.IsInfinity(value) && !double.IsNaN(value);
-        }
-
-        /// <summary>
-        /// Determines whether the specified value is a valid number.
-        /// </summary>
-        /// <param name="value">The number to check.</param>
-        /// <returns>A flag indicating whether the specified value is a number.</returns>
-        public static bool IsNumber(this float value)
-        {
-            return !float.IsInfinity(value) && !float.IsNaN(value);
-        }
-
-        /// <summary>
-        /// Invokes the specified foreach item in the enumerable.
-        /// </summary>
-        /// <typeparam name="T">The type of the items in the enumerable.</typeparam>
-        /// <param name="items">The enumerable that is iterated through this method. Cannot be null.</param>
-        /// <param name="action">The action to invoke foreach item. Cannot be null.</param>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="items"/> is null.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="action"/> is null.</para>
-        /// </exception>
-        public static void Foreach<T>(this IEnumerable<T> items, Action<T> action)
-        {
-            foreach (T item in items)
-            {
-                if (item != null)
-                {
-                    action(item);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Invokes the specified foreach item in the enumerable.
-        /// </summary>
-        /// <param name="items">The enumerable that is iterated through this method. Cannot be null.</param>
-        /// <param name="action">The action to invoke foreach item. Cannot be null.</param>
-        /// <exception cref="ArgumentNullException">
-        /// 	<para><paramref name="items"/> is null.</para>
-        /// 	<para>- or -</para>
-        /// 	<para><paramref name="action"/> is null.</para>
-        /// </exception>
-        public static void Foreach(this IEnumerable items, Action<object> action)
-        {
-            foreach (object item in items)
-            {
-                if (item != null)
-                {
-                    action(item);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Adds the the specified elements to the target collection object.
-        /// </summary>
-        /// <typeparam name="TItem">The type of the items in the source and target.</typeparam>
-        /// <param name="target">The target, where the items should be inserted to. Cannot be null.</param>
-        /// <param name="elements">The elements to add to the collection. Cannot be null.</param>
-        /// <exception cref="ArgumentNullException">
-        /// <para><paramref name="target"/> is null.</para>
-        /// <para>- or -</para>
-        /// <para><paramref name="elements"/> is null.</para>
-        /// </exception>
-        public static void AddRange<TItem>(this Collection<TItem> target, IEnumerable<TItem> elements)
-        {
-            foreach (TItem item in elements)
-            {
-                target.Add(item);
-            }
-        }
-
-        /// <summary>
         /// Determines whether the specified value is between two other
         /// values.
         /// </summary>
@@ -209,20 +109,6 @@ namespace Nine.Imaging
             }
 
             return result;
-        }
-
-        /// <summary>
-        /// Swaps two references.
-        /// </summary>
-        /// <typeparam name="TRef">The type of the references to swap.</typeparam>
-        /// <param name="lhs">The first reference.</param>
-        /// <param name="rhs">The second reference.</param>
-        public static void Swap<TRef>(ref TRef lhs, ref TRef rhs) where TRef : class
-        {
-            TRef tmp = lhs;
-
-            lhs = rhs;
-            rhs = tmp;
         }
     }
 }
