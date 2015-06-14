@@ -25,7 +25,8 @@ namespace Nine.Imaging.Filtering
                     target[x, y] = new Color(
                         r: (byte)(255 - color.R),
                         g: (byte)(255 - color.G),
-                        b: (byte)(255 - color.B));
+                        b: (byte)(255 - color.B),
+                        a: color.A);
                 }
             }
         }

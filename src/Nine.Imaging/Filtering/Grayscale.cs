@@ -40,7 +40,7 @@ namespace Nine.Imaging.Filtering
 
                     temp = (byte)(color.R * _cr + color.G * _cg + color.B * _cb);
                     
-                    target[x, y] = new Color(temp, temp, temp);
+                    target[x, y] = new Color(temp, temp, temp, color.A);
                 }
             }
         }

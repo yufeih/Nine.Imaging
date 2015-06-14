@@ -28,7 +28,8 @@ namespace Nine.Imaging.Filtering
                     target[x, y] = new Color(
                         r: (byte)((temp > 206) ? 255 : temp + 49),
                         g: (byte)((temp < 14) ? 0 : temp - 14),
-                        b: (byte)((temp < 56) ? 0 : temp - 56));
+                        b: (byte)((temp < 56) ? 0 : temp - 56),
+                        a: color.A);
                 }
             }
         }
