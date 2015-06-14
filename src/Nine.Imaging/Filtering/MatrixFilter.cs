@@ -56,9 +56,9 @@
                     }
 
                     target[x, y] = new Color(
-                        (byte)r.Clamp(0, 255),
-                        (byte)g.Clamp(0, 255),
-                        (byte)b.Clamp(0, 255));
+                        r: (byte)r.Clamp(0, 255),
+                        g: (byte)g.Clamp(0, 255),
+                        b: (byte)b.Clamp(0, 255));
                 }
             }
         }

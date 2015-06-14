@@ -39,10 +39,10 @@
                     if (a < 1.0)
                     {
                         color = new Color(
-                            (byte)(a * color.A),
                             (byte)(color.R), 
                             (byte)(color.G),
-                            (byte)(color.B));
+                            (byte)(color.B),
+                            (byte)(a * color.A));
                     }
 
                     target[x, y] = color;

@@ -65,9 +65,9 @@
                     }
 
                     target[x, y] = new Color(
-                        (byte)((Math.Sqrt(rX * rX + rY * rY)).Clamp(0, 255)),
-                        (byte)((Math.Sqrt(gX * gX + gY * gY)).Clamp(0, 255)),
-                        (byte)((Math.Sqrt(bX * bX + bY * bY)).Clamp(0, 255)));
+                        r: (byte)((Math.Sqrt(rX * rX + rY * rY)).Clamp(0, 255)),
+                        g: (byte)((Math.Sqrt(gX * gX + gY * gY)).Clamp(0, 255)),
+                        b: (byte)((Math.Sqrt(bX * bX + bY * bY)).Clamp(0, 255)));
                 }
             }
         }

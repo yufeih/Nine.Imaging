@@ -52,10 +52,10 @@
             if (this.S == 0.0)
             {
                 return new Color(
-                    (byte)(this.A * 255),
                     (byte)(this.B * 255),
                     (byte)(this.B * 255),
-                    (byte)(this.B * 255));
+                    (byte)(this.B * 255),
+                    (byte)(this.A * 255));
             }
             
             var h = (this.H == 360) ? 0 : this.H / 60;
@@ -107,10 +107,10 @@
             }
 
             return new Color(
-                (byte)(Math.Round(this.A * 255)),
                 (byte)(Math.Round(r * 255)),
                 (byte)(Math.Round(g * 255)),
-                (byte)(Math.Round(b * 255)));
+                (byte)(Math.Round(b * 255)),
+                (byte)(Math.Round(this.A * 255)));
         }
 
         public static bool operator ==(HsbColor a, HsbColor b)

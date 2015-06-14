@@ -105,7 +105,7 @@
                 }
             }
 
-            return new Color(a, r, g, b);
+            return new Color(r, g, b, a);
         }
 
         private static int Hex(char c)

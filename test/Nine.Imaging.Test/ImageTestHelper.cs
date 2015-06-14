@@ -25,7 +25,10 @@
                 }
                 catch
                 {
-                    File.WriteAllBytes(filename + ".actual", ms.ToArray());
+                    var actualName = Path.Combine(
+                        Path.GetDirectoryName(filename),
+                        $"{ Path.GetFileNameWithoutExtension(filename) }.actual{ Path.GetExtension(filename) }");
+                    File.WriteAllBytes(actualName, ms.ToArray());
                     throw;
                 }
             }

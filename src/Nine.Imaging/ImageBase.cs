@@ -27,7 +27,11 @@
             {
                 int start = (y * _pixelWidth + x) * 4;
 
-                return new Color(_pixels[start + 3], _pixels[start + 2], _pixels[start + 1], _pixels[start + 0]);
+                return new Color(
+                    r: _pixels[start + 2], 
+                    g: _pixels[start + 1], 
+                    b: _pixels[start + 0],
+                    a: _pixels[start + 3]);
             }
             set
             {
