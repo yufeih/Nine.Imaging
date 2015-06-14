@@ -18,9 +18,6 @@
         public static readonly Color Blue = new Color(255, 0, 0, 255);
 
         [FieldOffset(0)]
-        private int bgra;
-
-        [FieldOffset(0)]
         public byte B;
         [FieldOffset(1)]
         public byte G;
@@ -29,7 +26,12 @@
         [FieldOffset(3)]
         public byte A;
 
-        public Color(int bgra) : this() { this.bgra = bgra; }
+        [FieldOffset(0)]
+        public readonly int Bgra;
+        public int Rgba => (R << 24) | (G << 16) | (B << 8) | A;
+        public int Argb => (A << 24) | (R << 16) | (G << 8) | B;
+
+        public Color(int bgra) : this() { this.Bgra = bgra; }
         public Color(byte r, byte g, byte b) : this() { R = r; G = g; B = b; A = 255; }
         public Color(byte a, byte r, byte g, byte b) : this() { R = r; G = g; B = b; A = a; }
 
@@ -104,17 +106,17 @@
 
         public static bool operator ==(Color a, Color b)
         {
-            return a.bgra == b.bgra;
+            return a.Bgra == b.Bgra;
         }
         
         public static bool operator !=(Color a, Color b)
         {
-            return a.bgra != b.bgra;
+            return a.Bgra != b.Bgra;
         }
         
         public override int GetHashCode()
         {
-            return this.bgra.GetHashCode();
+            return this.Bgra.GetHashCode();
         }
         
         public override bool Equals(object obj)
@@ -124,7 +126,7 @@
 
         public bool Equals(Color other)
         {
-            return bgra == other.bgra;
+            return Bgra == other.Bgra;
         }
     }
 }
