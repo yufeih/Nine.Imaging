@@ -23,13 +23,12 @@ namespace Nine.Imaging.Filtering
                 {
                     Color color = source[x, y];
 
-                    temp = (byte)(0.299 * color.R + 0.587 * color.G + 0.114 * color.B);
+                    temp = (byte)(0.299f * color.R + 0.587f * color.G + 0.114f * color.B);
 
-                    color.R = (byte)((temp > 206) ? 255 : temp + 49);
-                    color.G = (byte)((temp < 14) ? 0 : temp - 14);
-                    color.B = (byte)((temp < 56) ? 0 : temp - 56);
-
-                    target[x, y] = color;
+                    target[x, y] = new Color(
+                        r: (byte)((temp > 206) ? 255 : temp + 49),
+                        g: (byte)((temp < 14) ? 0 : temp - 14),
+                        b: (byte)((temp < 56) ? 0 : temp - 56));
                 }
             }
         }

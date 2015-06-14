@@ -34,12 +34,10 @@
                     {
                         Color color = source[x, y];
 
-                        color.R = (byte)(color.R * TintColor.R / 255);
-                        color.G = (byte)(color.G * TintColor.G / 255);
-                        color.B = (byte)(color.B * TintColor.B / 255);
-                        color.A = (byte)(color.A * TintColor.A / 255);
-
-                        target[x, y] = color;
+                        target[x, y] = new Color(
+                            r: (byte)(color.R * TintColor.R / 255),
+                            g: (byte)(color.G * TintColor.G / 255),
+                            b: (byte)(color.B * TintColor.B / 255));
                     }
                 }
             }

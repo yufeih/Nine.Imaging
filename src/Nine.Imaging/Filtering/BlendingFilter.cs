@@ -78,12 +78,8 @@ namespace Nine.Imaging.Filtering
                     r = r.RemainBetween(0, 255);
                     g = g.RemainBetween(0, 255);
                     b = b.RemainBetween(0, 255);
-
-                    color.R = (byte)r;
-                    color.G = (byte)g;
-                    color.B = (byte)b;
-
-                    target[x, y] = color;
+                    
+                    target[x, y] = new Color((byte)r, (byte)g, (byte)b);
                 }
             }
         }

@@ -39,12 +39,8 @@ namespace Nine.Imaging.Filtering
                     Color color = source[x, y];
 
                     temp = (byte)(color.R * _cr + color.G * _cg + color.B * _cb);
-
-                    color.R = temp;
-                    color.G = temp;
-                    color.B = temp;
-
-                    target[x, y] = color;
+                    
+                    target[x, y] = new Color(temp, temp, temp);
                 }
             }
         }

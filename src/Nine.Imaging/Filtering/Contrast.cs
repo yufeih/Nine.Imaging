@@ -32,7 +32,7 @@ namespace Nine.Imaging.Filtering
         
         protected override void Apply(ImageBase target, ImageBase source, Rectangle rectangle, int startY, int endY)
         {
-            double pixel = 0, contrast = (100.0 + Value) / 100.0;
+            double r, g, b, contrast = (100.0 + Value) / 100.0;
 
             for (int y = startY; y < endY; y++)
             {
@@ -40,34 +40,28 @@ namespace Nine.Imaging.Filtering
                 {
                     Color color = source[x, y];
 
-                    pixel = color.R / 255.0;
-                    pixel -= 0.5;
-                    pixel *= contrast;
-                    pixel += 0.5;
-                    pixel *= 255;
-                    pixel = pixel.RemainBetween(0, 255);
+                    r = color.R / 255.0;
+                    r -= 0.5;
+                    r *= contrast;
+                    r += 0.5;
+                    r *= 255;
+                    r = r.RemainBetween(0, 255);
+                    
+                    g = color.G / 255.0;
+                    g -= 0.5;
+                    g *= contrast;
+                    g += 0.5;
+                    g *= 255;
+                    g = g.RemainBetween(0, 255);
 
-                    color.R = (byte)pixel;
+                    b = color.B / 255.0;
+                    b -= 0.5;
+                    b *= contrast;
+                    b += 0.5;
+                    b *= 255;
+                    b = b.RemainBetween(0, 255);
 
-                    pixel = color.G / 255.0;
-                    pixel -= 0.5;
-                    pixel *= contrast;
-                    pixel += 0.5;
-                    pixel *= 255;
-                    pixel = pixel.RemainBetween(0, 255);
-
-                    color.G = (byte)pixel;
-
-                    pixel = color.B / 255.0;
-                    pixel -= 0.5;
-                    pixel *= contrast;
-                    pixel += 0.5;
-                    pixel *= 255;
-                    pixel = pixel.RemainBetween(0, 255);
-
-                    color.B = (byte)pixel;
-
-                    target[x, y] = color;
+                    target[x, y] = new Color((byte)r, (byte)g, (byte)b);
                 }
             }
         }

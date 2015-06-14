@@ -18,13 +18,13 @@
         public static readonly Color Blue = new Color(0, 0, 255);
 
         [FieldOffset(0)]
-        public byte B;
+        public readonly byte B;
         [FieldOffset(1)]
-        public byte G;
+        public readonly byte G;
         [FieldOffset(2)]
-        public byte R;
+        public readonly byte R;
         [FieldOffset(3)]
-        public byte A;
+        public readonly byte A;
 
         [FieldOffset(0)]
         public readonly int Bgra;

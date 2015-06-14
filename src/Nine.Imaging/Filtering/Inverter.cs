@@ -22,11 +22,10 @@ namespace Nine.Imaging.Filtering
                 {
                     Color color = source[x, y];
 
-                    color.R = (byte)(255 - color.R);
-                    color.G = (byte)(255 - color.G);
-                    color.B = (byte)(255 - color.B);
-
-                    target[x, y] = color;
+                    target[x, y] = new Color(
+                        r: (byte)(255 - color.R),
+                        g: (byte)(255 - color.G),
+                        b: (byte)(255 - color.B));
                 }
             }
         }
