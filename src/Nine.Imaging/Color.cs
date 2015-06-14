@@ -8,14 +8,14 @@
     public struct Color : IEquatable<Color>
     {
         public static readonly Color Empty = new Color();
-        public static readonly Color Transparent = new Color(0, 255, 255, 255);
+        public static readonly Color Transparent = new Color(0, 0, 0, 0);
 
-        public static readonly Color Black = new Color(255, 0, 0, 0);
-        public static readonly Color White = new Color(255, 255, 255, 255);
+        public static readonly Color Black = new Color(0, 0, 0);
+        public static readonly Color White = new Color(255, 255, 255);
 
-        public static readonly Color Red = new Color(255, 255, 0, 0);
-        public static readonly Color Green = new Color(255, 0, 255, 0);
-        public static readonly Color Blue = new Color(255, 0, 0, 255);
+        public static readonly Color Red = new Color(255, 0, 0);
+        public static readonly Color Green = new Color(0, 255, 0);
+        public static readonly Color Blue = new Color(0, 0, 255);
 
         [FieldOffset(0)]
         public byte B;
@@ -31,9 +31,22 @@
         public int Rgba => (R << 24) | (G << 16) | (B << 8) | A;
         public int Argb => (A << 24) | (R << 16) | (G << 8) | B;
 
-        public Color(int bgra) : this() { this.Bgra = bgra; }
-        public Color(byte r, byte g, byte b) : this() { R = r; G = g; B = b; A = 255; }
-        public Color(byte a, byte r, byte g, byte b) : this() { R = r; G = g; B = b; A = a; }
+        public Color(int bgra) { R = G = B = A = 0; Bgra = bgra; }
+        public Color(byte r, byte g, byte b, byte a = 255) { Bgra = 0; R = r; G = g; B = b; A = a; }
+        public Color(float r, float g, float b, float a = 1.0f)
+        {
+            r *= 255; g *= 255; b *= 255; a *= 255;
+            if (r > 255) r = 255; if (r < 0) r = 0;
+            if (g > 255) g = 255; if (g < 0) g = 0;
+            if (b > 255) b = 255; if (b < 0) b = 0;
+            if (a > 255) a = 255; if (a < 0) a = 0;
+
+            Bgra = 0;
+            R = (byte)r;
+            G = (byte)g;
+            B = (byte)b;
+            A = (byte)a;
+        }
 
         public HsbColor ToHsb() => HsbColor.FromRgb(this);
         public static Color FromHsb(HsbColor hsb) => hsb.ToRgb();
@@ -102,6 +115,14 @@
             if (c >= '0' && c <= '9') return c - '0';
 
             throw new ArgumentOutOfRangeException($"{ c } is not a valid for hex number");
+        }
+
+        public static Color operator *(Color color, float alpha)
+        {
+            return new Color((byte)(color.R * alpha), 
+                             (byte)(color.G * alpha), 
+                             (byte)(color.B * alpha),
+                             (byte)(color.A * alpha));
         }
 
         public static bool operator ==(Color a, Color b)
