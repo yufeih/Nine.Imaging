@@ -1,21 +1,8 @@
-﻿// ===============================================================================
-// Extensions.cs
-// .NET Image Tools
-// ===============================================================================
-// Copyright (c) .NET Image Tools Development Group. 
-// All rights reserved.
-// ===============================================================================
-
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-
-namespace Nine.Imaging
+﻿namespace Nine.Imaging
 {
-    /// <summary>
-    /// A collection of simple helper extension methods.
-    /// </summary>
+    using System;
+    using System.Collections.Generic;
+    
     static class Extensions
     {
         /// <summary>
@@ -60,55 +47,20 @@ namespace Nine.Imaging
             return result;
         }
         
-        /// <summary>
-        /// Determines whether the specified value is between two other
-        /// values.
-        /// </summary>
-        /// <typeparam name="TValue">The type of the values to check.
-        /// Must implement <see cref="IComparable"/>.</typeparam>
-        /// <param name="value">The value which should be between the other values.</param>
-        /// <param name="low">The lower value.</param>
-        /// <param name="high">The higher value.</param>
-        /// <returns>
-        /// 	<c>true</c> if the specified value is between the other values; otherwise, <c>false</c>.
-        /// </returns>
-        public static bool IsBetween<TValue>(this TValue value, TValue low, TValue high) where TValue : IComparable
+        public static double Clamp(this double value, double low, double high)
         {
-            return (Comparer<TValue>.Default.Compare(low, value) <= 0
-                 && Comparer<TValue>.Default.Compare(high, value) >= 0);
+            if (value < low) return low;
+            if (value > high) return high;
+
+            return value;
         }
 
-        /// <summary>
-        /// Arranges the value, so that it is not greater than the high value and
-        /// not lower than the low value and returns the result.
-        /// </summary>
-        /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="value">The value.</param>
-        /// <param name="low">The lower value.</param>
-        /// <param name="high">The higher value.</param>
-        /// <returns>The arranged value.</returns>
-        /// <remarks>If the specified lower value is greater than the higher value. The low value
-        /// will be returned.</remarks>
-        public static TValue RemainBetween<TValue>(this TValue value, TValue low, TValue high) where TValue : IComparable
+        public static int Clamp(this int value, int low, int high)
         {
-            TValue result = value;
+            if (value < low) return low;
+            if (value > high) return high;
 
-            if (Comparer<TValue>.Default.Compare(high, low) < 0)
-            {
-                result = low;
-            }
-
-            else if (Comparer<TValue>.Default.Compare(value, low) <= 0)
-            {
-                result = low;
-            }
-
-            else if (Comparer<TValue>.Default.Compare(value, high) >= 0)
-            {
-                result = high;
-            }
-
-            return result;
+            return value;
         }
     }
 }

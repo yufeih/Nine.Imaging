@@ -384,7 +384,7 @@ namespace Nine.Imaging.Encoding
                 byte[] crcBuffer = new byte[4];
 
                 int numBytes = _stream.Read(crcBuffer, 0, 4);
-                if (numBytes.IsBetween(1, 3))
+                if (numBytes < 4)
                 {
                     throw new ImageFormatException("Image stream is not valid!");
                 }
@@ -420,7 +420,7 @@ namespace Nine.Imaging.Encoding
                 byte[] typeBuffer = new byte[4];
 
                 int numBytes = _stream.Read(typeBuffer, 0, 4);
-                if (numBytes.IsBetween(1, 3))
+                if (numBytes < 4)
                 {
                     throw new ImageFormatException("Image stream is not valid!");
                 }
@@ -441,7 +441,7 @@ namespace Nine.Imaging.Encoding
                 byte[] lengthBuffer = new byte[4];
 
                 int numBytes = _stream.Read(lengthBuffer, 0, 4);
-                if (numBytes.IsBetween(1, 3))
+                if (numBytes < 4)
                 {
                     throw new ImageFormatException("Image stream is not valid!");
                 }

@@ -41,9 +41,9 @@ namespace Nine.Imaging.Filtering
                     int g = color.G + Value;
                     int b = color.B + Value;
 
-                    r = r.RemainBetween(0, 255);
-                    g = g.RemainBetween(0, 255);
-                    b = b.RemainBetween(0, 255);
+                    r = r.Clamp(0, 255);
+                    g = g.Clamp(0, 255);
+                    b = b.Clamp(0, 255);
                     
                     target[x, y] = new Color((byte)r, (byte)g, (byte)b);
                 }
