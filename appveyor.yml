@@ -3,9 +3,10 @@ environment:
   VisualStudioVersion: 14.0
   DNX_FEED: https://www.nuget.org/api/v2
 install:
-  - dnvm install 1.0.0-beta5
+  - dnvm upgrade
   - dnu restore
   - dnu pack src/Nine.Imaging --configuration Release --out artifacts
+  - dnu pack src/Nine.Imaging.Http --configuration Release --out artifacts
   - cd test\Nine.Imaging.Test
   - dnx . test
 build: off
