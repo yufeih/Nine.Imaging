@@ -8,17 +8,15 @@
 
     public class ImageTransformTest
     {
-        public static readonly TheoryData<RotationType, FlippingType> Transforms = new TheoryData<RotationType, FlippingType>();
-
-        static ImageTransformTest()
+        public static readonly TheoryData<RotationType, FlippingType> Transforms = new TheoryData<RotationType, FlippingType>
         {
-            Transforms.Add(RotationType.None, FlippingType.Vertical);
-            Transforms.Add(RotationType.None, FlippingType.Horizontal);
+            { RotationType.None, FlippingType.Vertical },
+            { RotationType.None, FlippingType.Horizontal },
 
-            Transforms.Add(RotationType.Rotate90, FlippingType.None);
-            Transforms.Add(RotationType.Rotate180, FlippingType.None);
-            Transforms.Add(RotationType.Rotate270, FlippingType.None);
-        }
+            { RotationType.Rotate90, FlippingType.None },
+            { RotationType.Rotate180, FlippingType.None },
+            { RotationType.Rotate270, FlippingType.None },
+        };
 
         [Theory]
         [MemberData("Transforms")]

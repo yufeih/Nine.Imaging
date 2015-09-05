@@ -8,17 +8,15 @@
 
     public class ImageSamplerTest
     {
-        public static readonly TheoryData<string, int, int?, StretchMode, ParallelImageSampler> Resizers = new TheoryData<string, int, int?, StretchMode, ParallelImageSampler>();
-
         // TODO: Test alpha image
-        static ImageSamplerTest()
+        public static readonly TheoryData<string, int, int?, StretchMode, ParallelImageSampler> Resizers = new TheoryData<string, int, int?, StretchMode, ParallelImageSampler>
         {
-            Resizers.Add("Car.bmp", 1200, null, StretchMode.Fill, new NearestNeighborSampler());
-            Resizers.Add("Backdrop.jpg", 1000, null, StretchMode.Fill, new BilinearSampler());
-            Resizers.Add("Car.bmp", 1200, null, StretchMode.Fill, new BilinearSampler());
-            Resizers.Add("Car.bmp", 200, null, StretchMode.Fill, new SuperSamplingSampler());
-            Resizers.Add("Car.bmp", 1200, null, StretchMode.Fill, new SuperSamplingSampler());
-        }
+            { "Car.bmp", 1200, null, StretchMode.Fill, new NearestNeighborSampler() },
+            { "Backdrop.jpg", 1000, null, StretchMode.Fill, new BilinearSampler() },
+            { "Car.bmp", 1200, null, StretchMode.Fill, new BilinearSampler() },
+            { "Car.bmp", 200, null, StretchMode.Fill, new SuperSamplingSampler() },
+            { "Car.bmp", 1200, null, StretchMode.Fill, new SuperSamplingSampler() },
+        };
 
         [Theory]
         [MemberData("Resizers")]
