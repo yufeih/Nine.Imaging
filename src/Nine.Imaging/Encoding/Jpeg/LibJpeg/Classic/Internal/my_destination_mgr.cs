@@ -107,17 +107,7 @@ namespace BitMiracle.LibJpeg.Classic.Internal
             {
                 m_outfile.Write(m_buffer, 0, dataCount);
             }
-            catch (IOException e)
-            {
-                m_cinfo.TRACEMS(0, J_MESSAGE_CODE.JERR_FILE_WRITE, e.Message);
-                m_cinfo.ERREXIT(J_MESSAGE_CODE.JERR_FILE_WRITE);
-            }
-            catch (NotSupportedException e)
-            {
-                m_cinfo.TRACEMS(0, J_MESSAGE_CODE.JERR_FILE_WRITE, e.Message);
-                m_cinfo.ERREXIT(J_MESSAGE_CODE.JERR_FILE_WRITE);
-            }
-            catch (ObjectDisposedException e)
+            catch (Exception e)
             {
                 m_cinfo.TRACEMS(0, J_MESSAGE_CODE.JERR_FILE_WRITE, e.Message);
                 m_cinfo.ERREXIT(J_MESSAGE_CODE.JERR_FILE_WRITE);
