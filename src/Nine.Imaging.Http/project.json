@@ -7,10 +7,6 @@
   "projectUrl": "https://github.com/studio-nine/Nine.Imaging",
   "licenseUrl": "https://github.com/studio-nine/Nine.Imaging/blob/master/LICENSE",
 
-  "compilationOptions": {
-    "keyFile": "../../Key.snk"
-  },
-
   "dependencies": {
     "Nine.Imaging": ""
   },
