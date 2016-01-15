@@ -7,6 +7,10 @@
   "projectUrl": "https://github.com/studio-nine/Nine.Imaging",
   "licenseUrl": "https://github.com/studio-nine/Nine.Imaging/blob/master/LICENSE",
 
+  "compilationOptions": {
+    "keyFile": "../../Key.snk"
+  },
+
   "dependencies": {
     "SharpZipLib.Portable": "0.86.0.3"
   },
@@ -30,9 +34,6 @@
       }
     },
     "dotnet": {
-      "compilationOptions": {
-        "keyFile": "Key.snk" 
-      },
       "dependencies": {
         "System.Collections": "4.0.10",
         "System.ComponentModel": "4.0.0",
