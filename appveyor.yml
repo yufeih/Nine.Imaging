@@ -1,14 +1,9 @@
-os: Visual Studio 2015 RC
-environment:
-  VisualStudioVersion: 14.0
-  DNX_FEED: https://www.nuget.org/api/v2
 install:
   - dnvm upgrade
   - dnu restore
-  - dnu pack src/Nine.Imaging --configuration Release --out artifacts
-  - dnu pack src/Nine.Imaging.Http --configuration Release --out artifacts
+  - dnu pack src/*/project.json --configuration Release --out artifacts
   - cd test\Nine.Imaging.Test
-  - dnx . test
+  - dnx test
 build: off
 artifacts:
   - path: artifacts\**\*.nupkg
