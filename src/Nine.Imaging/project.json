@@ -30,9 +30,6 @@
       }
     },
     "dotnet": {
-      "compilationOptions": {
-        "keyFile": "Key.snk" 
-      },
       "dependencies": {
         "System.Collections": "4.0.10",
         "System.ComponentModel": "4.0.0",
