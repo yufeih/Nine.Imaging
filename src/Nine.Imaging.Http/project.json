@@ -1,5 +1,5 @@
 ﻿{
-  "version": "1.1.0-alpha-1",
+  "version": "1.1.0-alpha2",
   "description": "A portable image processing library for the web",
   "authors": [ "Yufei Huang" ],
   "tags": [ "PCL", "Portable", "Image", "Processing", "Filtering", "Encoding", "Decoding", "Blur", "PNG", "JPG", "GIF" ],
