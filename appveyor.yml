@@ -1,9 +1,0 @@
-install:
-  - dnvm upgrade
-  - dnu restore
-  - dnu pack src/*/project.json --configuration Release --out artifacts
-  - cd test\Nine.Imaging.Test
-  - dnx test
-build: off
-artifacts:
-  - path: artifacts\**\*.nupkg
