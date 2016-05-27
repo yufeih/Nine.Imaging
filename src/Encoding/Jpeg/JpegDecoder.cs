@@ -44,8 +44,6 @@ namespace Nine.Imaging.Encoding
         /// of length zero or contains only blanks.</exception>
         public bool IsSupportedFileExtension(string extension)
         {
-            Guard.NotNullOrEmpty(extension, "extension");
-
             if (extension.StartsWith(".")) extension = extension.Substring(1);
             return extension.Equals("JPG", StringComparison.OrdinalIgnoreCase) ||
                    extension.Equals("JPEG", StringComparison.OrdinalIgnoreCase) ||
@@ -65,8 +63,6 @@ namespace Nine.Imaging.Encoding
         /// is null (Nothing in Visual Basic).</exception>
         public bool IsSupportedFileFormat(byte[] header)
         {
-            Guard.NotNull(header, "header");
-
             bool isSupported = false;
 
             if (header.Length >= 11)
@@ -119,8 +115,6 @@ namespace Nine.Imaging.Encoding
         /// </exception>
         public void Decode(Image image, Stream stream)
         {
-            Guard.NotNull(image, "image");
-            Guard.NotNull(stream, "stream");
             JpegImage jpg = new JpegImage(stream);
 
             int pixelWidth = jpg.Width;

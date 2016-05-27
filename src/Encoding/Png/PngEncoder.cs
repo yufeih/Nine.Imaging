@@ -80,8 +80,6 @@ namespace Nine.Imaging.Encoding
         /// of length zero or contains only blanks.</exception>
         public bool IsSupportedFileExtension(string extension)
         {
-            Guard.NotNullOrEmpty(extension, "extension");
-
             if (extension.StartsWith(".")) extension = extension.Substring(1);
             return extension.Equals("PNG", StringComparison.OrdinalIgnoreCase);
         }
@@ -101,9 +99,6 @@ namespace Nine.Imaging.Encoding
         /// </exception>
         public void Encode(ImageBase image, Stream stream)
         {
-            Guard.NotNull(image, "image");
-            Guard.NotNull(stream, "stream");
-
             // Write the png header.
             stream.Write(
                 new byte[] 

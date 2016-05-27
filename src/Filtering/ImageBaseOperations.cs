@@ -245,13 +245,9 @@ namespace Nine.Imaging.Filtering
         /// </exception>
         internal static void Crop(ImageBase source, ImageBase target, Rectangle bounds)
         {
-            Guard.GreaterThan(bounds.Width, 0, "bounds", "Width of the rectangle must be greater than zero.");
-            Guard.GreaterThan(bounds.Height, 0, "bounds", "Height of the rectangle must be greater than zero.");
-
-            if (bounds.Right > source.PixelWidth || bounds.Bottom > source.PixelHeight)
-            {
-                throw new ArgumentException("Rectangle must be in the range of the image's dimension.", "bounds");
-            }
+            if (bounds.Width < 0) throw new ArgumentOutOfRangeException(nameof(bounds));
+            if (bounds.Height < 0) throw new ArgumentOutOfRangeException(nameof(bounds));
+            if (bounds.Right > source.PixelWidth || bounds.Bottom > source.PixelHeight) throw new ArgumentOutOfRangeException(nameof(bounds));
 
             byte[] sourcePixels = source.Pixels;
             byte[] targetPixels = new byte[bounds.Width * bounds.Height * 4];

@@ -50,8 +50,6 @@ namespace Nine.Imaging.Encoding
         /// of length zero or contains only blanks.</exception>
         public bool IsSupportedFileExtension(string extension)
         {
-            Guard.NotNullOrEmpty(extension, "extension");
-
             if (extension.StartsWith(".")) extension = extension.Substring(1);
             return extension.Equals("BMP", StringComparison.OrdinalIgnoreCase) ||
                    extension.Equals("DIP", StringComparison.OrdinalIgnoreCase);
@@ -72,9 +70,6 @@ namespace Nine.Imaging.Encoding
         /// </exception>
         public void Encode(ImageBase image, Stream stream)
         {
-            Guard.NotNull(image, "image");
-            Guard.NotNull(stream, "stream");
-
             int rowWidth = image.PixelWidth;
 
             int amount = (image.PixelWidth * 3) % 4; 

@@ -30,8 +30,6 @@ namespace Nine.Imaging.Gif
         /// (Nothing in Visual Basic).</exception>
         public LZWDecoder(Stream stream)
         {
-            Guard.NotNull(stream, "stream");
-
             _stream = stream;
         }
 
