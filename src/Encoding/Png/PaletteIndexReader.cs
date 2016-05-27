@@ -51,7 +51,7 @@ namespace Nine.Imaging.Png
         /// the width of the image and the height.</param>
         public void ReadScanline(byte[] scanline, byte[] pixels, PngHeader header)
         {
-            byte[] newScanline = scanline.ToArrayByBitsLength(header.BitDepth);
+            byte[] newScanline = PngColorReader.ToArrayByBitsLength(scanline, header.BitDepth);
 
             int offset = 0, index = 0;
 

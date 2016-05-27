@@ -50,7 +50,7 @@ namespace Nine.Imaging.Png
         {
             int offset = 0;
 
-            byte[] newScanline = scanline.ToArrayByBitsLength(header.BitDepth);
+            byte[] newScanline = PngColorReader.ToArrayByBitsLength(scanline, header.BitDepth);
             
             if (_useAlpha)
             {

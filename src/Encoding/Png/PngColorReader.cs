@@ -1,12 +1,11 @@
-﻿namespace Nine.Imaging
+﻿namespace Nine.Imaging.Png
 {
     using System;
-    using System.Collections.Generic;
-    
-    static class Extensions
+
+    static class PngColorReader
     {
         /// <summary>
-        /// Converts byte array to a new array where each value in the original array is represented 
+        /// Converts byte array to a new array where each value in the original array is represented
         /// by a the specified number of bits.
         /// </summary>
         /// <param name="bytes">The bytes to convert from. Cannot be null.</param>
@@ -14,7 +13,7 @@
         /// <returns>The resulting byte array. Is never null.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="bytes"/> is null.</exception>
         /// <exception cref="ArgumentException"><paramref name="bits"/> is greater or equals than zero.</exception>
-        public static byte[] ToArrayByBitsLength(this byte[] bytes, int bits)
+        public static byte[] ToArrayByBitsLength(byte[] bytes, int bits)
         {
             byte[] result = null;
 
@@ -45,22 +44,6 @@
             }
 
             return result;
-        }
-        
-        public static double Clamp(this double value, double low, double high)
-        {
-            if (value < low) return low;
-            if (value > high) return high;
-
-            return value;
-        }
-
-        public static int Clamp(this int value, int low, int high)
-        {
-            if (value < low) return low;
-            if (value > high) return high;
-
-            return value;
         }
     }
 }
