@@ -3,8 +3,8 @@
   <Import Project="..\packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props" Condition="Exists('packages\xunit.runner.visualstudio.2.1.0\build\net20\xunit.runner.visualstudio.props')" />
   <PropertyGroup>
     <ProjectGuid>{65252ACE-C744-44C8-9AC1-197F54B329E0}</ProjectGuid>
-    <RootNamespace>Nine.Formatting</RootNamespace>
-    <AssemblyName>Nine.Formatting.Test</AssemblyName>
+    <RootNamespace>Nine.Imaging</RootNamespace>
+    <AssemblyName>Nine.Imaging.Test</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <OutputType Condition=" '$(OutputType)' == '' ">Library</OutputType>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
