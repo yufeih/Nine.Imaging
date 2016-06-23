@@ -29,11 +29,11 @@
 
         public NinePatchImage(ImageBase source, double scale = 1)
         {
-            if (source.PixelWidth < 3) throw new ArgumentOutOfRangeException(nameof(PixelWidth));
-            if (source.PixelHeight < 3) throw new ArgumentOutOfRangeException(nameof(PixelHeight));
+            if (source.Width < 3) throw new ArgumentOutOfRangeException(nameof(Width));
+            if (source.Height < 3) throw new ArgumentOutOfRangeException(nameof(Height));
 
-            var maxX = source.PixelWidth - 1;
-            var maxY = source.PixelHeight - 1;
+            var maxX = source.Width - 1;
+            var maxY = source.Height - 1;
 
             // Left/Right
             for (var x = 1; x <= maxX; x++) if (source[x, 0].A > 0) { Left = x - 1; break; }
@@ -64,13 +64,13 @@
                 PaddingBottom = Math.Max(1, (int)Math.Round(PaddingBottom * scale));
             }
 
-            var w = source.PixelWidth - 2;
-            var h = source.PixelHeight - 2;
+            var w = source.Width - 2;
+            var h = source.Height - 2;
             var pixels = new byte[w * h * 4];
 
             for (var y = 0; y < h; y++)
             {
-                Array.Copy(source.Pixels, ((y + 1) * source.PixelWidth + 1) * 4, pixels, y * w * 4, w * 4);
+                Array.Copy(source.Pixels, ((y + 1) * source.Width + 1) * 4, pixels, y * w * 4, w * 4);
             }
 
             SetPixels(w, h, pixels);
@@ -81,8 +81,8 @@
                 var inner = new Image();
                 inner.SetPixels(w, h, pixels);
 
-                w = Math.Max(3, (int)Math.Round((source.PixelWidth - 1) * scale));
-                h = Math.Max(3, (int)Math.Round((source.PixelHeight - 1) * scale));
+                w = Math.Max(3, (int)Math.Round((source.Width - 1) * scale));
+                h = Math.Max(3, (int)Math.Round((source.Height - 1) * scale));
 
                 resampler.Sample(inner, this, w, h);
             }
@@ -95,16 +95,16 @@
             return new ImageBase[9]
             {
                 Patch(0, 0, Left, Top),
-                Patch(Left, 0, PixelWidth - Left - Right, Top),
-                Patch(PixelWidth - Right, 0, Right, Top),
+                Patch(Left, 0, Width - Left - Right, Top),
+                Patch(Width - Right, 0, Right, Top),
 
-                Patch(0, Top, Left, PixelHeight - Top - Bottom),
-                Patch(Left, Top, PixelWidth - Left - Right, PixelHeight - Top - Bottom),
-                Patch(PixelWidth - Right, Top, Right, PixelHeight - Top - Bottom),
+                Patch(0, Top, Left, Height - Top - Bottom),
+                Patch(Left, Top, Width - Left - Right, Height - Top - Bottom),
+                Patch(Width - Right, Top, Right, Height - Top - Bottom),
 
-                Patch(0, PixelHeight - Top, Left, Bottom),
-                Patch(Left, PixelHeight - Top, PixelWidth - Left - Right, Bottom),
-                Patch(PixelWidth - Right, PixelHeight - Top, Right, Bottom),
+                Patch(0, Height - Top, Left, Bottom),
+                Patch(Left, Height - Top, Width - Left - Right, Bottom),
+                Patch(Width - Right, Height - Top, Right, Bottom),
             };
         }
 

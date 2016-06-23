@@ -40,7 +40,7 @@
     <Content Include="TestImages\**\*.*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Compile Include="../src/**/*.cs" />
+    <Compile Include="..\src\**\*.cs" />
     <Compile Include="*.cs" />
   </ItemGroup>
   <ItemGroup>

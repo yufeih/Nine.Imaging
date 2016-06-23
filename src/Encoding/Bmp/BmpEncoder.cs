@@ -70,9 +70,9 @@ namespace Nine.Imaging.Encoding
         /// </exception>
         public void Encode(ImageBase image, Stream stream)
         {
-            int rowWidth = image.PixelWidth;
+            int rowWidth = image.Width;
 
-            int amount = (image.PixelWidth * 3) % 4; 
+            int amount = (image.Width * 3) % 4; 
             if (amount != 0)
             {
                 rowWidth += 4 - amount;
@@ -83,17 +83,17 @@ namespace Nine.Imaging.Encoding
             BmpFileHeader fileHeader = new BmpFileHeader();
             fileHeader.Type = 19778;
             fileHeader.Offset = 54;
-            fileHeader.FileSize = 54 + image.PixelHeight * rowWidth * 3;
+            fileHeader.FileSize = 54 + image.Height * rowWidth * 3;
             Write(writer, fileHeader);
 
             BmpInfoHeader infoHeader = new BmpInfoHeader();
             infoHeader.HeaderSize = 40;
-            infoHeader.Height = image.PixelHeight;
-            infoHeader.Width = image.PixelWidth;
+            infoHeader.Height = image.Height;
+            infoHeader.Width = image.Width;
             infoHeader.BitsPerPixel = 24;
             infoHeader.Planes = 1;
             infoHeader.Compression = BmpCompression.RGB;
-            infoHeader.ImageSize = image.PixelHeight * rowWidth * 3;
+            infoHeader.ImageSize = image.Height * rowWidth * 3;
             infoHeader.ClrUsed = 0;
             infoHeader.ClrImportant = 0;
             Write(writer, infoHeader);
@@ -105,7 +105,7 @@ namespace Nine.Imaging.Encoding
 
         private static void WriteImage(BinaryWriter writer, ImageBase image)
         {
-            int amount = (image.PixelWidth * 3) % 4, offset = 0;
+            int amount = (image.Width * 3) % 4, offset = 0;
             if (amount != 0)
             {
                 amount = 4 - amount;
@@ -113,11 +113,11 @@ namespace Nine.Imaging.Encoding
 
             byte[] data = image.Pixels;
 
-            for (int y = image.PixelHeight - 1; y >= 0; y--)
+            for (int y = image.Height - 1; y >= 0; y--)
             {
-                for (int x = 0; x < image.PixelWidth; x++)
+                for (int x = 0; x < image.Width; x++)
                 {
-                    offset = (y * image.PixelWidth + x) * 4;
+                    offset = (y * image.Width + x) * 4;
 
                     writer.Write(data[offset + 0]);
                     writer.Write(data[offset + 1]);

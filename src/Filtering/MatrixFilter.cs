@@ -18,7 +18,7 @@
             int width = rectangle.Width;
             int height = rectangle.Height;
 
-            int sourceWidth = source.PixelWidth;
+            int sourceWidth = source.Width;
             int halfFilterSize = filterSize >> 1;
 
             byte[] pixels = source.Pixels;

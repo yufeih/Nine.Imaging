@@ -50,14 +50,14 @@ namespace Nine.Imaging.Filtering
         protected override void Apply(ImageBase target, ImageBase source, Rectangle rectangle, int startY, int endY)
         {
             // Make sure we stop combining when the whole image that should be combined has been processed.
-            if (rectangle.Right > _blendedImage.PixelWidth)
+            if (rectangle.Right > _blendedImage.Width)
             {
-                rectangle.Width = _blendedImage.PixelWidth - rectangle.Left;
+                rectangle.Width = _blendedImage.Width - rectangle.Left;
             }
 
-            if (rectangle.Bottom > _blendedImage.PixelHeight)
+            if (rectangle.Bottom > _blendedImage.Height)
             {
-                rectangle.Height = _blendedImage.PixelHeight - rectangle.Top;
+                rectangle.Height = _blendedImage.Height - rectangle.Top;
             }
 
             for (int y = startY; y < endY; y++)

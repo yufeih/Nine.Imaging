@@ -8,7 +8,7 @@
 
         public override void Sample(ImageBase source, ImageBase target, int width, int height)
         {
-            if (width < source.PixelWidth && height < source.PixelHeight)
+            if (width < source.Width && height < source.Height)
             {
                 // Use super sampling only in case of minification
                 base.Sample(source, target, width, height);
@@ -23,10 +23,10 @@
         {
             byte[] sourcePixels = source.Pixels;
 
-            int sourceWidth = source.PixelWidth, offset;
+            int sourceWidth = source.Width, offset;
 
-            double factorX = (double)source.PixelWidth / width;
-            double factorY = (double)source.PixelHeight / height;
+            double factorX = (double)source.Width / width;
+            double factorY = (double)source.Height / height;
 
             int b, t, l, r;
             double wb, wt, wl, wr, weight;

@@ -19,8 +19,8 @@ namespace Nine.Imaging.Filtering
         {
             byte[] sourcePixels = source.Pixels;
 
-            double factorX = (double)source.PixelWidth / width;
-            double factorY = (double)source.PixelHeight / height;
+            double factorX = (double)source.Width / width;
+            double factorY = (double)source.Height / height;
 
             double fractionX, oneMinusX;
             double fractionY, oneMinusY;
@@ -35,7 +35,7 @@ namespace Nine.Imaging.Filtering
 
                 b = t + 1;
 
-                if (b >= source.PixelHeight)
+                if (b >= source.Height)
                 {
                     b = t;
                 }
@@ -44,8 +44,8 @@ namespace Nine.Imaging.Filtering
 
                 oneMinusY = 1.0 - fractionY;
 
-                b *= source.PixelWidth;
-                t *= source.PixelWidth;
+                b *= source.Width;
+                t *= source.Width;
 
                 for (int x = 0; x < width; x++)
                 {
@@ -55,7 +55,7 @@ namespace Nine.Imaging.Filtering
 
                     r = l + 1;
 
-                    if (r >= source.PixelWidth)
+                    if (r >= source.Width)
                     {
                         r = l;
                     }

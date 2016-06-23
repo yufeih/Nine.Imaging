@@ -37,7 +37,7 @@ namespace Nine.Imaging.Filtering
 
                         Array.Copy(targetPixels, sourcePixels, targetPixels.Length);
 
-                        target.SetPixels(source.PixelWidth, source.PixelHeight, sourcePixels);
+                        target.SetPixels(source.Width, source.Height, sourcePixels);
                     }
                     break;
                 case RotationType.Rotate90:
@@ -75,17 +75,17 @@ namespace Nine.Imaging.Filtering
             int oldIndex = 0, newIndex = 0;
 
             byte[] sourcePixels = source.Pixels;
-            byte[] targetPixels = new byte[source.PixelWidth * source.PixelHeight * 4];
+            byte[] targetPixels = new byte[source.Width * source.Height * 4];
 
-            for (int y = 0; y < source.PixelHeight; y++)
+            for (int y = 0; y < source.Height; y++)
             {
-                for (int x = 0; x < source.PixelWidth; x++)
+                for (int x = 0; x < source.Width; x++)
                 {
-                    oldIndex = (y * source.PixelWidth + x) * 4;
+                    oldIndex = (y * source.Width + x) * 4;
 
                     // The new index will be calculated as if the image would be flipped
                     // at the x and the y axis and rotated about 90 degrees.
-                    newIndex = ((source.PixelWidth - x - 1) * source.PixelHeight + y) * 4;
+                    newIndex = ((source.Width - x - 1) * source.Height + y) * 4;
 
                     targetPixels[newIndex + 0] = sourcePixels[oldIndex + 0];
                     targetPixels[newIndex + 1] = sourcePixels[oldIndex + 1];
@@ -93,7 +93,7 @@ namespace Nine.Imaging.Filtering
                     targetPixels[newIndex + 3] = sourcePixels[oldIndex + 3];
                 }
             }
-            target.SetPixels(source.PixelHeight, source.PixelWidth, targetPixels);
+            target.SetPixels(source.Height, source.Width, targetPixels);
         }
 
         private static void Rotate180(ImageBase source, ImageBase target)
@@ -101,17 +101,17 @@ namespace Nine.Imaging.Filtering
             int oldIndex = 0, newIndex = 0;
 
             byte[] sourcePixels = source.Pixels;
-            byte[] targetPixels = new byte[source.PixelWidth * source.PixelHeight * 4];
+            byte[] targetPixels = new byte[source.Width * source.Height * 4];
 
-            for (int y = 0; y < source.PixelHeight; y++)
+            for (int y = 0; y < source.Height; y++)
             {
-                for (int x = 0; x < source.PixelWidth; x++)
+                for (int x = 0; x < source.Width; x++)
                 {
-                    oldIndex = (y * source.PixelWidth + x) * 4;
+                    oldIndex = (y * source.Width + x) * 4;
 
                     // The new index will be calculated as if the image would be flipped
                     // at the x and the y axis.
-                    newIndex = ((source.PixelHeight - y - 1) * source.PixelWidth + source.PixelWidth - x - 1) * 4;
+                    newIndex = ((source.Height - y - 1) * source.Width + source.Width - x - 1) * 4;
 
                     targetPixels[newIndex + 0] = sourcePixels[oldIndex + 0];
                     targetPixels[newIndex + 1] = sourcePixels[oldIndex + 1];
@@ -119,7 +119,7 @@ namespace Nine.Imaging.Filtering
                     targetPixels[newIndex + 3] = sourcePixels[oldIndex + 3];
                 }
             }
-            target.SetPixels(source.PixelWidth, source.PixelHeight, targetPixels);
+            target.SetPixels(source.Width, source.Height, targetPixels);
         }
 
         private static void Rotate90(ImageBase source, ImageBase target)
@@ -127,17 +127,17 @@ namespace Nine.Imaging.Filtering
             int oldIndex = 0, newIndex = 0;
 
             byte[] sourcePixels = source.Pixels;
-            byte[] targetPixels = new byte[source.PixelWidth * source.PixelHeight * 4];
+            byte[] targetPixels = new byte[source.Width * source.Height * 4];
 
-            for (int y = 0; y < source.PixelHeight; y++)
+            for (int y = 0; y < source.Height; y++)
             {
-                for (int x = 0; x < source.PixelWidth; x++)
+                for (int x = 0; x < source.Width; x++)
                 {
-                    oldIndex = (y * source.PixelWidth + x) * 4;
+                    oldIndex = (y * source.Width + x) * 4;
 
                     // The new index will just be calculated by swapping
                     // the x and the y value for the pixel.
-                    newIndex = ((x + 1) * source.PixelHeight - y - 1) * 4;
+                    newIndex = ((x + 1) * source.Height - y - 1) * 4;
 
                     targetPixels[newIndex + 0] = sourcePixels[oldIndex + 0];
                     targetPixels[newIndex + 1] = sourcePixels[oldIndex + 1];
@@ -145,7 +145,7 @@ namespace Nine.Imaging.Filtering
                     targetPixels[newIndex + 3] = sourcePixels[oldIndex + 3];
                 }
             }
-            target.SetPixels(source.PixelHeight, source.PixelWidth, targetPixels);
+            target.SetPixels(source.Height, source.Width, targetPixels);
         }
 
         /// <summary>
@@ -164,18 +164,18 @@ namespace Nine.Imaging.Filtering
 
             byte r, g, b, a;
 
-            for (int y = 0; y < image.PixelHeight / 2; y++)
+            for (int y = 0; y < image.Height / 2; y++)
             {
-                for (int x = 0; x < image.PixelWidth; x++)
+                for (int x = 0; x < image.Width; x++)
                 {
-                    oldIndex = (y * image.PixelWidth + x) * 4;
+                    oldIndex = (y * image.Width + x) * 4;
 
                     r = sourcePixels[oldIndex + 0];
                     g = sourcePixels[oldIndex + 1];
                     b = sourcePixels[oldIndex + 2];
                     a = sourcePixels[oldIndex + 3];
 
-                    newIndex = ((image.PixelHeight - y - 1) * image.PixelWidth + x) * 4;
+                    newIndex = ((image.Height - y - 1) * image.Width + x) * 4;
 
                     sourcePixels[oldIndex + 0] = sourcePixels[newIndex + 0];
                     sourcePixels[oldIndex + 1] = sourcePixels[newIndex + 1];
@@ -206,18 +206,18 @@ namespace Nine.Imaging.Filtering
 
             byte r, g, b, a;
 
-            for (int y = 0; y < image.PixelHeight; y++)
+            for (int y = 0; y < image.Height; y++)
             {
-                for (int x = 0; x < image.PixelWidth / 2; x++)
+                for (int x = 0; x < image.Width / 2; x++)
                 {
-                    oldIndex = (y * image.PixelWidth + x) * 4;
+                    oldIndex = (y * image.Width + x) * 4;
 
                     r = sourcePixels[oldIndex + 0];
                     g = sourcePixels[oldIndex + 1];
                     b = sourcePixels[oldIndex + 2];
                     a = sourcePixels[oldIndex + 3];
 
-                    newIndex = (y * image.PixelWidth + image.PixelWidth - x - 1) * 4;
+                    newIndex = (y * image.Width + image.Width - x - 1) * 4;
 
                     sourcePixels[oldIndex + 0] = sourcePixels[newIndex + 0];
                     sourcePixels[oldIndex + 1] = sourcePixels[newIndex + 1];
@@ -247,14 +247,14 @@ namespace Nine.Imaging.Filtering
         {
             if (bounds.Width < 0) throw new ArgumentOutOfRangeException(nameof(bounds));
             if (bounds.Height < 0) throw new ArgumentOutOfRangeException(nameof(bounds));
-            if (bounds.Right > source.PixelWidth || bounds.Bottom > source.PixelHeight) throw new ArgumentOutOfRangeException(nameof(bounds));
+            if (bounds.Right > source.Width || bounds.Bottom > source.Height) throw new ArgumentOutOfRangeException(nameof(bounds));
 
             byte[] sourcePixels = source.Pixels;
             byte[] targetPixels = new byte[bounds.Width * bounds.Height * 4];
 
             for (int y = bounds.Top, i = 0; y < bounds.Bottom; y++, i++)
             {
-                Array.Copy(sourcePixels, (y * source.PixelWidth + bounds.Left) * 4, targetPixels, i * bounds.Width * 4, bounds.Width * 4);
+                Array.Copy(sourcePixels, (y * source.Width + bounds.Left) * 4, targetPixels, i * bounds.Width * 4, bounds.Width * 4);
             }
 
             target.SetPixels(bounds.Width, bounds.Height, targetPixels);

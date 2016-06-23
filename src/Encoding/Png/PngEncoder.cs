@@ -108,8 +108,8 @@ namespace Nine.Imaging.Encoding
                 }, 0, 8);
 
             PngHeader header = new PngHeader();
-            header.Width = image.PixelWidth;
-            header.Height = image.PixelHeight;
+            header.Width = image.Width;
+            header.Height = image.Height;
             header.ColorType = 6;
             header.BitDepth = 8;
             header.FilterMethod = 0;
@@ -136,21 +136,7 @@ namespace Nine.Imaging.Encoding
 
         private void WritePhysicsChunk(Stream stream, ImageBase imageBase)
         {
-            var image = imageBase as Image;
-            if (image != null && image.DensityX > 0 && image.DensityY > 0)
-            {
-                int dpmX = (int)Math.Round(image.DensityX * 39.3700787d);
-                int dpmY = (int)Math.Round(image.DensityY * 39.3700787d);
 
-                byte[] chunkData = new byte[9];
-
-                WriteInteger(chunkData, 0, dpmX);
-                WriteInteger(chunkData, 4, dpmY);
-
-                chunkData[8] = 1;
-
-                WriteChunk(stream, PngChunkTypes.Physical, chunkData);
-            }
         }
 
         private void WriteGammaChunk(Stream stream)
@@ -175,15 +161,15 @@ namespace Nine.Imaging.Encoding
             // Convert the pixel array to a new array for adding
             // the filter byte.
             // --------------------------------------------------
-            byte[] data = new byte[image.PixelWidth * image.PixelHeight * 4 + image.PixelHeight];
+            byte[] data = new byte[image.Width * image.Height * 4 + image.Height];
 
-            int rowLength = image.PixelWidth * 4 + 1;
+            int rowLength = image.Width * 4 + 1;
 
-            for (int y = 0; y < image.PixelHeight; y++)
+            for (int y = 0; y < image.Height; y++)
             {
                 data[y * rowLength] = 0;
 
-                Array.Copy(pixels, y * image.PixelWidth * 4, data, y * rowLength + 1, image.PixelWidth * 4);
+                Array.Copy(pixels, y * image.Width * 4, data, y * rowLength + 1, image.Width * 4);
             }
             // --------------------------------------------------
 
@@ -249,11 +235,11 @@ namespace Nine.Imaging.Encoding
         {
             byte[] pixels = image.Pixels;
 
-            byte[] data = new byte[image.PixelWidth * image.PixelHeight * 4 + image.PixelHeight];
+            byte[] data = new byte[image.Width * image.Height * 4 + image.Height];
 
-            int rowLength = image.PixelWidth * 4 + 1;
+            int rowLength = image.Width * 4 + 1;
 
-            for (int y = 0; y < image.PixelHeight; y++)
+            for (int y = 0; y < image.Height; y++)
             {
                 byte compression = 0;
                 if (y > 0)
@@ -262,13 +248,13 @@ namespace Nine.Imaging.Encoding
                 }
                 data[y * rowLength] = compression;
 
-                for (int x = 0; x < image.PixelWidth; x++)
+                for (int x = 0; x < image.Width; x++)
                 {
                     // Calculate the offset for the new array.
                     int dataOffset = y * rowLength + x * 4 + 1;
                     
                     // Calculate the offset for the original pixel array.
-                    int pixelOffset = (y * image.PixelWidth + x) * 4;
+                    int pixelOffset = (y * image.Width + x) * 4;
 
                     data[dataOffset + 0] = pixels[pixelOffset + 2];
                     data[dataOffset + 1] = pixels[pixelOffset + 1];
@@ -277,7 +263,7 @@ namespace Nine.Imaging.Encoding
 
                     if (y > 0)
                     {
-                        int lastOffset = ((y - 1) * image.PixelWidth + x) * 4;
+                        int lastOffset = ((y - 1) * image.Width + x) * 4;
 
                         data[dataOffset + 0] -= pixels[lastOffset + 2];
                         data[dataOffset + 1] -= pixels[lastOffset + 1];

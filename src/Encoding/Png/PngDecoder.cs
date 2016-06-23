@@ -166,11 +166,7 @@ namespace Nine.Imaging.Encoding
 
             private void ReadPhysicalChunk(byte[] data)
             {
-                Array.Reverse(data, 0, 4);
-                Array.Reverse(data, 4, 4);
 
-                _image.DensityX = BitConverter.ToInt32(data, 0) / 39.3700787d;
-                _image.DensityY = BitConverter.ToInt32(data, 4) / 39.3700787d;
             }
 
             private int CalculateScanlineLength(PngColorTypeInformation colorTypeInformation)

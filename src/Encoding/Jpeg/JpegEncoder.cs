@@ -81,8 +81,8 @@ namespace Nine.Imaging.Encoding
         /// </exception>
         public void Encode(ImageBase image, Stream stream)
         {
-            int pixelWidth  = image.PixelWidth;
-            int pixelHeight = image.PixelHeight;
+            int pixelWidth  = image.Width;
+            int pixelHeight = image.Height;
 
             byte[] sourcePixels = image.Pixels;
 

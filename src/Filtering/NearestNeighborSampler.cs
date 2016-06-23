@@ -18,8 +18,8 @@ namespace Nine.Imaging.Filtering
         {
             byte[] newPixels = new byte[width * height * 4];
 
-            double xFactor = (double)source.PixelWidth / width;
-            double yFactor = (double)source.PixelHeight / height;
+            double xFactor = (double)source.Width / width;
+            double yFactor = (double)source.Height / height;
 
             int dstOffsetLine = 0;
             int dstOffset = 0;
@@ -34,7 +34,7 @@ namespace Nine.Imaging.Filtering
                 dstOffsetLine = 4 * width * y;
 
                 // Calculate the line offset at the source image, where the pixels should be get from.
-                srcOffsetLine = 4 * source.PixelWidth * (int)(y * yFactor);
+                srcOffsetLine = 4 * source.Width * (int)(y * yFactor);
 
                 for (int x = 0; x < width; x++)
                 {

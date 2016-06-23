@@ -22,19 +22,19 @@
         public static Image Crop(this Image source, Rectangle bounds) => PerformAction(source, false, (sourceImage, targetImage) => ImageBaseOperations.Crop(sourceImage, targetImage, bounds));
 
         public static Image Width(this Image source, int width, int height = -1, StretchMode mode = StretchMode.Fill, IImageSampler sampler = null)
-            => Resize(source, width, height >= 0 ? height : (int)Math.Round(width / source.PixelRatio), mode, sampler);
+            => Resize(source, width, height >= 0 ? height : (int)Math.Round(width / source.AspectRatio), mode, sampler);
 
         public static Image Height(this Image source, int height, int width = -1, StretchMode mode = StretchMode.Fill, IImageSampler sampler = null)
-            => Resize(source, width >= 0 ? width : (int)Math.Round(height * source.PixelRatio), height, mode, sampler);
+            => Resize(source, width >= 0 ? width : (int)Math.Round(height * source.AspectRatio), height, mode, sampler);
 
         public static Image Resize(this Image source, int size, StretchMode mode = StretchMode.Fill, IImageSampler sampler = null)
         {
             int width = 0;
             int height = 0;
 
-            var ratio = source.PixelRatio;
+            var ratio = source.AspectRatio;
 
-            if (source.PixelWidth > source.PixelHeight && ratio > 0)
+            if (source.Width > source.Height && ratio > 0)
             {
                 width = size;
                 height = (int)Math.Round(width / ratio);

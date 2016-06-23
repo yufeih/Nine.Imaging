@@ -22,19 +22,9 @@ namespace Nine.Imaging
     /// </summary>
     /// <remarks>The image data is alway stored in RGBA format, where the red, the blue, the
     /// alpha values are simple bytes.</remarks>
-    [DebuggerDisplay("Image: {PixelWidth}x{PixelHeight}")]
     public class Image : ImageBase
     {
         #region Constants
-
-        /// <summary>
-        /// The default density value (dots per inch) in x direction. The default value is 75 dots per inch.
-        /// </summary>
-        public const double DefaultDensityX = 75;
-        /// <summary>
-        /// The default density value (dots per inch) in y direction. The default value is 75 dots per inch.
-        /// </summary>
-        public const double DefaultDensityY = 75;
 
         private static readonly Lazy<List<IImageDecoder>> defaultDecoders = new Lazy<List<IImageDecoder>>(() => new List<IImageDecoder>
         {
@@ -69,12 +59,6 @@ namespace Nine.Imaging
 
         #endregion
 
-        #region Fields
-
-        private readonly object _lockObject = new object();
-
-        #endregion
-
         /// <summary>
         /// If not 0, this field specifies the number of hundredths (1/100) of a second to 
         /// wait before continuing with the processing of the Data Stream. 
@@ -84,62 +68,6 @@ namespace Nine.Imaging
         public int? DelayTime { get; set; }
 
         #region Properties
-
-        /// <summary>
-        /// Gets or sets the resolution of the image in x direction. It is defined as 
-        /// number of dots per inch and should be an positive value.
-        /// </summary>
-        /// <value>The density of the image in x direction.</value>
-        public double DensityX { get; set; }
-
-        /// <summary>
-        /// Gets or sets the resolution of the image in y direction. It is defined as 
-        /// number of dots per inch and should be an positive value.
-        /// </summary>
-        /// <value>The density of the image in y direction.</value>
-        public double DensityY { get; set; }
-
-        /// <summary>
-        /// Gets the width of the image in inches. It is calculated as the width of the image 
-        /// in pixels multiplied with the density. When the density is equals or less than zero 
-        /// the default value is used.
-        /// </summary>
-        /// <value>The width of the image in inches.</value>
-        public double InchWidth
-        {
-            get
-            {
-                double densityX = DensityX;
-
-                if (densityX <= 0)
-                {
-                    densityX = DefaultDensityX;
-                }
-
-                return PixelWidth / densityX;
-            }
-        }
-
-        /// <summary>
-        /// Gets the height of the image in inches. It is calculated as the height of the image 
-        /// in pixels multiplied with the density. When the density is equals or less than zero 
-        /// the default value is used.
-        /// </summary>
-        /// <value>The height of the image in inches.</value>
-        public double InchHeight
-        {
-            get
-            {
-                double densityY = DensityY;
-
-                if (densityY <= 0)
-                {
-                    densityY = DefaultDensityY;
-                }
-
-                return PixelHeight / densityY;
-            }
-        }
 
         /// <summary>
         /// Gets a value indicating whether this image is animated.
@@ -184,9 +112,9 @@ namespace Nine.Imaging
         /// <param name="height">The height of the image in pixels.</param>
         public Image(int width, int height) : base(width, height)
         {
-            DensityX = DefaultDensityX;
-            DensityY = DefaultDensityY;
+
         }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Image"/> class
         /// by making a copy from another image.
@@ -205,19 +133,12 @@ namespace Nine.Imaging
                     Frames.Add(new ImageFrame(frame));
                 }
             }
-
-            DensityX = DefaultDensityX;
-            DensityY = DefaultDensityY;
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Image"/> class.
         /// </summary>
-        public Image()
-        {
-            DensityX = DefaultDensityX;
-            DensityY = DefaultDensityY;
-        }
+        public Image() { }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Image"/> class.
