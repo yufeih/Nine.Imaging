@@ -1,12 +1,8 @@
 ﻿namespace Nine.Imaging
 {
     using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Text;
-    using Nine.Imaging.Encoding;
 
-    public class Image
+    public partial class Image
     {
         public readonly int Width;
         public readonly int Height;
@@ -76,79 +72,6 @@
             Array.Copy(Pixels, clonedPixels, Pixels.Length);
 
             return new Image(Width, Height, clonedPixels);
-        }
-
-        private static readonly Lazy<List<IImageDecoder>> defaultDecoders = new Lazy<List<IImageDecoder>>(() => new List<IImageDecoder>
-        {
-            new BmpDecoder(),
-            new JpegDecoder(),
-            new PngDecoder(),
-            new GifDecoder(),
-        });
-
-        private static readonly Lazy<List<IImageEncoder>> defaultEncoders = new Lazy<List<IImageEncoder>>(() => new List<IImageEncoder>
-        {
-            new BmpEncoder(),
-            new JpegEncoder(),
-            new PngEncoder(),
-        });
-
-        public static IList<IImageDecoder> Decoders => defaultDecoders.Value;
-        public static IList<IImageEncoder> Encoders => defaultEncoders.Value;
-
-        public static Image Load(string path, IList<IImageDecoder> decoders = null)
-        {
-            using (var stream = File.OpenRead(path))
-            {
-                return Load(stream, decoders);
-            }
-        }
-
-        public static Image Load(Stream stream, IList<IImageDecoder> decoders = null)
-        {
-            if (decoders == null)
-            {
-                decoders = Decoders;
-            }
-
-            if (decoders.Count > 0)
-            {
-                var maxHeaderSize = 0;
-
-                foreach (var decoder in decoders)
-                {
-                    if (decoder.HeaderSize > maxHeaderSize)
-                    {
-                        maxHeaderSize = decoder.HeaderSize;
-                    }
-                }
-
-                if (maxHeaderSize > 0)
-                {
-                    byte[] header = new byte[maxHeaderSize];
-
-                    stream.Read(header, 0, maxHeaderSize);
-                    stream.Position = 0;
-
-                    foreach (var decoder in decoders)
-                    {
-                        if (decoder.IsSupportedFileFormat(header))
-                        {
-                            return decoder.Decode(stream);
-                        }
-                    }
-                }
-            }
-
-            var stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine("Image cannot be loaded. Available decoders:");
-
-            foreach (IImageDecoder decoder in decoders)
-            {
-                stringBuilder.AppendLine("-" + decoder);
-            }
-
-            throw new NotSupportedException(stringBuilder.ToString());
         }
     }
 }

@@ -53,10 +53,7 @@ namespace Nine.Imaging.Encoding
         /// Gets the default file extension for this encoder.
         /// </summary>
         /// <value>The default file extension for this encoder.</value>
-        public string Extension
-        {
-            get { return "PNG"; }
-        }
+        public string Extension => "png";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PngEncoder"/> class.

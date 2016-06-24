@@ -20,34 +20,8 @@ namespace Nine.Imaging.Encoding
     /// to streams. All other formats does not make much sense today.</remarks>
     public class BmpEncoder : IImageEncoder
     {
-        #region IImageEncoder Members
+        public string Extension => "bmp";
 
-        /// <summary>
-        /// Gets the default file extension for this encoder ("bmp");
-        /// </summary>
-        /// <value>The default file extension for this encoder.</value>
-        /// <remarks>Please recognize, that "dmp" is also a valid file
-        /// extension for Windows Bitmap files but should not be used.</remarks>
-        public string Extension
-        {
-            get { return "bmp"; }
-        }
-
-        /// <summary>
-        /// Indicates if the image encoder supports the specified
-        /// file extension.
-        /// </summary>
-        /// <param name="extension">The file extension.</param>
-        /// <returns>
-        /// <c>true</c>, if the encoder supports the specified
-        /// extensions; otherwise <c>false</c>.
-        /// </returns>
-        /// <remarks>For example, the <see cref="Nine.Imaging.Bmp.BmpDecoder"/>
-        /// supports BMP or DIP as file extension.</remarks>
-        /// <exception cref="ArgumentNullException"><paramref name="extension"/>
-        /// is null (Nothing in Visual Basic).</exception>
-        /// <exception cref="ArgumentException"><paramref name="extension"/> is a string
-        /// of length zero or contains only blanks.</exception>
         public bool IsSupportedFileExtension(string extension)
         {
             if (extension.StartsWith(".")) extension = extension.Substring(1);
@@ -55,19 +29,6 @@ namespace Nine.Imaging.Encoding
                    extension.Equals("DIP", StringComparison.OrdinalIgnoreCase);
         }
 
-        /// <summary>
-        /// Encodes the data of the specified image and writes the result to
-        /// the specified stream.
-        /// </summary>
-        /// <param name="image">The image, where the data should be get from.
-        /// Cannot be null (Nothing in Visual Basic).</param>
-        /// <param name="stream">The stream, where the image data should be written to. 
-        /// Cannot be null (Nothing in Visual Basic).</param>
-        /// <exception cref="ArgumentNullException">
-        /// 	<para><paramref name="image"/> is null (Nothing in Visual Basic).</para>
-        /// 	<para>- or -</para>
-        /// 	<para><paramref name="stream"/> is null (Nothing in Visual Basic).</para>
-        /// </exception>
         public void Encode(Image image, Stream stream)
         {
             int rowWidth = image.Width;
@@ -153,7 +114,5 @@ namespace Nine.Imaging.Encoding
             writer.Write(infoHeader.ClrUsed);
             writer.Write(infoHeader.ClrImportant);
         }
-
-        #endregion
     }
 }
