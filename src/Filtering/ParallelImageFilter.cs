@@ -73,18 +73,6 @@
             }
             else
             {
-                for (var y = rectangle.Bottom; y < source.Height; y++)
-                {
-                    var i = y * source.Width;
-                    var max = i + source.Width;
-
-                    while (i < max)
-                    {
-                        target.Pixels[i] = source.Pixels[i];
-                    }
-                }
-
-
                 Apply(target, source, rectangle, rectangle.Y, rectangle.Bottom);
             }
 

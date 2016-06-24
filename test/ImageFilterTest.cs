@@ -11,8 +11,8 @@
         {
             { typeof(Inverter).Name, new Inverter() },
             { typeof(BlendingFilter).Name, new BlendingFilter(Image.Load("TestImages/Car.bmp")) { Alpha = 0.25 } },
-            { "GrayscaleBT709", new Grayscale { Coefficients = Grayscale.BT709 } },
-            { "GrayscaleRMY", new Grayscale { Coefficients = Grayscale.RMY } },
+            { "GrayscaleBT709", new Grayscale { Coefficients = Grayscale.BT709, Parallelism = 4 } },
+            { "GrayscaleRMY", new Grayscale { Coefficients = Grayscale.RMY, Parallelism = 1 } },
             { typeof(Sepia).Name, new Sepia() },
             { typeof(Sobel).Name, new Sobel() },
             { typeof(Prewitt).Name, new Prewitt() },
