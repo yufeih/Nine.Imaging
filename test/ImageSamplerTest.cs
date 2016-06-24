@@ -22,7 +22,7 @@
         [MemberData("Resizers")]
         public void resize_image_using_sampler(string filename, int width, int? height, StretchMode mode, IImageSampler sampler)
         {
-            var image = new Image(File.OpenRead($"TestImages/{ filename }"));
+            var image = Image.Load($"TestImages/{ filename }");
             var watch = Stopwatch.StartNew();
 
             if (height != null)

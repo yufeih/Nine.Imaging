@@ -24,7 +24,7 @@ namespace Nine.Imaging.Filtering
 
         #region Methods
 
-        protected override void Apply(ImageBase target, ImageBase source, Rectangle rectangle, int startY, int endY)
+        protected override void Apply(Image target, Image source, Rectangle rectangle, int startY, int endY)
         {
             double _cr = Coefficients[0];
             double _cg = Coefficients[1];

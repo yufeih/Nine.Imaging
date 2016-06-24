@@ -53,12 +53,9 @@ namespace Nine.Imaging.Encoding
                    header[7] == 0x0A;   // LF
         }
 
-        public void Decode(Image image, Stream stream)
-        {
-            new PngDecoderCore().Decode(image, stream);
-        }
+        public Image Decode(Stream stream) => new PngDecoderCore().Decode(stream);
 
-        class PngDecoderCore
+        struct PngDecoderCore
         {
             private static readonly Dictionary<int, PngColorTypeInformation> _colorTypes = new Dictionary<int, PngColorTypeInformation>();
             private Image _image;
@@ -88,10 +85,8 @@ namespace Nine.Imaging.Encoding
                         (p, a) => new TrueColorReader(true)));
             }
 
-            public void Decode(Image image, Stream stream)
+            public Image Decode(Stream stream)
             {
-                _image = image;
-
                 _stream = stream;
                 _stream.Seek(8, SeekOrigin.Current);
 
@@ -117,10 +112,6 @@ namespace Nine.Imaging.Encoding
 
                             ValidateHeader();
                         }
-                        else if (currentChunk.Type == PngChunkTypes.Physical)
-                        {
-                            ReadPhysicalChunk(currentChunk.Data);
-                        }
                         else if (currentChunk.Type == PngChunkTypes.Data)
                         {
                             dataStream.Write(currentChunk.Data, 0, currentChunk.Data.Length);
@@ -133,20 +124,16 @@ namespace Nine.Imaging.Encoding
                         {
                             paletteAlpha = currentChunk.Data;
                         }
-                        else if (currentChunk.Type == PngChunkTypes.Text)
-                        {
-                            ReadTextChunk(currentChunk.Data);
-                        }
                         else if (currentChunk.Type == PngChunkTypes.End)
                         {
                             isEndChunckReached = true;
                         }
                     }
 
-                    if (_header.Width > ImageBase.MaxWidth || _header.Height > ImageBase.MaxHeight)
+                    if (_header.Width > Image.MaxWidth || _header.Height > Image.MaxHeight)
                     {
                         throw new ArgumentOutOfRangeException(
-                            $"The input png '{ _header.Width }x{ _header.Height }' is bigger then the max allowed size '{ ImageBase.MaxWidth }x{ ImageBase.MaxHeight }'");
+                            $"The input png '{ _header.Width }x{ _header.Height }' is bigger then the max allowed size '{ Image.MaxWidth }x{ Image.MaxHeight }'");
                     }
 
                     byte[] pixels = new byte[_header.Width * _header.Height * 4];
@@ -160,13 +147,8 @@ namespace Nine.Imaging.Encoding
                         ReadScanlines(dataStream, pixels, colorReader, colorTypeInformation);
                     }
 
-                    image.SetPixels(_header.Width, _header.Height, pixels);
+                    return new Image(_header.Width, _header.Height, pixels);
                 }
-            }
-
-            private void ReadPhysicalChunk(byte[] data)
-            {
-
             }
 
             private int CalculateScanlineLength(PngColorTypeInformation colorTypeInformation)
@@ -297,25 +279,6 @@ namespace Nine.Imaging.Encoding
                 }
 
                 return predicator;
-            }
-
-            private void ReadTextChunk(byte[] data)
-            {
-                int zeroIndex = 0;
-
-                for (int i = 0; i < data.Length; i++)
-                {
-                    if (data[i] == (byte)0)
-                    {
-                        zeroIndex = i;
-                        break;
-                    }
-                }
-
-                string name = System.Text.Encoding.Unicode.GetString(data, 0, zeroIndex);
-                string value = System.Text.Encoding.Unicode.GetString(data, zeroIndex + 1, data.Length - zeroIndex - 1);
-
-                _image.Properties.Add(new ImageProperty(name, value));
             }
 
             private void ReadHeaderChunk(byte[] data)

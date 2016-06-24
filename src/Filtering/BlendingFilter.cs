@@ -1,69 +1,28 @@
-﻿// ===============================================================================
-// BlendingFilter.cs
-// .NET Image Tools
-// ===============================================================================
-// Copyright (c) .NET Image Tools Development Group. 
-// All rights reserved.
-// ===============================================================================
-
-namespace Nine.Imaging.Filtering
+﻿namespace Nine.Imaging.Filtering
 {
-    /// <summary>
-    /// An <see cref="IImageFilter"/> for adding an overlay image to an <see cref="Image"/>. The transperency
-    /// of the overlay is respected, so an alpha value of 255 in the overlay image pixel means that the original image pixel
-    /// is fully replaced. A value of 0 means that the original image pixel is not changed at all.
-    /// </summary>
     public class BlendingFilter : ParallelImageFilter
     {
-        #region Fields
+        private readonly Image _blendedImage;
 
-        private readonly ImageBase _blendedImage;
-
-        #endregion
-
-        #region Properties
-
-        /// <summary>
-        /// Gets or sets the global alpha factor.
-        /// </summary>
-        /// <value>The global alpha factor.</value>
         public double? Alpha { get; set; }
 
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BlendingFilter"/> class.
-        /// </summary>
-        /// <param name="blendedImage">The image that should be added to another image when apply is called. Is not allowed to be null.</param>
-        /// <exception cref="ArgumentException"><paramref name="blendedImage"/> is null.</exception>
-        public BlendingFilter(ImageBase blendedImage)
+        public BlendingFilter(Image blendedImage)
         {
             _blendedImage = blendedImage;
         }
 
-        #endregion
-
-        #region Methods
-
-        protected override void Apply(ImageBase target, ImageBase source, Rectangle rectangle, int startY, int endY)
+        protected override void Apply(Image target, Image source, Rectangle rectangle, int startY, int endY)
         {
-            // Make sure we stop combining when the whole image that should be combined has been processed.
-            if (rectangle.Right > _blendedImage.Width)
-            {
-                rectangle.Width = _blendedImage.Width - rectangle.Left;
-            }
-
-            if (rectangle.Bottom > _blendedImage.Height)
-            {
-                rectangle.Height = _blendedImage.Height - rectangle.Top;
-            }
-
             for (int y = startY; y < endY; y++)
             {
                 for (int x = rectangle.X; x < rectangle.Right; x++)
                 {
+                    if (y >= _blendedImage.Height || x >= _blendedImage.Width)
+                    {
+                        target[x, y] = source[x, y];
+                        continue;
+                    }
+
                     Color color = source[x, y], blendedColor = _blendedImage[x, y];
 
                     // combining colors is dependent o the alpha of the blended color
@@ -83,7 +42,5 @@ namespace Nine.Imaging.Filtering
                 }
             }
         }
-
-        #endregion
     }
 }

@@ -2,9 +2,6 @@
 {
     using System;
 
-    /// <summary>
-    /// Implements a gaussian blur filter using a filter matrix.
-    /// </summary>
     public class GaussianBlur : MatrixFilter
     {
         private double[] filter;
@@ -16,7 +13,7 @@
 
         protected override void OnApply()
         {
-            var varience = Math.Max(1, this.Variance);
+            var varience = Math.Max(1, Variance);
 
             if (filter == null || oldVariance != varience)
             {

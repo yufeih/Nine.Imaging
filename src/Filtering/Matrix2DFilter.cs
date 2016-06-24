@@ -11,7 +11,7 @@
         public abstract double[] KernelX { get; }
         public abstract double[] KernelY { get; }
 
-        protected override void Apply(ImageBase target, ImageBase source, Rectangle rectangle, int startY, int endY)
+        protected override void Apply(Image target, Image source, Rectangle rectangle, int startY, int endY)
         {
             double[] kernelX = KernelX;
             double[] kernelY = KernelY;

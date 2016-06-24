@@ -9,17 +9,26 @@
 
         // Transform
         public static Image Transform(this Image source, RotationType rotate, FlippingType flip)
-            => PerformAction(source, false, (sourceImage, targetImage) => ImageBaseOperations.Transform(sourceImage, targetImage, rotate, flip));
+            => PerformAction(source, image => ImageBaseOperations.Transform(image, rotate, flip));
 
-        public static Image FlipX(this Image source) => Transform(source, RotationType.None, FlippingType.Horizontal);
-        public static Image FlipY(this Image source) => Transform(source, RotationType.None, FlippingType.Vertical);
+        public static Image FlipX(this Image source)
+            => Transform(source, RotationType.None, FlippingType.Horizontal);
 
-        public static Image Rotate90(this Image source) => Transform(source, RotationType.Rotate90, FlippingType.None);
-        public static Image Rotate180(this Image source) => Transform(source, RotationType.Rotate180, FlippingType.None);
-        public static Image Rotate270(this Image source) => Transform(source, RotationType.Rotate270, FlippingType.None);
+        public static Image FlipY(this Image source)
+            => Transform(source, RotationType.None, FlippingType.Vertical);
+
+        public static Image Rotate90(this Image source)
+            => Transform(source, RotationType.Rotate90, FlippingType.None);
+
+        public static Image Rotate180(this Image source)
+            => Transform(source, RotationType.Rotate180, FlippingType.None);
+
+        public static Image Rotate270(this Image source)
+            => Transform(source, RotationType.Rotate270, FlippingType.None);
 
         // Resize
-        public static Image Crop(this Image source, Rectangle bounds) => PerformAction(source, false, (sourceImage, targetImage) => ImageBaseOperations.Crop(sourceImage, targetImage, bounds));
+        public static Image Crop(this Image source, Rectangle bounds)
+            => PerformAction(source, image => ImageBaseOperations.Crop(image, bounds));
 
         public static Image Width(this Image source, int width, int height = -1, StretchMode mode = StretchMode.Fill, IImageSampler sampler = null)
             => Resize(source, width, height >= 0 ? height : (int)Math.Round(width / source.AspectRatio), mode, sampler);
@@ -55,14 +64,14 @@
             if (width <= 0) throw new ArgumentOutOfRangeException(nameof(width));
             if (height <= 0) throw new ArgumentOutOfRangeException(nameof(height));
 
-            if (width > ImageBase.MaxWidth || width > ImageBase.MaxHeight)
+            if (width > Image.MaxWidth || width > Image.MaxHeight)
             {
                 throw new ArgumentOutOfRangeException(
-                    $"Target size '{ width }x{ width }' is bigger then the max allowed size '{ ImageBase.MaxWidth }x{ ImageBase.MaxHeight }'");
+                    $"Target size '{ width }x{ width }' is bigger then the max allowed size '{ Image.MaxWidth }x{ Image.MaxHeight }'");
             }
 
             sampler = sampler ?? defaultSampler;
-            return PerformAction(source, false, (sourceImage, targetImage) => sampler.Sample(sourceImage, targetImage, width, height));
+            return PerformAction(source, image => sampler.Sample(image, width, height));
         }
 
         // Per pixel filtering effects
@@ -90,35 +99,38 @@
             return ms;
         }
 
+        public static Image Filter(this Image source, IImageFilter filter) => Filter(source, source.Bounds, filter);
+        public static Image Filter(this Image source, Rectangle rectangle, IImageFilter filter)
+        {
+            return PerformAction(source, image => filter.Apply(image, rectangle));
+        }
+
         public static Image Filter(this Image source, params IImageFilter[] filters) => Filter(source, source.Bounds, filters);
         public static Image Filter(this Image source, Rectangle rectangle, params IImageFilter[] filters)
         {
             foreach (IImageFilter filter in filters)
             {
-                source = PerformAction(source, true, (sourceImage, targetImage) => filter.Apply(targetImage, sourceImage, rectangle));
+                source = PerformAction(source, image => filter.Apply(image, rectangle));
             }
             return source;
         }
 
-        private static Image PerformAction(Image source, bool clone, Action<ImageBase, ImageBase> action)
+        private static Image PerformAction(Image source, Func<Image, Image> action)
         {
-            Image transformedImage = clone ? new Image(source) : new Image();
-
-            action(source, transformedImage);
-
-            foreach (ImageFrame frame in source.Frames)
+            var animatedImage = source as AnimatedImage;
+            if (animatedImage == null)
             {
-                ImageFrame temp = new ImageFrame();
-
-                action(frame, temp);
-
-                if (!clone)
-                {
-                    transformedImage.Frames.Add(temp);
-                }
+                return action(source);
             }
 
-            return transformedImage;
+            var frames = new Image[animatedImage.Frames.Count];
+
+            for (var i = 0; i < frames.Length; i++)
+            {
+                frames[i] = action(animatedImage.Frames[i]);
+            }
+
+            return new AnimatedImage(animatedImage.FrameDuration, frames);
         }
     }
 }

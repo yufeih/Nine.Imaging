@@ -97,7 +97,7 @@ namespace Nine.Imaging.Encoding
         /// <para>- or -</para>
         /// <para><paramref name="stream"/> is null (Nothing in Visual Basic).</para>
         /// </exception>
-        public void Encode(ImageBase image, Stream stream)
+        public void Encode(Image image, Stream stream)
         {
             // Write the png header.
             stream.Write(
@@ -134,7 +134,7 @@ namespace Nine.Imaging.Encoding
             stream.Flush();
         }
 
-        private void WritePhysicsChunk(Stream stream, ImageBase imageBase)
+        private void WritePhysicsChunk(Stream stream, Image imageBase)
         {
 
         }
@@ -154,7 +154,7 @@ namespace Nine.Imaging.Encoding
             }
         }
 
-        private void WriteDataChunksFast(Stream stream, ImageBase image)
+        private void WriteDataChunksFast(Stream stream, Image image)
         {
             byte[] pixels = image.Pixels;
 
@@ -231,7 +231,7 @@ namespace Nine.Imaging.Encoding
             }
         }
 
-        private void WriteDataChunks(Stream stream, ImageBase image)
+        private void WriteDataChunks(Stream stream, Image image)
         {
             byte[] pixels = image.Pixels;
 

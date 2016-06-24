@@ -7,7 +7,7 @@
         private double CubeClamped(double x) => x >= 0 ? x * x * x : 0;
         private double R(double x) => (CubeClamped(x + 2) - (4 * CubeClamped(x + 1)) + (6 * CubeClamped(x)) - (4 * CubeClamped(x - 1))) / 6;
 
-        protected override void Sample(ImageBase source, int width, int height, int startY, int endY, byte[] pixels)
+        protected override void Sample(Image source, int width, int height, int startY, int endY, byte[] pixels)
         {
             // TODO: Implement this
             byte[] sourcePixels = source.Pixels;

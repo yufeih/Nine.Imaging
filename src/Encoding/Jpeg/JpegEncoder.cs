@@ -79,7 +79,7 @@ namespace Nine.Imaging.Encoding
         /// 	<para>- or -</para>
         /// 	<para><paramref name="stream"/> is null (Nothing in Visual Basic).</para>
         /// </exception>
-        public void Encode(ImageBase image, Stream stream)
+        public void Encode(Image image, Stream stream)
         {
             int pixelWidth  = image.Width;
             int pixelHeight = image.Height;

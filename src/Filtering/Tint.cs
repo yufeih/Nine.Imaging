@@ -5,7 +5,7 @@
         public bool UseHsbSpace { get; set; } = false;
         public Color TintColor { get; set; } = Color.White;
 
-        protected override void Apply(ImageBase target, ImageBase source, Rectangle rectangle, int startY, int endY)
+        protected override void Apply(Image target, Image source, Rectangle rectangle, int startY, int endY)
         {
             if (UseHsbSpace)
             {

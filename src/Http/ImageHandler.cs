@@ -30,7 +30,7 @@
             this.loaders = loaders.ToArray();
             this.invoker = new ExtensionMethodInvoker(convert, new[] { typeof(ImageFiltering) }.Concat(declaredTypes).ToArray());
 
-            ImageBase.MaxWidth = ImageBase.MaxHeight = 5000;
+            Image.MaxWidth = Image.MaxHeight = 5000;
         }
 
         protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)

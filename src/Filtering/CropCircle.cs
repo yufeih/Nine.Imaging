@@ -9,7 +9,7 @@
 
         public double Radius { get; set; } = -1;
 
-        protected override void Apply(ImageBase target, ImageBase source, Rectangle rectangle, int startY, int endY)
+        protected override void Apply(Image target, Image source, Rectangle rectangle, int startY, int endY)
         {
             var radius = Radius >= 0 ? Radius : Math.Min(rectangle.Width, rectangle.Height) * 0.5;
             var radiusSq = radius * radius;

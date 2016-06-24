@@ -1,13 +1,12 @@
 ﻿namespace Nine.Imaging.Encoding
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using Nine.Imaging.Gif;
 
     public class GifDecoder : IImageDecoder
     {
-        public static int MaxCommentLength = 1024 * 8;
-
         public int HeaderSize => 6;
 
         public bool IsSupportedFileExtension(string extension)
@@ -27,12 +26,11 @@
                    header[5] == 0x61;   // a
         }
 
-        public void Decode(Image image, Stream stream)
-        {
-            new GifDecoderCore().Decode(image, stream);
-        }
+        Image IImageDecoder.Decode(Stream stream) => Decode(stream);
 
-        class GifDecoderCore
+        public AnimatedImage Decode(Stream stream) => new GifDecoderCore().Decode(stream);
+
+        struct GifDecoderCore
         {
             private const byte ExtensionIntroducer = 0x21;
             private const byte Terminator = 0;
@@ -44,23 +42,22 @@
             private const byte PlainTextLabel = 0x01;
             private const byte GraphicControlLabel = 0xF9;
 
-            private Image _image;
             private Stream _stream;
             private GifLogicalScreenDescriptor _descriptor;
             private byte[] _globalColorTable;
             private byte[] _currentFrame;
+            private List<Image> _frames;
             private GifGraphicsControlExtension _graphicsControl;
             
-            public void Decode(Image image, Stream stream)
+            public AnimatedImage Decode(Stream stream)
             {
-                _image = image;
-
                 _stream = stream;
                 _stream.Seek(6, SeekOrigin.Current);
+                _frames = new List<Image>();
 
                 ReadLogicalScreenDescriptor();
 
-                if (_descriptor.GlobalColorTableFlag == true)
+                if (_descriptor.GlobalColorTableFlag)
                 {
                     _globalColorTable = new byte[_descriptor.GlobalColorTableSize * 3];
 
@@ -100,6 +97,13 @@
                     }
                     nextFlag = stream.ReadByte();
                 }
+
+
+                // If not 0, this field specifies the number of hundredths (1/100) of a second to 
+                // wait before continuing with the processing of the Data Stream. 
+                var frameDuration = _graphicsControl != null ? _graphicsControl.DelayTime * 10 : 0;
+
+                return new AnimatedImage(frameDuration, _frames);
             }
 
             private void ReadGraphicalControlExtension()
@@ -157,10 +161,10 @@
                     throw new ImageFormatException($"Invalid gif colormap size '{ _descriptor.GlobalColorTableSize }'");
                 }
 
-                if (_descriptor.Width > ImageBase.MaxWidth || _descriptor.Height > ImageBase.MaxHeight)
+                if (_descriptor.Width > Image.MaxWidth || _descriptor.Height > Image.MaxHeight)
                 {
                     throw new ArgumentOutOfRangeException(
-                        $"The input gif '{ _descriptor.Width }x{ _descriptor.Height }' is bigger then the max allowed size '{ ImageBase.MaxWidth }x{ ImageBase.MaxHeight }'");
+                        $"The input gif '{ _descriptor.Width }x{ _descriptor.Height }' is bigger then the max allowed size '{ Image.MaxWidth }x{ Image.MaxHeight }'");
                 }
             }
 
@@ -182,16 +186,7 @@
 
                 while ((flag = _stream.ReadByte()) != 0)
                 {
-                    if (flag > MaxCommentLength)
-                    {
-                        throw new ImageFormatException($"Gif comment length '{ flag }' excceeds max '{ MaxCommentLength }'");
-                    }
-
-                    byte[] buffer = new byte[flag];
-
-                    _stream.Read(buffer, 0, flag);
-
-                    _image.Properties.Add(new ImageProperty("Comments", BitConverter.ToString(buffer)));
+                    _stream.Seek(flag, SeekOrigin.Current);
                 }
             }
 
@@ -319,31 +314,11 @@
                     }
                 }
 
-                byte[] pixels = new byte[imageWidth * imageHeight * 4];
+                var pixels = new byte[imageWidth * imageHeight * 4];
 
                 Array.Copy(_currentFrame, pixels, pixels.Length);
 
-                ImageBase currentImage = null;
-
-                if (_image.Pixels == null)
-                {
-                    currentImage = _image;
-                    currentImage.SetPixels(imageWidth, imageHeight, pixels);
-
-                    if (_graphicsControl != null && _graphicsControl.DelayTime > 0)
-                    {
-                        _image.DelayTime = _graphicsControl.DelayTime;
-                    }
-                }
-                else
-                {
-                    ImageFrame frame = new ImageFrame();
-
-                    currentImage = frame;
-                    currentImage.SetPixels(imageWidth, imageHeight, pixels);
-
-                    _image.Frames.Add(frame);
-                }
+                _frames.Add(new Image(imageWidth, imageHeight, pixels));
 
                 if (_graphicsControl != null)
                 {

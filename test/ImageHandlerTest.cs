@@ -31,7 +31,7 @@
             var response = await client.GetAsync(url);
             var content = await response.EnsureSuccessStatusCode().Content.ReadAsStreamAsync();
 
-            var image = new Image(content);
+            var image = Image.Load(content);
             image.VerifyAndSave($"TestResult/Http/{ Uri.EscapeDataString(url) }.png");
         }
     }

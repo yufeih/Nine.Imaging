@@ -1,7 +1,6 @@
 ﻿namespace Nine.Imaging.Test
 {
     using Xunit;
-    using System.IO;
     using Nine.Imaging;
     using Nine.Imaging.Filtering;
     using System.Diagnostics;
@@ -11,7 +10,7 @@
         public static readonly TheoryData<string, IImageFilter> Filters = new TheoryData<string, IImageFilter>
         {
             { typeof(Inverter).Name, new Inverter() },
-            { typeof(BlendingFilter).Name, new BlendingFilter(new Image(File.OpenRead("TestImages/Car.bmp"))) { Alpha = 0.25 } },
+            { typeof(BlendingFilter).Name, new BlendingFilter(Image.Load("TestImages/Car.bmp")) { Alpha = 0.25 } },
             { "GrayscaleBT709", new Grayscale { Coefficients = Grayscale.BT709 } },
             { "GrayscaleRMY", new Grayscale { Coefficients = Grayscale.RMY } },
             { typeof(Sepia).Name, new Sepia() },
@@ -28,12 +27,10 @@
             { nameof(CropCircle), new CropCircle() },
         };
 
-        [Theory]
-        [MemberData("Filters")]
+        [Theory, MemberData(nameof(Filters))]
         public void filter_image(string name, IImageFilter filter)
         {
-            var stream = File.OpenRead("TestImages/Backdrop.jpg");
-            var image = new Image(stream);
+            var image = Image.Load("TestImages/Backdrop.jpg");
 
             var watch = Stopwatch.StartNew();
 
@@ -42,6 +39,20 @@
             Trace.WriteLine($"{ name }: { watch.ElapsedMilliseconds}ms");
 
             image.VerifyAndSave("TestResult/Filtered/" + name + ".png");
+        }
+
+        [Theory, MemberData(nameof(Filters))]
+        public void filter_image_partial(string name, IImageFilter filter)
+        {
+            var image = Image.Load("TestImages/Backdrop.jpg");
+
+            var watch = Stopwatch.StartNew();
+
+            image = image.Filter(new Rectangle(40, 60, 400, 250), filter);
+
+            Trace.WriteLine($"{ name }: { watch.ElapsedMilliseconds}ms");
+
+            image.VerifyAndSave("TestResult/Filtered/" + name + ".partial.png");
         }
     }
 }

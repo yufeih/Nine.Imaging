@@ -15,7 +15,7 @@ namespace Nine.Imaging.Filtering
     /// </summary>
     public class BilinearSampler : ParallelImageSampler
     {
-        protected override void Sample(ImageBase source, int width, int height, int startY, int endY, byte[] pixels)
+        protected override void Sample(Image source, int width, int height, int startY, int endY, byte[] pixels)
         {
             byte[] sourcePixels = source.Pixels;
 

@@ -6,20 +6,20 @@
     {
         private readonly BilinearSampler bilinear = new BilinearSampler();
 
-        public override void Sample(ImageBase source, ImageBase target, int width, int height)
+        public override Image Sample(Image source, int width, int height)
         {
             if (width < source.Width && height < source.Height)
             {
                 // Use super sampling only in case of minification
-                base.Sample(source, target, width, height);
+                return base.Sample(source, width, height);
             }
             else
             {
-                bilinear.Sample(source, target, width, height);
+                return bilinear.Sample(source, width, height);
             }
         }
 
-        protected override void Sample(ImageBase source, int width, int height, int startY, int endY, byte[] pixels)
+        protected override void Sample(Image source, int width, int height, int startY, int endY, byte[] pixels)
         {
             byte[] sourcePixels = source.Pixels;
 

@@ -34,7 +34,7 @@
 
             using (var stream = File.OpenRead(path))
             {
-                return Task.FromResult(new Image(stream));
+                return Task.FromResult(Image.Load(stream));
             }
         }
     }

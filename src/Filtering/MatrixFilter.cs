@@ -10,13 +10,13 @@
     {
         public abstract double[] Kernel { get; }
 
-        protected override void Apply(ImageBase target, ImageBase source, Rectangle rectangle, int startY, int endY)
+        protected override void Apply(Image target, Image source, Rectangle rectangle, int startY, int endY)
         {
             double[] filter = Kernel;
             int filterSize = (int)Math.Sqrt(filter.Length);
 
-            int width = rectangle.Width;
-            int height = rectangle.Height;
+            int width = source.Width;
+            int height = source.Height;
 
             int sourceWidth = source.Width;
             int halfFilterSize = filterSize >> 1;

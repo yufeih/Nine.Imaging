@@ -9,6 +9,6 @@
         /// Resizes the specified source image by creating a new image with
         /// the specified size which is a resized version of the passed image..
         /// </summary>
-        void Sample(ImageBase source, ImageBase target, int width, int height);
+        Image Sample(Image source, int width, int height);
     }
 }

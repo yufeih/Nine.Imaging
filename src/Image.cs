@@ -1,30 +1,82 @@
-﻿// ===============================================================================
-// Image.cs
-// .NET Image Tools
-// ===============================================================================
-// Copyright (c) .NET Image Tools Development Group. 
-// All rights reserved.
-// ===============================================================================
-
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using Nine.Imaging.Encoding;
-
-namespace Nine.Imaging
+﻿namespace Nine.Imaging
 {
-    /// <summary>
-    /// Image class with stores the pixels and provides common functionality
-    /// such as loading images from files and streams or operation like resizing or cutting.
-    /// </summary>
-    /// <remarks>The image data is alway stored in RGBA format, where the red, the blue, the
-    /// alpha values are simple bytes.</remarks>
-    public class Image : ImageBase
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Text;
+    using Nine.Imaging.Encoding;
+
+    public class Image
     {
-        #region Constants
+        public readonly int Width;
+        public readonly int Height;
+
+        /// <summary>
+        /// Returns all pixels of the image in g, b, r, a byte order.
+        /// </summary>
+        public readonly byte[] Pixels;
+
+        public double AspectRatio => (double)Width / Height;
+
+        public static int MaxWidth { get; set; } = int.MaxValue;
+        public static int MaxHeight { get; set; } = int.MaxValue;
+        
+        public Color this[int x, int y]
+        {
+            get
+            {
+                int start = (y * Width + x) * 4;
+
+                return new Color(
+                    r: Pixels[start + 2], 
+                    g: Pixels[start + 1], 
+                    b: Pixels[start + 0],
+                    a: Pixels[start + 3]);
+            }
+            set
+            {
+                int start = (y * Width + x) * 4;
+
+                Pixels[start + 0] = value.B;
+                Pixels[start + 1] = value.G;
+                Pixels[start + 2] = value.R;
+                Pixels[start + 3] = value.A;
+            }
+        }
+        
+        public Rectangle Bounds => new Rectangle(0, 0, Width, Height);
+
+        public override string ToString() => $"Image {Width}x{Height}, {Width * Height * 4.0 / 1024}k";
+
+        public Image(int width, int height)
+        {
+            if (width < 0 || width > MaxWidth) throw new ArgumentOutOfRangeException($"Width must be between 0 and { MaxWidth }");
+            if (height < 0 || height > MaxHeight) throw new ArgumentOutOfRangeException($"Height must be between 0 and { MaxHeight }");
+
+            Width = width;
+            Height = height;
+            Pixels = new byte[Width * Height * 4];
+        }
+
+        public Image(int width, int height, byte[] pixels)
+        {
+            if (width < 0 || width > MaxWidth) throw new ArgumentOutOfRangeException($"Width must be between 0 and { MaxWidth }");
+            if (height < 0 || height > MaxHeight) throw new ArgumentOutOfRangeException($"Height must be between 0 and { MaxHeight }");
+            if (pixels.Length != width * height * 4) throw new ArgumentOutOfRangeException($"Expected pixel array length { width * height * 4 }");
+
+            Width = width;
+            Height = height;
+            Pixels = pixels;
+        }
+
+        public virtual Image Clone()
+        {
+            var clonedPixels = new byte[Pixels.Length];
+
+            Array.Copy(Pixels, clonedPixels, Pixels.Length);
+
+            return new Image(Width, Height, clonedPixels);
+        }
 
         private static readonly Lazy<List<IImageDecoder>> defaultDecoders = new Lazy<List<IImageDecoder>>(() => new List<IImageDecoder>
         {
@@ -41,150 +93,36 @@ namespace Nine.Imaging
             new PngEncoder(),
         });
 
-        /// <summary>
-        /// Gets a list of default decoders.
-        /// </summary>
-        public static IList<IImageDecoder> Decoders
+        public static IList<IImageDecoder> Decoders => defaultDecoders.Value;
+        public static IList<IImageEncoder> Encoders => defaultEncoders.Value;
+
+        public static Image Load(string path, IList<IImageDecoder> decoders = null)
         {
-            get { return defaultDecoders.Value; }
-        }
-
-        /// <summary>
-        /// Gets a list of default encoders.
-        /// </summary>
-        public static IList<IImageEncoder> Encoders
-        {
-            get { return defaultEncoders.Value; }
-        }
-
-        #endregion
-
-        /// <summary>
-        /// If not 0, this field specifies the number of hundredths (1/100) of a second to 
-        /// wait before continuing with the processing of the Data Stream. 
-        /// The clock starts ticking immediately after the graphic is rendered. 
-        /// This field may be used in conjunction with the User Input Flag field. 
-        /// </summary>
-        public int? DelayTime { get; set; }
-
-        #region Properties
-
-        /// <summary>
-        /// Gets a value indicating whether this image is animated.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this image is animated; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsAnimated
-        {
-            get { return _frames.Count > 0; }
-        }
-
-        private IList<ImageFrame> _frames = new List<ImageFrame>();
-        /// <summary>
-        /// Get the other frames for the animation.
-        /// </summary>
-        /// <value>The list of frame images.</value>
-        public IList<ImageFrame> Frames
-        {
-            get { return _frames; }
-        }
-
-        private IList<ImageProperty> _properties = new List<ImageProperty>();
-        /// <summary>
-        /// Gets the list of properties for storing meta information about this image.
-        /// </summary>
-        /// <value>A list of image properties.</value>
-        public IList<ImageProperty> Properties
-        {
-            get { return _properties; }
-        }
-
-        #endregion
-
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Image"/> class
-        /// with the height and the width of the image.
-        /// </summary>
-        /// <param name="width">The width of the image in pixels.</param>
-        /// <param name="height">The height of the image in pixels.</param>
-        public Image(int width, int height) : base(width, height)
-        {
-
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Image"/> class
-        /// by making a copy from another image.
-        /// </summary>
-        /// <param name="other">The other image, where the clone should be made from.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="other"/> is null
-        /// (Nothing in Visual Basic).</exception>
-        public Image(Image other) : base(other)
-        {
-            if (other == null) throw new ArgumentNullException("Other image cannot be null.");
-
-            foreach (ImageFrame frame in other.Frames)
+            using (var stream = File.OpenRead(path))
             {
-                if (frame != null)
-                {
-                    Frames.Add(new ImageFrame(frame));
-                }
+                return Load(stream, decoders);
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Image"/> class.
-        /// </summary>
-        public Image() { }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Image"/> class.
-        /// </summary>
-        public Image(Stream stream)
+        public static Image Load(Stream stream, IList<IImageDecoder> decoders = null)
         {
-            if (stream == null)
+            if (decoders == null)
             {
-                throw new ArgumentNullException("stream");
-            }
-
-            Load(stream, Decoders);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Image"/> class.
-        /// </summary>
-        public Image(Stream stream, params IImageDecoder[] decoders)
-        {
-            if (stream == null)
-            {
-                throw new ArgumentNullException("stream");
-            }
-
-            Load(stream, decoders);
-        }
-
-        #endregion Constructors 
-
-        #region Methods
-
-        private void Load(Stream stream, IList<IImageDecoder> decoders)
-        {
-            if (!stream.CanRead)
-            {
-                throw new NotSupportedException("Cannot read from the stream.");
-            }
-
-            if (!stream.CanSeek)
-            {
-                throw new NotSupportedException("The stream does not support seeking.");
+                decoders = Decoders;
             }
 
             if (decoders.Count > 0)
             {
-                int maxHeaderSize = decoders.Max(x => x.HeaderSize);
+                var maxHeaderSize = 0;
+
+                foreach (var decoder in decoders)
+                {
+                    if (decoder.HeaderSize > maxHeaderSize)
+                    {
+                        maxHeaderSize = decoder.HeaderSize;
+                    }
+                }
+
                 if (maxHeaderSize > 0)
                 {
                     byte[] header = new byte[maxHeaderSize];
@@ -192,16 +130,17 @@ namespace Nine.Imaging
                     stream.Read(header, 0, maxHeaderSize);
                     stream.Position = 0;
 
-                    var decoder = decoders.FirstOrDefault(x => x.IsSupportedFileFormat(header));
-                    if (decoder != null)
+                    foreach (var decoder in decoders)
                     {
-                        decoder.Decode(this, stream);
-                        return;
+                        if (decoder.IsSupportedFileFormat(header))
+                        {
+                            return decoder.Decode(stream);
+                        }
                     }
                 }
             }
 
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine("Image cannot be loaded. Available decoders:");
 
             foreach (IImageDecoder decoder in decoders)
@@ -211,7 +150,5 @@ namespace Nine.Imaging
 
             throw new NotSupportedException(stringBuilder.ToString());
         }
-
-        #endregion Methods
     }
 }

@@ -44,15 +44,10 @@
             return isBmp;
         }
 
-        public void Decode(Image image, Stream stream)
-        {
-            new BmpDecoderCore().Decode(image, stream);
-        }
+        public Image Decode(Stream stream) => new BmpDecoderCore().Decode(stream);
 
-        class BmpDecoderCore
+        struct BmpDecoderCore
         {
-            #region Constants
-
             /// <summary>
             /// The mask for the red part of the color for 16 bit rgb bitmaps.
             /// </summary>
@@ -66,32 +61,11 @@
             /// </summary>
             private const int Rgb16BMask = 0x0000001F;
 
-            #endregion
-
-            #region Fields
-
             private Stream _stream;
             private BmpFileHeader _fileHeader;
             private BmpInfoHeader _infoHeader;
 
-            #endregion
-
-            #region IImageDecoder Members
-
-            /// <summary>
-            /// Decodes the image from the specified _stream and sets
-            /// the data to image.
-            /// </summary>
-            /// <param name="image">The image, where the data should be set to.
-            /// Cannot be null (Nothing in Visual Basic).</param>
-            /// <param name="stream">The _stream, where the image should be
-            /// decoded from. Cannot be null (Nothing in Visual Basic).</param>
-            /// <exception cref="ArgumentNullException">
-            /// 	<para><paramref name="image"/> is null (Nothing in Visual Basic).</para>
-            /// 	<para>- or -</para>
-            /// 	<para><paramref name="stream"/> is null (Nothing in Visual Basic).</para>
-            /// </exception>
-            public void Decode(Image image, Stream stream)
+            public Image Decode(Stream stream)
             {
                 _stream = stream;
 
@@ -130,10 +104,10 @@
                         _stream.Read(palette, 0, colorMapSize);
                     }
 
-                    if (_infoHeader.Width > ImageBase.MaxWidth || _infoHeader.Height > ImageBase.MaxHeight)
+                    if (_infoHeader.Width > Image.MaxWidth || _infoHeader.Height > Image.MaxHeight)
                     {
                         throw new ArgumentOutOfRangeException(
-                            $"The input bitmap '{ _infoHeader.Width }x{ _infoHeader.Height }' is bigger then the max allowed size '{ ImageBase.MaxWidth }x{ ImageBase.MaxHeight }'");
+                            $"The input bitmap '{ _infoHeader.Width }x{ _infoHeader.Height }' is bigger then the max allowed size '{ Image.MaxWidth }x{ Image.MaxHeight }'");
                     }
 
                     byte[] imageData = new byte[_infoHeader.Width * _infoHeader.Height * 4];
@@ -171,7 +145,7 @@
                             throw new NotSupportedException("Does not support this kind of bitmap files.");
                     }
 
-                    image.SetPixels(_infoHeader.Width, _infoHeader.Height, imageData);
+                    return new Image(_infoHeader.Width, _infoHeader.Height, imageData);
                 }
                 catch (IndexOutOfRangeException e)
                 {
@@ -394,8 +368,6 @@
                 _fileHeader.Reserved = BitConverter.ToInt32(data, 6);
                 _fileHeader.Offset = BitConverter.ToInt32(data, 10);
             }
-
-            #endregion
         }
     }
 }

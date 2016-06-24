@@ -25,10 +25,10 @@ namespace BitMiracle.LibJpeg
 
         public void SetImageAttributes(LoadedImageAttributes parameters)
         {
-            if (parameters.Width > ImageBase.MaxWidth || parameters.Height > ImageBase.MaxHeight)
+            if (parameters.Width > Image.MaxWidth || parameters.Height > Image.MaxHeight)
             {
                 throw new ArgumentOutOfRangeException(
-                    $"The input jpg '{ parameters.Width }x{ parameters.Height }' is bigger then the max allowed size '{ ImageBase.MaxWidth }x{ ImageBase.MaxHeight }'");
+                    $"The input jpg '{ parameters.Width }x{ parameters.Height }' is bigger then the max allowed size '{ Image.MaxWidth }x{ Image.MaxHeight }'");
             }
 
             m_jpegImage.Width = parameters.Width;

@@ -22,7 +22,7 @@
         [MemberData("Transforms")]
         public void transform_images(RotationType rotate, FlippingType flip)
         {
-            var image = new Image(File.OpenRead("TestImages/Backdrop.jpg"));
+            var image = Image.Load("TestImages/Backdrop.jpg");
             var watch = Stopwatch.StartNew();
 
             image = image.Transform(rotate, flip);

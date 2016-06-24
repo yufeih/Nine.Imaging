@@ -68,7 +68,7 @@ namespace Nine.Imaging.Encoding
         /// 	<para>- or -</para>
         /// 	<para><paramref name="stream"/> is null (Nothing in Visual Basic).</para>
         /// </exception>
-        public void Encode(ImageBase image, Stream stream)
+        public void Encode(Image image, Stream stream)
         {
             int rowWidth = image.Width;
 
@@ -103,7 +103,7 @@ namespace Nine.Imaging.Encoding
             writer.Flush();
         }
 
-        private static void WriteImage(BinaryWriter writer, ImageBase image)
+        private static void WriteImage(BinaryWriter writer, Image image)
         {
             int amount = (image.Width * 3) % 4, offset = 0;
             if (amount != 0)

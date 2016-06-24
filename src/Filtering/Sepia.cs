@@ -14,7 +14,7 @@ namespace Nine.Imaging.Filtering
     /// <remarks>The filter makes an image look like an old brown photo.</remarks>
     public class Sepia : ParallelImageFilter
     {
-        protected override void Apply(ImageBase target, ImageBase source, Rectangle rectangle, int startY, int endY)
+        protected override void Apply(Image target, Image source, Rectangle rectangle, int startY, int endY)
         {
             byte temp = 0;
             for (int y = startY; y < endY; y++)

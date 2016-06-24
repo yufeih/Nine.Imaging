@@ -1,36 +1,33 @@
 ﻿namespace Nine.Imaging
 {
     using System;
-    using System.Collections.Generic;
-    using System.IO;
     using Nine.Imaging.Filtering;
 
     /// <summary>
     /// Represents a nine patch image from an android nine patch image format (http://developer.android.com/tools/help/draw9patch.html).
     /// </summary>
-    public class NinePatchImage : ImageBase
+    public class NinePatchImage
     {
-        private readonly Lazy<IReadOnlyList<ImageBase>> patches;
+        private Image[] _patches;
 
-        public int Left { get; private set; }
-        public int Right { get; private set; }
-        public int Top { get; private set; }
-        public int Bottom { get; private set; }
+        private readonly Image _image;
 
-        public int PaddingLeft { get; private set; }
-        public int PaddingRight { get; private set; }
-        public int PaddingTop { get; private set; }
-        public int PaddingBottom { get; private set; }
+        public readonly int Left;
+        public readonly int Right;
+        public readonly int Top;
+        public readonly int Bottom;
 
-        public IReadOnlyList<ImageBase> Patches => patches.Value;
+        public readonly int PaddingLeft;
+        public readonly int PaddingRight;
+        public readonly int PaddingTop;
+        public readonly int PaddingBottom;
 
-        public NinePatchImage(Stream stream, double scale = 1) : this(new Image(stream), scale)
-        { }
+        public Image Image => _image;
+        public Image[] Patches => _patches ?? (_patches = CreatePatches());
 
-        public NinePatchImage(ImageBase source, double scale = 1)
+        private NinePatchImage(Image source, double scale, Image self)
         {
-            if (source.Width < 3) throw new ArgumentOutOfRangeException(nameof(Width));
-            if (source.Height < 3) throw new ArgumentOutOfRangeException(nameof(Height));
+            _image = self;
 
             var maxX = source.Width - 1;
             var maxY = source.Height - 1;
@@ -63,6 +60,11 @@
                 PaddingTop = Math.Max(1, (int)Math.Round(PaddingTop * scale));
                 PaddingBottom = Math.Max(1, (int)Math.Round(PaddingBottom * scale));
             }
+        }
+
+        public static NinePatchImage Create(Image source, double scale = 1)
+        {
+            if (source.Width < 3 || source.Height < 3) throw new ArgumentOutOfRangeException(nameof(source));
 
             var w = source.Width - 2;
             var h = source.Height - 2;
@@ -73,46 +75,43 @@
                 Array.Copy(source.Pixels, ((y + 1) * source.Width + 1) * 4, pixels, y * w * 4, w * 4);
             }
 
-            SetPixels(w, h, pixels);
+            var self = new Image(w, h, pixels);
 
             if (scale != 1)
             {
                 var resampler = new SuperSamplingSampler();
-                var inner = new Image();
-                inner.SetPixels(w, h, pixels);
+                var inner = new Image(w, h, pixels);
 
                 w = Math.Max(3, (int)Math.Round((source.Width - 1) * scale));
                 h = Math.Max(3, (int)Math.Round((source.Height - 1) * scale));
 
-                resampler.Sample(inner, this, w, h);
+                self = resampler.Sample(inner, w, h);
             }
 
-            patches = new Lazy<IReadOnlyList<ImageBase>>(CreatePatches);
+            return new NinePatchImage(source, scale, self);
         }
 
-        private IReadOnlyList<ImageBase> CreatePatches()
+        private Image[] CreatePatches()
         {
-            return new ImageBase[9]
+            return new Image[9]
             {
-                Patch(0, 0, Left, Top),
-                Patch(Left, 0, Width - Left - Right, Top),
-                Patch(Width - Right, 0, Right, Top),
+                Patch(_image, 0, 0, Left, Top),
+                Patch(_image, Left, 0, _image.Width - Left - Right, Top),
+                Patch(_image, _image.Width - Right, 0, Right, Top),
 
-                Patch(0, Top, Left, Height - Top - Bottom),
-                Patch(Left, Top, Width - Left - Right, Height - Top - Bottom),
-                Patch(Width - Right, Top, Right, Height - Top - Bottom),
+                Patch(_image, 0, Top, Left, _image.Height - Top - Bottom),
+                Patch(_image, Left, Top, _image.Width - Left - Right, _image.Height - Top - Bottom),
+                Patch(_image, _image.Width - Right, Top, Right, _image.Height - Top - Bottom),
 
-                Patch(0, Height - Top, Left, Bottom),
-                Patch(Left, Height - Top, Width - Left - Right, Bottom),
-                Patch(Width - Right, Height - Top, Right, Bottom),
+                Patch(_image, 0, _image.Height - Top, Left, Bottom),
+                Patch(_image, Left, _image.Height - Top, _image.Width - Left - Right, Bottom),
+                Patch(_image, _image.Width - Right, _image.Height - Top, Right, Bottom),
             };
         }
 
-        private ImageBase Patch(int x, int y, int w, int h)
+        private static Image Patch(Image image, int x, int y, int w, int h)
         {
-            var image = new Image();
-            ImageBaseOperations.Crop(this, image, new Rectangle(x, y, w, h));
-            return image;
+            return ImageBaseOperations.Crop(image, new Rectangle(x, y, w, h));
         }
     }
 }

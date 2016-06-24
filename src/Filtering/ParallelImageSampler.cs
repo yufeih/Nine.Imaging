@@ -10,7 +10,7 @@
         /// </summary>
         public int Parallelism { get; set; } = Environment.ProcessorCount;
 
-        public virtual void Sample(ImageBase source, ImageBase target, int width, int height)
+        public virtual Image Sample(Image source, int width, int height)
         {
             byte[] pixels = new byte[width * height * 4];
 
@@ -40,9 +40,9 @@
                 Sample(source, width, height, 0, height, pixels);
             }
 
-            target.SetPixels(width, height, pixels);
+            return new Image(width, height, pixels);
         }
 
-        protected abstract void Sample(ImageBase source, int width, int height, int startY, int endY, byte[] pixels);
+        protected abstract void Sample(Image source, int width, int height, int startY, int endY, byte[] pixels);
     }
 }

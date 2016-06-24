@@ -30,7 +30,7 @@ namespace Nine.Imaging.Filtering
             Value = contrast;
         }
         
-        protected override void Apply(ImageBase target, ImageBase source, Rectangle rectangle, int startY, int endY)
+        protected override void Apply(Image target, Image source, Rectangle rectangle, int startY, int endY)
         {
             double r, g, b, contrast = (100.0 + Value) / 100.0;
 

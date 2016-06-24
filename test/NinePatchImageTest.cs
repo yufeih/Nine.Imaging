@@ -13,7 +13,7 @@
         {
             if (!Directory.Exists("TestResult/NinePatch")) Directory.CreateDirectory("TestResult/NinePatch");
 
-            var img = new NinePatchImage(File.OpenRead(file), scale);
+            var img = NinePatchImage.Create(Image.Load(file), scale);
 
             var name = 
                 $"TestResult/NinePatch/{ Path.GetFileNameWithoutExtension(file) }x{ scale } " +
@@ -35,10 +35,10 @@
 
             using (var output = File.OpenWrite(name))
             {
-                img.SaveAsPng(output);
+                img.Image.SaveAsPng(output);
             }
 
-            for (int i = 0; i < img.Patches.Count; i++)
+            for (int i = 0; i < img.Patches.Length; i++)
             {
                 var patch = $"TestResult/NinePatch/{ Path.GetFileNameWithoutExtension(file) }x{ scale }-{ i }.png";
 

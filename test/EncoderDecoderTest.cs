@@ -16,14 +16,14 @@
         public void decode_then_encode_image_from_stream_should_succeed(string filename)
         {
             if (!Directory.Exists("TestResult/Encoded")) Directory.CreateDirectory("TestResult/Encoded");
-
-            var stream = File.OpenRead(filename);
+            
             var watch = Stopwatch.StartNew();
-            var image = new Image(stream);
+            var image = Image.Load(filename);
 
             var encodedFilename = "TestResult/Encoded/" + Path.GetFileName(filename);
 
-            if (!image.IsAnimated)
+            var animatedImage = image as AnimatedImage;
+            if (animatedImage == null)
             {
                 using (var output = File.OpenWrite(encodedFilename))
                 {
@@ -38,11 +38,11 @@
                     image.SaveAsJpeg(output, 40);
                 }
 
-                for (int i = 0; i < image.Frames.Count; i++)
+                for (int i = 0; i < animatedImage.Frames.Count; i++)
                 {
                     using (var output = File.OpenWrite($"TestResult/Encoded/{ i }_{ Path.GetFileNameWithoutExtension(filename) }.png"))
                     {
-                        image.Frames[i].SaveAsPng(output);
+                        animatedImage.Frames[i].SaveAsPng(output);
                     }
                 }
             }
@@ -58,7 +58,7 @@
         [InlineData(100)]
         public void jpeg_quality(int quality)
         {
-            var image = new Image(File.OpenRead("TestImages/Backdrop.jpg"));
+            var image = Image.Load(File.OpenRead("TestImages/Backdrop.jpg"));
             image.VerifyAndSave($"TestResult/Jpeg/{ quality }.jpg", output => image.SaveAsJpeg(output, quality));
         }
     }

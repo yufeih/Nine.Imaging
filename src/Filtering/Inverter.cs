@@ -14,7 +14,7 @@ namespace Nine.Imaging.Filtering
     /// <remarks>The filter inverts colored and grayscale images.</remarks> 
     public class Inverter : ParallelImageFilter
     {
-        protected override void Apply(ImageBase target, ImageBase source, Rectangle rectangle, int startY, int endY)
+        protected override void Apply(Image target, Image source, Rectangle rectangle, int startY, int endY)
         {
             for (int y = startY; y < endY; y++)
             {

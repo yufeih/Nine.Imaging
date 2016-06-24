@@ -12,22 +12,10 @@ namespace Nine.Imaging.Filtering
 {
     static class ImageBaseOperations
     {
-        /// <summary>
-        /// Transforms the specified image by flipping and rotating it. First the image
-        /// will be rotated, then the image will be flipped. A new image will be returned. The original image
-        /// will not be changed.
-        /// </summary>
-        /// <param name="source">The image, which should be transformed.</param>
-        /// <param name="target">The new transformed image.</param>
-        /// <param name="rotationType">Type of the rotation.</param>
-        /// <param name="flippingType">Type of the flipping.</param>
-        /// <exception cref="ArgumentNullException">
-        /// 	<para><paramref name="source"/> is null (Nothing in Visual Basic).</para>
-        /// 	<para>- or -</para>
-        /// 	<para><paramref name="target"/> is null (Nothing in Visual Basic).</para>
-        /// </exception>
-        internal static void Transform(ImageBase source, ImageBase target, RotationType rotationType, FlippingType flippingType)
+        internal static Image Transform(Image source, RotationType rotationType, FlippingType flippingType)
         {
+            Image target;
+
             switch (rotationType)
             {
                 case RotationType.None:
@@ -37,26 +25,29 @@ namespace Nine.Imaging.Filtering
 
                         Array.Copy(targetPixels, sourcePixels, targetPixels.Length);
 
-                        target.SetPixels(source.Width, source.Height, sourcePixels);
+                        target = new Image(source.Width, source.Height, sourcePixels);
                     }
                     break;
                 case RotationType.Rotate90:
                     {
-                        Rotate90(source, target);
+                        target = Rotate90(source);
                     }
                     break;
                 case RotationType.Rotate180:
                     {
-                        Rotate180(source, target);
+                        target = Rotate180(source);
                     }
                     break;
                 case RotationType.Rotate270:
                     {
-                        Rotate270(source, target);
+                        target = Rotate270(source);
                     }
                     break;
                 default:
-                    throw new InvalidOperationException();
+                    {
+                        target = source.Clone();
+                    }
+                    break;
             }
 
             switch (flippingType)
@@ -68,9 +59,11 @@ namespace Nine.Imaging.Filtering
                     FlipY(target);
                     break;
             }
+
+            return target;
         }
 
-        private static void Rotate270(ImageBase source, ImageBase target)
+        private static Image Rotate270(Image source)
         {
             int oldIndex = 0, newIndex = 0;
 
@@ -93,10 +86,11 @@ namespace Nine.Imaging.Filtering
                     targetPixels[newIndex + 3] = sourcePixels[oldIndex + 3];
                 }
             }
-            target.SetPixels(source.Height, source.Width, targetPixels);
+
+            return new Image(source.Height, source.Width, targetPixels);
         }
 
-        private static void Rotate180(ImageBase source, ImageBase target)
+        private static Image Rotate180(Image source)
         {
             int oldIndex = 0, newIndex = 0;
 
@@ -119,10 +113,11 @@ namespace Nine.Imaging.Filtering
                     targetPixels[newIndex + 3] = sourcePixels[oldIndex + 3];
                 }
             }
-            target.SetPixels(source.Width, source.Height, targetPixels);
+
+            return new Image(source.Width, source.Height, targetPixels);
         }
 
-        private static void Rotate90(ImageBase source, ImageBase target)
+        private static Image Rotate90(Image source)
         {
             int oldIndex = 0, newIndex = 0;
 
@@ -145,18 +140,11 @@ namespace Nine.Imaging.Filtering
                     targetPixels[newIndex + 3] = sourcePixels[oldIndex + 3];
                 }
             }
-            target.SetPixels(source.Height, source.Width, targetPixels);
-        }
 
-        /// <summary>
-        /// Swaps the image at the X-axis, which goes throug the middle
-        ///  of the height of the image.
-        /// </summary>
-        /// <param name="image">The image to swap at the x-axis. Cannot be null
-        /// (Nothing in Visual Basic).</param>
-        /// <exception cref="ArgumentNullException"><paramref name="image"/> is null
-        /// (Nothing in Visual Basic).</exception>
-        private static void FlipX(ImageBase image)
+            return new Image(source.Height, source.Width, targetPixels);
+        }
+        
+        private static void FlipX(Image image)
         {
             int oldIndex = 0, newIndex = 0;
 
@@ -189,16 +177,8 @@ namespace Nine.Imaging.Filtering
                 }
             }
         }
-
-        /// <summary>
-        /// Swaps the image at the Y-axis, which goes throug the middle
-        ///  of the width of the image.
-        /// </summary>
-        /// <param name="image">The image to swap at the y-axis. Cannot be null
-        /// (Nothing in Visual Basic).</param>
-        /// <exception cref="ArgumentNullException"><paramref name="image"/> is null
-        /// (Nothing in Visual Basic).</exception>
-        private static void FlipY(ImageBase image)
+        
+        private static void FlipY(Image image)
         {
             int oldIndex = 0, newIndex = 0;
 
@@ -231,19 +211,8 @@ namespace Nine.Imaging.Filtering
                 }
             }
         }
-
-        /// <summary>
-        /// Cuts the image with the specified rectangle and returns a new image.
-        /// </summary>
-        /// <param name="source">The image, where a cutted copy should be made from.</param>
-        /// <param name="target">The new image.</param>
-        /// <param name="bounds">The bounds of the new image.</param>
-        /// <exception cref="ArgumentNullException">
-        /// 	<para><paramref name="source"/> is null (Nothing in Visual Basic).</para>
-        /// 	<para>- or -</para>
-        /// 	<para><paramref name="target"/> is null (Nothing in Visual Basic).</para>
-        /// </exception>
-        internal static void Crop(ImageBase source, ImageBase target, Rectangle bounds)
+        
+        internal static Image Crop(Image source, Rectangle bounds)
         {
             if (bounds.Width < 0) throw new ArgumentOutOfRangeException(nameof(bounds));
             if (bounds.Height < 0) throw new ArgumentOutOfRangeException(nameof(bounds));
@@ -257,7 +226,7 @@ namespace Nine.Imaging.Filtering
                 Array.Copy(sourcePixels, (y * source.Width + bounds.Left) * 4, targetPixels, i * bounds.Width * 4, bounds.Width * 4);
             }
 
-            target.SetPixels(bounds.Width, bounds.Height, targetPixels);
+            return new Image(bounds.Width, bounds.Height, targetPixels);
         }
     }
 }
