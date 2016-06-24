@@ -122,7 +122,6 @@
             if (type == typeof(double)) return double.Parse(value);
             if (type == typeof(Color)) return Color.Parse(value);
             if (type == typeof(Rectangle)) return Rectangle.Parse(value);
-            if (type == typeof(Point)) return Point.Parse(value);
             if (type.GetTypeInfo().IsEnum) return Enum.Parse(type, value, true);
 
             return null;
