@@ -12,28 +12,19 @@
 
         public virtual Image Sample(Image source, int width, int height)
         {
-            byte[] pixels = new byte[width * height * 4];
+            var pixels = new byte[width * height * 4];
 
-            if (Parallelism > 1)
+            var partitionCount = Parallelism;
+            if (partitionCount > 1)
             {
-                int partitionCount = Parallelism;
-
-                Task[] tasks = new Task[partitionCount];
-
-                for (int p = 0; p < partitionCount; p++)
+                Parallel.For(0, partitionCount, i =>
                 {
-                    int current = p;
-                    tasks[p] = Task.Run(() =>
-                    {
-                        int batchSize = height / partitionCount;
-                        int yBegin = current * batchSize;
-                        int yEnd = (current == partitionCount - 1 ? height : yBegin + batchSize);
+                    int batchSize = height / partitionCount;
+                    int yBegin = i * batchSize;
+                    int yEnd = (i == partitionCount - 1 ? height : yBegin + batchSize);
 
-                        Sample(source, width, height, yBegin, yEnd, pixels);
-                    });
-                }
-
-                Task.WaitAll(tasks);
+                    Sample(source, width, height, yBegin, yEnd, pixels);
+                });
             }
             else
             {

@@ -50,26 +50,17 @@
             }
 
 
-            if (Parallelism > 1)
+            var partitionCount = Parallelism;
+            if (partitionCount > 1)
             {
-                int partitionCount = Parallelism;
-
-                Task[] tasks = new Task[partitionCount];
-
-                for (int p = 0; p < partitionCount; p++)
+                Parallel.For(0, partitionCount, i =>
                 {
-                    int current = p;
-                    tasks[p] = Task.Run(() =>
-                    {
-                        int batchSize = rectangle.Height / partitionCount;
-                        int yBegin = rectangle.Y + current * batchSize;
-                        int yEnd = (current == partitionCount - 1 ? rectangle.Bottom : yBegin + batchSize);
+                    int batchSize = rectangle.Height / partitionCount;
+                    int yBegin = rectangle.Y + i * batchSize;
+                    int yEnd = (i == partitionCount - 1 ? rectangle.Bottom : yBegin + batchSize);
 
-                        Apply(target, source, rectangle, yBegin, yEnd);
-                    });
-                }
-
-                Task.WaitAll(tasks);
+                    Apply(target, source, rectangle, yBegin, yEnd);
+                });
             }
             else
             {
