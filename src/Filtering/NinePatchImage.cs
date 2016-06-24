@@ -1,6 +1,7 @@
-﻿namespace Nine.Imaging.Filtering
+﻿namespace Nine.Imaging
 {
     using System;
+    using Nine.Imaging.Filtering;
 
     /// <summary>
     /// Represents a nine patch image from an android nine patch image format (http://developer.android.com/tools/help/draw9patch.html).
