@@ -26,7 +26,7 @@
         public static IList<IImageDecoder> Decoders => defaultDecoders.Value;
         public static IList<IImageEncoder> Encoders => defaultEncoders.Value;
 
-
+#if !PCL
         public static Image Load(string path, IList<IImageDecoder> decoders = null)
         {
             using (var stream = File.OpenRead(path))
@@ -34,7 +34,7 @@
                 return Load(stream, decoders);
             }
         }
-
+#endif
         public static Image Load(Stream stream, IList<IImageDecoder> decoders = null)
         {
             if (decoders == null)
