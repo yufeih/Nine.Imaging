@@ -13,6 +13,7 @@
         [InlineData("TestImages/Logo.png")]
         [InlineData("TestImages/Backdrop.jpg")]
         [InlineData("TestImages/Windmill.gif")]
+        [InlineData("TestImages/Search.png")]
         public void decode_then_encode_image_from_stream_should_succeed(string filename)
         {
             if (!Directory.Exists("TestResult/Encoded")) Directory.CreateDirectory("TestResult/Encoded");
@@ -29,6 +30,10 @@
                 {
                     var encoder = Image.Encoders.First(e => e.IsSupportedFileExtension(Path.GetExtension(filename)));
                     encoder.Encode(image, output);
+                }
+                using (var output = File.OpenWrite(encodedFilename + ".jpg"))
+                {
+                    image.SaveAsJpeg(output, 100);
                 }
             }
             else

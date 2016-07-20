@@ -85,6 +85,29 @@
 
     public static class ImageIOExtensions
     {
+#if !PCL
+        public static void SaveAsPng(this Image image, string path)
+        {
+            using (var stream = File.Create(path))
+            {
+                SaveAsPng(image, stream);
+            }
+        }
+        public static void SaveAsJpeg(this Image image, string path, int quality = 80)
+        {
+            using (var stream = File.Create(path))
+            {
+                SaveAsJpeg(image, stream, quality);
+            }
+        }
+        public static void Save(this Image image, string path, IImageEncoder encoder)
+        {
+            using (var stream = File.Create(path))
+            {
+                Save(image, stream, encoder);
+            }
+        }
+#endif
         public static void SaveAsPng(this Image image, Stream stream) => new PngEncoder().Encode(image, stream);
         public static void SaveAsJpeg(this Image image, Stream stream, int quality = 80) => new JpegEncoder { Quality = quality }.Encode(image, stream);
         public static void Save(this Image image, Stream stream, IImageEncoder encoder) => encoder.Encode(image, stream);

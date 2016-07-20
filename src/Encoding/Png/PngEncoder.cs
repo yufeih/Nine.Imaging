@@ -20,48 +20,12 @@ namespace Nine.Imaging.Encoding
     public class PngEncoder : IImageEncoder
     {
         private const int MaxBlockSize = 0xFFFF;
-        
-        /// <summary>
-        /// Gets or sets a value indicating whether this encoder
-        /// will write the image uncompressed the stream.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if the image should be written uncompressed to
-        /// the stream; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsWritingUncompressed { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this instance is writing
-        /// gamma information to the stream. The default value is false.
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if this instance is writing gamma 
-        /// information to the stream.; otherwise, <c>false</c>.
-        /// </value>
-        public bool IsWritingGamma { get; set; }
-
-        /// <summary>
-        /// Gets or sets the gamma value, that will be written
-        /// the the stream, when the <see cref="IsWritingGamma"/> property
-        /// is set to true. The default value is 2.2f.
-        /// </summary>
-        /// <value>The gamma value of the image.</value>
-        public double Gamma { get; set; }
 
         /// <summary>
         /// Gets the default file extension for this encoder.
         /// </summary>
         /// <value>The default file extension for this encoder.</value>
         public string Extension => "png";
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="PngEncoder"/> class.
-        /// </summary>
-        public PngEncoder()
-        {
-            Gamma = 2.2f;
-        }
 
         /// <summary>
         /// Indicates if the image encoder supports the specified
@@ -114,118 +78,10 @@ namespace Nine.Imaging.Encoding
             header.InterlaceMethod = 0;
 
             WriteHeaderChunk(stream, header);
-
-            WritePhysicsChunk(stream, image);
-            WriteGammaChunk(stream);
-
-            if (IsWritingUncompressed)
-            {
-                WriteDataChunksFast(stream, image);
-            }
-            else
-            {
-                WriteDataChunks(stream, image);
-            }
+            WriteDataChunks(stream, image);
             WriteEndChunk(stream);
 
             stream.Flush();
-        }
-
-        private void WritePhysicsChunk(Stream stream, Image imageBase)
-        {
-
-        }
-
-        private void WriteGammaChunk(Stream stream)
-        {
-            if (IsWritingGamma)
-            {
-                int gammeValue = (int)(Gamma * 100000f);
-
-                byte[] fourByteData = new byte[4];
-
-                byte[] size = BitConverter.GetBytes(gammeValue);
-                fourByteData[0] = size[3]; fourByteData[1] = size[2]; fourByteData[2] = size[1]; fourByteData[3] = size[0];
-
-                WriteChunk(stream, PngChunkTypes.Gamma, fourByteData);
-            }
-        }
-
-        private void WriteDataChunksFast(Stream stream, Image image)
-        {
-            byte[] pixels = image.Pixels;
-
-            // Convert the pixel array to a new array for adding
-            // the filter byte.
-            // --------------------------------------------------
-            byte[] data = new byte[image.Width * image.Height * 4 + image.Height];
-
-            int rowLength = image.Width * 4 + 1;
-
-            for (int y = 0; y < image.Height; y++)
-            {
-                data[y * rowLength] = 0;
-
-                Array.Copy(pixels, y * image.Width * 4, data, y * rowLength + 1, image.Width * 4);
-            }
-            // --------------------------------------------------
-
-            Adler32 adler32 = new Adler32();
-            adler32.Update(data);
-
-            using (MemoryStream tempStream = new MemoryStream())
-            {                
-                int remainder = data.Length;
-
-                int blockCount;
-                if ((data.Length % MaxBlockSize) == 0)
-                {
-                    blockCount = data.Length / MaxBlockSize;
-                }
-                else
-                {
-                    blockCount = (data.Length / MaxBlockSize) + 1;
-                }
-
-                // Write headers
-                tempStream.WriteByte(0x78);
-                tempStream.WriteByte(0xDA);
-
-                for (int i = 0; i < blockCount; i++)
-                {
-                    // Write the length
-                    ushort length = (ushort)((remainder < MaxBlockSize) ? remainder : MaxBlockSize);
-
-                    if (length == remainder)
-                    {
-                        tempStream.WriteByte(0x01);
-                    }
-                    else
-                    {
-                        tempStream.WriteByte(0x00);
-                    }
-
-                    tempStream.Write(BitConverter.GetBytes(length), 0, 2);
-
-                    // Write one's compliment of length
-                    tempStream.Write(BitConverter.GetBytes((ushort)~length), 0, 2);
-
-                    // Write blocks
-                    tempStream.Write(data, (int)(i * MaxBlockSize), length);
-
-                    // Next block
-                    remainder -= MaxBlockSize;
-                }
-
-                WriteInteger(tempStream, (int)adler32.Value);
-
-                tempStream.Seek(0, SeekOrigin.Begin);
-
-                byte[] zipData = new byte[tempStream.Length];
-                tempStream.Read(zipData, 0, (int)tempStream.Length);
-
-                WriteChunk(stream, PngChunkTypes.Data, zipData);
-            }
         }
 
         private void WriteDataChunks(Stream stream, Image image)
@@ -253,18 +109,22 @@ namespace Nine.Imaging.Encoding
                     // Calculate the offset for the original pixel array.
                     int pixelOffset = (y * image.Width + x) * 4;
 
-                    data[dataOffset + 0] = pixels[pixelOffset + 2];
-                    data[dataOffset + 1] = pixels[pixelOffset + 1];
-                    data[dataOffset + 2] = pixels[pixelOffset + 0];
+                    var a = 255.0f / pixels[pixelOffset + 3];
+
+                    data[dataOffset + 0] = (byte)(pixels[pixelOffset + 2] * a);
+                    data[dataOffset + 1] = (byte)(pixels[pixelOffset + 1] * a);
+                    data[dataOffset + 2] = (byte)(pixels[pixelOffset + 0] * a);
                     data[dataOffset + 3] = pixels[pixelOffset + 3];
 
                     if (y > 0)
                     {
                         int lastOffset = ((y - 1) * image.Width + x) * 4;
 
-                        data[dataOffset + 0] -= pixels[lastOffset + 2];
-                        data[dataOffset + 1] -= pixels[lastOffset + 1];
-                        data[dataOffset + 2] -= pixels[lastOffset + 0];
+                        a = 255.0f / pixels[pixelOffset + 3];
+
+                        data[dataOffset + 0] -= (byte)(pixels[lastOffset + 2] * a);
+                        data[dataOffset + 1] -= (byte)(pixels[lastOffset + 1] * a);
+                        data[dataOffset + 2] -= (byte)(pixels[lastOffset + 0] * a);
                         data[dataOffset + 3] -= pixels[lastOffset + 3];
                     }
                 }

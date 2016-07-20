@@ -110,7 +110,7 @@
                             $"The input bitmap '{ _infoHeader.Width }x{ _infoHeader.Height }' is bigger then the max allowed size '{ Image.MaxWidth }x{ Image.MaxHeight }'");
                     }
 
-                    byte[] imageData = new byte[_infoHeader.Width * _infoHeader.Height * 4];
+                    byte[] pixels = new byte[_infoHeader.Width * _infoHeader.Height * 4];
 
                     switch (_infoHeader.Compression)
                     {
@@ -123,19 +123,19 @@
 
                             if (_infoHeader.BitsPerPixel == 32)
                             {
-                                ReadRgb32(imageData, _infoHeader.Width, _infoHeader.Height);
+                                ReadRgb32(pixels, _infoHeader.Width, _infoHeader.Height);
                             }
                             else if (_infoHeader.BitsPerPixel == 24)
                             {
-                                ReadRgb24(imageData, _infoHeader.Width, _infoHeader.Height);
+                                ReadRgb24(pixels, _infoHeader.Width, _infoHeader.Height);
                             }
                             else if (_infoHeader.BitsPerPixel == 16)
                             {
-                                ReadRgb16(imageData, _infoHeader.Width, _infoHeader.Height);
+                                ReadRgb16(pixels, _infoHeader.Width, _infoHeader.Height);
                             }
                             else if (_infoHeader.BitsPerPixel <= 8)
                             {
-                                ReadRgbPalette(imageData, palette,
+                                ReadRgbPalette(pixels, palette,
                                     _infoHeader.Width,
                                     _infoHeader.Height,
                                     _infoHeader.BitsPerPixel);
@@ -145,7 +145,7 @@
                             throw new NotSupportedException("Does not support this kind of bitmap files.");
                     }
 
-                    return new Image(_infoHeader.Width, _infoHeader.Height, imageData);
+                    return new Image(_infoHeader.Width, _infoHeader.Height, pixels);
                 }
                 catch (IndexOutOfRangeException e)
                 {

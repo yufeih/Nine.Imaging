@@ -8,7 +8,6 @@
 
     public class ImageSamplerTest
     {
-        // TODO: Test alpha image
         public static readonly TheoryData<string, int, int?, StretchMode, ParallelImageSampler> Resizers = new TheoryData<string, int, int?, StretchMode, ParallelImageSampler>
         {
             { "Car.bmp", 1200, null, StretchMode.Fill, new NearestNeighborSampler() },
@@ -16,6 +15,8 @@
             { "Car.bmp", 1200, null, StretchMode.Fill, new BilinearSampler() },
             { "Car.bmp", 200, null, StretchMode.Fill, new SuperSamplingSampler() },
             { "Car.bmp", 1200, null, StretchMode.Fill, new SuperSamplingSampler() },
+            { "Search.png", 40, null, StretchMode.Fill, new SuperSamplingSampler() },
+            { "Search.png", 160, null, StretchMode.Fill, new SuperSamplingSampler() },
         };
 
         [Theory]

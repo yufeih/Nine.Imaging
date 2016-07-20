@@ -147,6 +147,7 @@ namespace Nine.Imaging.Encoding
                         ReadScanlines(dataStream, pixels, colorReader, colorTypeInformation);
                     }
 
+                    Image.PremultiplyPixels(pixels);
                     return new Image(_header.Width, _header.Height, pixels);
                 }
             }
