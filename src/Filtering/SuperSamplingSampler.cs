@@ -4,7 +4,7 @@
 
     public class SuperSamplingSampler : ParallelImageSampler
     {
-        private readonly BilinearSampler bilinear = new BilinearSampler();
+        private static readonly BilinearSampler bilinear = new BilinearSampler();
 
         public override Image Sample(Image source, int width, int height)
         {
@@ -29,7 +29,7 @@
             double factorY = (double)source.Height / height;
 
             int b, t, l, r;
-            double wb, wt, wl, wr, weight;
+            double wb, wt, wl, wr, weight, a;
 
             for (int y = startY; y < endY; y++)
             {
@@ -59,18 +59,22 @@
                         // Left
                         offset = (srcY * sourceWidth + l) << 2;
 
-                        sr += sourcePixels[offset + 0] * wl;
-                        sg += sourcePixels[offset + 1] * wl;
-                        sb += sourcePixels[offset + 2] * wl;
-                        sa += sourcePixels[offset + 3] * wl;
+                        a = sourcePixels[offset + 3];
+
+                        sr += sourcePixels[offset + 0] * wl * a;
+                        sg += sourcePixels[offset + 1] * wl * a;
+                        sb += sourcePixels[offset + 2] * wl * a;
+                        sa += a * wl;
 
                         // Right
                         offset = (srcY * sourceWidth + r) << 2;
 
-                        sr += sourcePixels[offset + 0] * wr;
-                        sg += sourcePixels[offset + 1] * wr;
-                        sb += sourcePixels[offset + 2] * wr;
-                        sa += sourcePixels[offset + 3] * wr;
+                        a = sourcePixels[offset + 3];
+
+                        sr += sourcePixels[offset + 0] * wr * a;
+                        sg += sourcePixels[offset + 1] * wr * a;
+                        sb += sourcePixels[offset + 2] * wr * a;
+                        sa += a * wr;
                     }
 
                     totalWeight += (b - t - 1) * (wr + wl);
@@ -80,18 +84,22 @@
                         // Top
                         offset = (t * sourceWidth + srcX) << 2;
 
-                        sr += sourcePixels[offset + 0] * wt;
-                        sg += sourcePixels[offset + 1] * wt;
-                        sb += sourcePixels[offset + 2] * wt;
-                        sa += sourcePixels[offset + 3] * wt;
+                        a = sourcePixels[offset + 3];
+
+                        sr += sourcePixels[offset + 0] * wt * a;
+                        sg += sourcePixels[offset + 1] * wt * a;
+                        sb += sourcePixels[offset + 2] * wt * a;
+                        sa += a * wt;
 
                         // Bottom
                         offset = (b * sourceWidth + srcX) << 2;
 
-                        sr += sourcePixels[offset + 0] * wb;
-                        sg += sourcePixels[offset + 1] * wb;
-                        sb += sourcePixels[offset + 2] * wb;
-                        sa += sourcePixels[offset + 3] * wb;
+                        a = sourcePixels[offset + 3];
+
+                        sr += sourcePixels[offset + 0] * wb * a;
+                        sg += sourcePixels[offset + 1] * wb * a;
+                        sb += sourcePixels[offset + 2] * wb * a;
+                        sa += a * wb;
                     }
 
                     totalWeight += (r - l - 1) * (wt + wb);
@@ -103,10 +111,12 @@
                         {
                             offset = (srcY * sourceWidth + srcX) << 2;
 
-                            sr += sourcePixels[offset + 0];
-                            sg += sourcePixels[offset + 1];
-                            sb += sourcePixels[offset + 2];
-                            sa += sourcePixels[offset + 3];
+                            a = sourcePixels[offset + 3];
+
+                            sr += sourcePixels[offset + 0] * a;
+                            sg += sourcePixels[offset + 1] * a;
+                            sb += sourcePixels[offset + 2] * a;
+                            sa += a;
                         }
                     }
 
@@ -115,39 +125,53 @@
                     // Corner
                     offset = (t * sourceWidth + l) << 2;
                     totalWeight += weight = wt * wl;
-                    sr += sourcePixels[offset + 0] * weight;
-                    sg += sourcePixels[offset + 1] * weight;
-                    sb += sourcePixels[offset + 2] * weight;
-                    sa += sourcePixels[offset + 3] * weight;
+
+                    a = sourcePixels[offset + 3];
+
+                    sr += sourcePixels[offset + 0] * weight * a;
+                    sg += sourcePixels[offset + 1] * weight * a;
+                    sb += sourcePixels[offset + 2] * weight * a;
+                    sa += a * weight;
 
                     offset = (t * sourceWidth + r) << 2;
                     totalWeight += weight = wt * wr;
-                    sr += sourcePixels[offset + 0] * weight;
-                    sg += sourcePixels[offset + 1] * weight;
-                    sb += sourcePixels[offset + 2] * weight;
-                    sa += sourcePixels[offset + 3] * weight;
+
+                    a = sourcePixels[offset + 3];
+
+                    sr += sourcePixels[offset + 0] * weight * a;
+                    sg += sourcePixels[offset + 1] * weight * a;
+                    sb += sourcePixels[offset + 2] * weight * a;
+                    sa += a * weight;
 
                     offset = (b * sourceWidth + l) << 2;
                     totalWeight += weight = wb * wl;
-                    sr += sourcePixels[offset + 0] * weight;
-                    sg += sourcePixels[offset + 1] * weight;
-                    sb += sourcePixels[offset + 2] * weight;
-                    sa += sourcePixels[offset + 3] * weight;
+
+                    a = sourcePixels[offset + 3];
+
+                    sr += sourcePixels[offset + 0] * weight * a;
+                    sg += sourcePixels[offset + 1] * weight * a;
+                    sb += sourcePixels[offset + 2] * weight * a;
+                    sa += a * weight;
 
                     offset = (b * sourceWidth + r) << 2;
                     totalWeight += weight = wb * wr;
-                    sr += sourcePixels[offset + 0] * weight;
-                    sg += sourcePixels[offset + 1] * weight;
-                    sb += sourcePixels[offset + 2] * weight;
-                    sa += sourcePixels[offset + 3] * weight;
+
+                    a = sourcePixels[offset + 3];
+
+                    sr += sourcePixels[offset + 0] * weight * a;
+                    sg += sourcePixels[offset + 1] * weight * a;
+                    sb += sourcePixels[offset + 2] * weight * a;
+                    sa += a * weight;
 
                     offset = (y * width + x) << 2;
                     weight = 1.0 / totalWeight;
 
-                    pixels[offset + 0] = (byte)(sr * weight);
-                    pixels[offset + 1] = (byte)(sg * weight);
-                    pixels[offset + 2] = (byte)(sb * weight);
-                    pixels[offset + 3] = (byte)(sa * weight);
+                    a = sa * weight;
+
+                    pixels[offset + 0] = (byte)(sr * weight / a);
+                    pixels[offset + 1] = (byte)(sg * weight / a);
+                    pixels[offset + 2] = (byte)(sb * weight / a);
+                    pixels[offset + 3] = (byte)a;
                 }
             }
         }

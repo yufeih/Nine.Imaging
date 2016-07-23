@@ -1,12 +1,4 @@
-﻿// ===============================================================================
-// NearestNeighborResizer.cs
-// .NET Image Tools
-// ===============================================================================
-// Copyright (c) .NET Image Tools Development Group. 
-// All rights reserved.
-// ===============================================================================
-
-namespace Nine.Imaging.Filtering
+﻿namespace Nine.Imaging.Filtering
 {
     /// <summary>
     /// Default image resizer, which resizes the image with the fast known method,

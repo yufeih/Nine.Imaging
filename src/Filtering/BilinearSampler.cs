@@ -1,12 +1,4 @@
-﻿// ===============================================================================
-// BilinearResizer.cs
-// .NET Image Tools
-// ===============================================================================
-// Copyright (c) .NET Image Tools Development Group. 
-// All rights reserved.
-// ===============================================================================
-
-namespace Nine.Imaging.Filtering
+﻿namespace Nine.Imaging.Filtering
 {
     using System;
 
@@ -27,7 +19,8 @@ namespace Nine.Imaging.Filtering
 
             int b, t, l, r;
 
-            byte c1, c2, c3, c4, b1, b2;
+            double c1, c2, c3, c4, b1, b2;
+            double a1, a2, a3, a4, a;
 
             for (int y = startY; y < endY; y++)
             {
@@ -64,17 +57,29 @@ namespace Nine.Imaging.Filtering
 
                     oneMinusX = 1.0 - fractionX;
 
-                    for (int c = 0; c < 4; c++)
+                    a1 = sourcePixels[((t + l) << 2) + 3];
+                    a2 = sourcePixels[((t + r) << 2) + 3];
+                    a3 = sourcePixels[((b + l) << 2) + 3];
+                    a4 = sourcePixels[((b + r) << 2) + 3];
+                    
+                    b1 = oneMinusX * a1 + fractionX * a2;
+                    b2 = oneMinusX * a3 + fractionX * a4;
+
+                    a = (oneMinusY * b1 + fractionY * b2);
+
+                    pixels[dstOffset + 3] = (byte)a;
+
+                    for (int c = 0; c < 3; c++)
                     {
-                        c1 = sourcePixels[((t + l) << 2) + c];
-                        c2 = sourcePixels[((t + r) << 2) + c];
-                        c3 = sourcePixels[((b + l) << 2) + c];
-                        c4 = sourcePixels[((b + r) << 2) + c];
+                        c1 = sourcePixels[((t + l) << 2) + c] * a1;
+                        c2 = sourcePixels[((t + r) << 2) + c] * a2;
+                        c3 = sourcePixels[((b + l) << 2) + c] * a3;
+                        c4 = sourcePixels[((b + r) << 2) + c] * a4;
 
-                        b1 = (byte)(oneMinusX * c1 + fractionX * c2);
-                        b2 = (byte)(oneMinusX * c3 + fractionX * c4);
+                        b1 = oneMinusX * c1 + fractionX * c2;
+                        b2 = oneMinusX * c3 + fractionX * c4;
 
-                        pixels[dstOffset + c] = (byte)(oneMinusY * b1 + fractionY * b2);
+                        pixels[dstOffset + c] = (byte)((oneMinusY * b1 + fractionY * b2) / a);
                     }
                 }
             }

@@ -15,6 +15,7 @@
             { "Car.bmp", 1200, null, StretchMode.Fill, new BilinearSampler() },
             { "Car.bmp", 200, null, StretchMode.Fill, new SuperSamplingSampler() },
             { "Car.bmp", 1200, null, StretchMode.Fill, new SuperSamplingSampler() },
+            { "Search.png", 160, null, StretchMode.Fill, new NearestNeighborSampler() },
             { "Search.png", 40, null, StretchMode.Fill, new SuperSamplingSampler() },
             { "Search.png", 160, null, StretchMode.Fill, new SuperSamplingSampler() },
         };
