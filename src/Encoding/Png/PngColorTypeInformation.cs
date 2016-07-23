@@ -1,14 +1,6 @@
-﻿// ===============================================================================
-// PngColorTypeInformation.cs
-// .NET Image Tools
-// ===============================================================================
-// Copyright (c) .NET Image Tools Development Group. 
-// All rights reserved.
-// ===============================================================================
+﻿using System;
 
-using System;
-
-namespace Nine.Imaging.Png
+namespace Nine.Imaging.Encoding
 {
     /// <summary>
     /// Contains information that are required when loading a png with a specific color type.

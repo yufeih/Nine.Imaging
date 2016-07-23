@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using ICSharpCode.SharpZipLib.Checksums;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
-using Nine.Imaging.Png;
+using SharpZipLib;
 
 namespace Nine.Imaging.Encoding
 {
@@ -194,7 +192,7 @@ namespace Nine.Imaging.Encoding
 
                 int row = 0, filter = 0, column = -1;
 
-                using (InflaterInputStream compressedStream = new InflaterInputStream(dataStream))
+                using (var compressedStream = new ZlibInflateStream(dataStream))
                 {
                     int readByte = 0;
                     while ((readByte = compressedStream.ReadByte()) >= 0)

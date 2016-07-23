@@ -1,12 +1,4 @@
-﻿// ===============================================================================
-// PngChunk.cs
-// .NET Image Tools
-// ===============================================================================
-// Copyright (c) .NET Image Tools Development Group. 
-// All rights reserved.
-// ===============================================================================
-
-namespace Nine.Imaging.Png
+﻿namespace Nine.Imaging.Encoding
 {
     /// <summary>
     /// Contains a list of possible chunk type identifier.

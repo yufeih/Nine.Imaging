@@ -1,14 +1,4 @@
-﻿// ===============================================================================
-// TruecolorReader.cs
-// .NET Image Tools
-// ===============================================================================
-// Copyright (c) .NET Image Tools Development Group. 
-// All rights reserved.
-// ===============================================================================
-
-using System;
-
-namespace Nine.Imaging.Png
+﻿namespace Nine.Imaging.Encoding
 {
     /// <summary>
     /// Color reader for reading truecolors from a PNG file. Only colors

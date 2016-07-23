@@ -1,13 +1,4 @@
-﻿// ===============================================================================
-// PaletteIndexReader.cs
-// .NET Image Tools
-// ===============================================================================
-// Copyright (c) .NET Image Tools Development Group. 
-// All rights reserved.
-// ===============================================================================
-
-
-namespace Nine.Imaging.Png
+﻿namespace Nine.Imaging.Encoding
 {
     /// <summary>
     /// A color reader for reading palette indices from the PNG file.

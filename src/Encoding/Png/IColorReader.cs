@@ -1,12 +1,4 @@
-﻿// ===============================================================================
-// IColorReader.cs
-// .NET Image Tools
-// ===============================================================================
-// Copyright (c) .NET Image Tools Development Group. 
-// All rights reserved.
-// ===============================================================================
-
-namespace Nine.Imaging.Png
+﻿namespace Nine.Imaging.Encoding
 {
     /// <summary>
     /// Interface for color readers, which are responsible for reading 

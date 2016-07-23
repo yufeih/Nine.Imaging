@@ -1,16 +1,6 @@
-﻿// ===============================================================================
-// PngEncoder.cs
-// .NET Image Tools
-// ===============================================================================
-// Copyright (c) .NET Image Tools Development Group. 
-// All rights reserved.
-// ===============================================================================
-
-using System;
+﻿using System;
 using System.IO;
-using ICSharpCode.SharpZipLib.Checksums;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
-using Nine.Imaging.Png;
+using SharpZipLib;
 
 namespace Nine.Imaging.Encoding
 {
@@ -62,10 +52,10 @@ namespace Nine.Imaging.Encoding
         {
             // Write the png header.
             stream.Write(
-                new byte[] 
-                { 
-                    0x89, 0x50, 0x4E, 0x47, 
-                    0x0D, 0x0A, 0x1A, 0x0A 
+                new byte[]
+                {
+                    0x89, 0x50, 0x4E, 0x47,
+                    0x0D, 0x0A, 0x1A, 0x0A
                 }, 0, 8);
 
             PngHeader header = new PngHeader();
@@ -105,7 +95,7 @@ namespace Nine.Imaging.Encoding
                 {
                     // Calculate the offset for the new array.
                     int dataOffset = y * rowLength + x * 4 + 1;
-                    
+
                     // Calculate the offset for the original pixel array.
                     int pixelOffset = (y * image.Width + x) * 4;
 
@@ -138,15 +128,13 @@ namespace Nine.Imaging.Encoding
             {
                 memoryStream = new MemoryStream();
 
-                using (DeflaterOutputStream zStream = new DeflaterOutputStream(memoryStream))
+                using (var zStream = new ZlibDeflateStream(memoryStream, 6))
                 {
                     zStream.Write(data, 0, data.Length);
-                    zStream.Flush();
-                    zStream.Finish();
-
-                    bufferLength = (int)memoryStream.Length;
-                    buffer = memoryStream.ToArray();
                 }
+
+                bufferLength = (int)memoryStream.Length;
+                buffer = memoryStream.ToArray();
             }
             finally
             {
@@ -243,7 +231,7 @@ namespace Nine.Imaging.Encoding
             byte[] buffer = BitConverter.GetBytes(value);
 
             Array.Reverse(buffer);
-           
+
             stream.Write(buffer, 0, 4);
         }
 

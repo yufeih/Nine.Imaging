@@ -1,4 +1,4 @@
-﻿namespace Nine.Imaging.Png
+﻿namespace Nine.Imaging.Encoding
 {
     using System;
 
