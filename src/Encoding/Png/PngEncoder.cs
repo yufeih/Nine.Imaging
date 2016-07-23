@@ -10,6 +10,7 @@ namespace Nine.Imaging.Encoding
     public class PngEncoder : IImageEncoder
     {
         private const int MaxBlockSize = 0xFFFF;
+        private static readonly byte[] s_pngHeader = new byte[] { 0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A };
 
         /// <summary>
         /// Gets the default file extension for this encoder.
@@ -51,12 +52,7 @@ namespace Nine.Imaging.Encoding
         public void Encode(Image image, Stream stream)
         {
             // Write the png header.
-            stream.Write(
-                new byte[]
-                {
-                    0x89, 0x50, 0x4E, 0x47,
-                    0x0D, 0x0A, 0x1A, 0x0A
-                }, 0, 8);
+            stream.Write(s_pngHeader, 0, 8);
 
             PngHeader header = new PngHeader();
             header.Width = image.Width;
@@ -98,23 +94,19 @@ namespace Nine.Imaging.Encoding
 
                     // Calculate the offset for the original pixel array.
                     int pixelOffset = (y * image.Width + x) * 4;
-
-                    var a = 255.0f / pixels[pixelOffset + 3];
-
-                    data[dataOffset + 0] = (byte)(pixels[pixelOffset + 2] * a);
-                    data[dataOffset + 1] = (byte)(pixels[pixelOffset + 1] * a);
-                    data[dataOffset + 2] = (byte)(pixels[pixelOffset + 0] * a);
+                    
+                    data[dataOffset + 0] = pixels[pixelOffset + 2];
+                    data[dataOffset + 1] = pixels[pixelOffset + 1];
+                    data[dataOffset + 2] = pixels[pixelOffset + 0];
                     data[dataOffset + 3] = pixels[pixelOffset + 3];
 
                     if (y > 0)
                     {
                         int lastOffset = ((y - 1) * image.Width + x) * 4;
-
-                        a = 255.0f / pixels[pixelOffset + 3];
-
-                        data[dataOffset + 0] -= (byte)(pixels[lastOffset + 2] * a);
-                        data[dataOffset + 1] -= (byte)(pixels[lastOffset + 1] * a);
-                        data[dataOffset + 2] -= (byte)(pixels[lastOffset + 0] * a);
+                        
+                        data[dataOffset + 0] -= pixels[lastOffset + 2];
+                        data[dataOffset + 1] -= pixels[lastOffset + 1];
+                        data[dataOffset + 2] -= pixels[lastOffset + 0];
                         data[dataOffset + 3] -= pixels[lastOffset + 3];
                     }
                 }

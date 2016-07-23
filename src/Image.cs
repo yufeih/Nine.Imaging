@@ -8,7 +8,7 @@
         public readonly int Height;
 
         /// <summary>
-        /// Returns all pixels of the image in b, g, r, a byte order. Alpha is pre-multiplied.
+        /// Returns all pixels of the image in b, g, r, a byte order.
         /// </summary>
         public readonly byte[] Pixels;
 
@@ -63,28 +63,6 @@
             Width = width;
             Height = height;
             Pixels = pixels;
-        }
-
-        public static void PremultiplyPixels(byte[] pixels)
-        {
-            for (var i = 0; i < pixels.Length; i += 4)
-            {
-                var a = pixels[i + 3] / 255.0f;
-                pixels[i] = (byte)(pixels[i] * a);
-                pixels[i + 1] = (byte)(pixels[i + 1] * a);
-                pixels[i + 2] = (byte)(pixels[i + 2] * a);
-            }
-        }
-
-        public static void UnpremultiplyAlpha(byte[] pixels)
-        {
-            for (var i = 0; i < pixels.Length; i += 4)
-            {
-                var a = 255.0f / pixels[i + 3];
-                pixels[i] = (byte)(pixels[i] * a);
-                pixels[i + 1] = (byte)(pixels[i + 1] * a);
-                pixels[i + 2] = (byte)(pixels[i + 2] * a);
-            }
         }
 
         public virtual Image Clone()

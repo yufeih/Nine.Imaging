@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using SharpZipLib;
@@ -31,7 +30,7 @@ namespace Nine.Imaging.Encoding
         public static int MaxChunkSize = 1024 * 1024;
 
         public int HeaderSize => 8;
-        
+
         public bool IsSupportedFileExtension(string extension)
         {
             if (extension.StartsWith(".")) extension = extension.Substring(1);
@@ -55,33 +54,24 @@ namespace Nine.Imaging.Encoding
 
         struct PngDecoderCore
         {
-            private static readonly Dictionary<int, PngColorTypeInformation> _colorTypes = new Dictionary<int, PngColorTypeInformation>();
-            private Image _image;
+            private static readonly PngColorTypeInformation[] _colorTypes = new[]
+            {
+                new PngColorTypeInformation(1, new int[] { 1, 2, 4, 8 },
+                    (p, a) => new GrayscaleReader(false)),
+                null,
+                new PngColorTypeInformation(3, new int[] { 8, 16 },
+                    (p, a) => new TrueColorReader(false)),
+                new PngColorTypeInformation(1, new int[] { 1, 2, 4, 8 },
+                    (p, a) => new PaletteIndexReader(p, a)),
+                new PngColorTypeInformation(2, new int[] { 8 },
+                    (p, a) => new GrayscaleReader(true)),
+                null,
+                new PngColorTypeInformation(4, new int[] { 8 },
+                    (p, a) => new TrueColorReader(true)),
+            };
+
             private Stream _stream;
             private PngHeader _header;
-
-            static PngDecoderCore()
-            {
-                _colorTypes.Add(0,
-                    new PngColorTypeInformation(1, new int[] { 1, 2, 4, 8 },
-                        (p, a) => new GrayscaleReader(false)));
-
-                _colorTypes.Add(2,
-                    new PngColorTypeInformation(3, new int[] { 8, 16 },
-                        (p, a) => new TrueColorReader(false)));
-
-                _colorTypes.Add(3,
-                    new PngColorTypeInformation(1, new int[] { 1, 2, 4, 8 },
-                        (p, a) => new PaletteIndexReader(p, a)));
-
-                _colorTypes.Add(4,
-                    new PngColorTypeInformation(2, new int[] { 8 },
-                        (p, a) => new GrayscaleReader(true)));
-
-                _colorTypes.Add(6,
-                    new PngColorTypeInformation(4, new int[] { 8 },
-                        (p, a) => new TrueColorReader(true)));
-            }
 
             public Image Decode(Stream stream)
             {
@@ -145,7 +135,6 @@ namespace Nine.Imaging.Encoding
                         ReadScanlines(dataStream, pixels, colorReader, colorTypeInformation);
                     }
 
-                    Image.PremultiplyPixels(pixels);
                     return new Image(_header.Width, _header.Height, pixels);
                 }
             }
@@ -299,7 +288,7 @@ namespace Nine.Imaging.Encoding
 
             private void ValidateHeader()
             {
-                if (!_colorTypes.ContainsKey(_header.ColorType))
+                if (_header.ColorType >= _colorTypes.Length || _colorTypes[_header.ColorType] == null)
                 {
                     throw new ImageFormatException($"Color type '{ _header.ColorType }' is not supported or not valid.");
                 }
