@@ -18,16 +18,16 @@
         public static readonly Color Blue = new Color(0, 0, 255);
 
         [FieldOffset(0)]
-        public readonly byte B;
+        public byte B;
         [FieldOffset(1)]
-        public readonly byte G;
+        public byte G;
         [FieldOffset(2)]
-        public readonly byte R;
+        public byte R;
         [FieldOffset(3)]
-        public readonly byte A;
+        public byte A;
 
         [FieldOffset(0)]
-        public readonly int Bgra;
+        public int Bgra;
 
         public int Rgba { get { return (R << 24) | (G << 16) | (B << 8) | A; } }
         public int Argb { get { return (A << 24) | (R << 16) | (G << 8) | B; } }
