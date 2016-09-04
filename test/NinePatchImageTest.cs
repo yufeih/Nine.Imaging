@@ -11,7 +11,7 @@
         [InlineData("TestImages/NinePatch.png", 0.5)]
         public void transform_images(string file, double scale)
         {
-            if (!Directory.Exists("TestResult/NinePatch")) Directory.CreateDirectory("TestResult/NinePatch");
+            Directory.CreateDirectory("TestResult/NinePatch");
 
             var img = NinePatchImage.Create(Image.Load(file), scale);
 
