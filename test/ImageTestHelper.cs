@@ -8,8 +8,7 @@
     {
         public static void VerifyAndSave(this Image image, string filename, Action<Stream> save = null)
         {
-            var directory = Path.GetDirectoryName(filename);
-            if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
+            Directory.CreateDirectory(Path.GetDirectoryName(filename));
 
             var ms = new MemoryStream();
             if (save != null)

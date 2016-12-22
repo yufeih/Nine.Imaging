@@ -16,7 +16,7 @@
         [InlineData("TestImages/Search.png")]
         public void decode_then_encode_image_from_stream_should_succeed(string filename)
         {
-            if (!Directory.Exists("TestResult/Encoded")) Directory.CreateDirectory("TestResult/Encoded");
+            Directory.CreateDirectory("TestResult/Encoded");
             
             var watch = Stopwatch.StartNew();
             var image = Image.Load(filename);
