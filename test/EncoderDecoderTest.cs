@@ -12,6 +12,7 @@
         [InlineData("TestImages/Portrait.png")]
         [InlineData("TestImages/Logo.png")]
         [InlineData("TestImages/Backdrop.jpg")]
+        [InlineData("TestImages/Backdrop-grayscale.jpg")]
         [InlineData("TestImages/Windmill.gif")]
         [InlineData("TestImages/Search.png")]
         public void decode_then_encode_image_from_stream_should_succeed(string filename)
