@@ -76,26 +76,52 @@ namespace Nine.Imaging.Encoding
 
             byte[] pixels = new byte[pixelWidth * pixelHeight * 4];
 
-            if (!(jpg.Colorspace == Colorspace.RGB && jpg.BitsPerComponent == 8))
+            if (jpg.BitsPerComponent != 8)
             {
-                throw new NotSupportedException("JpegDecoder only support RGB color space.");
+                throw new NotSupportedException("JpegDecoder only supports 8 bits per component.");
             }
 
-            for (int y = 0; y < pixelHeight; y++)
+            if (jpg.Colorspace == Colorspace.RGB)
             {
-                SampleRow row = jpg.GetRow(y);
-
-                for (int x = 0; x < pixelWidth; x++)
+                for (int y = 0; y < pixelHeight; y++)
                 {
-                    Sample sample = row.GetAt(x);
-                    
-                    int offset = (y * pixelWidth + x) * 4;
+                    SampleRow row = jpg.GetRow(y);
 
-                    pixels[offset + 0] = (byte)sample[2];
-                    pixels[offset + 1] = (byte)sample[1];
-                    pixels[offset + 2] = (byte)sample[0];
-                    pixels[offset + 3] = (byte)255;
+                    for (int x = 0; x < pixelWidth; x++)
+                    {
+                        Sample sample = row.GetAt(x);
+                        
+                        int offset = (y * pixelWidth + x) * 4;
+
+                        pixels[offset + 0] = (byte)sample[2];
+                        pixels[offset + 1] = (byte)sample[1];
+                        pixels[offset + 2] = (byte)sample[0];
+                        pixels[offset + 3] = (byte)255;
+                    }
                 }
+            }
+            else if (jpg.Colorspace == Colorspace.Grayscale)
+            {
+                for (int y = 0; y < pixelHeight; y++)
+                {
+                    SampleRow row = jpg.GetRow(y);
+
+                    for (int x = 0; x < pixelWidth; x++)
+                    {
+                        Sample sample = row.GetAt(x);
+
+                        int offset = (y * pixelWidth + x) * 4;
+
+                        pixels[offset + 0] = (byte)sample[0];
+                        pixels[offset + 1] = (byte)sample[0];
+                        pixels[offset + 2] = (byte)sample[0];
+                        pixels[offset + 3] = (byte)255;
+                    }
+                }
+            }
+            else
+            {
+                throw new NotSupportedException($"JpegDecoder doesn't support {jpg.Colorspace} color space.");
             }
 
             return new Image(pixelWidth, pixelHeight, pixels);
