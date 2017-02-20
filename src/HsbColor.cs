@@ -5,7 +5,7 @@
     /// <summary>
     /// Presents color in HSV color cylinder (http://en.wikipedia.org/wiki/HSL_and_HSV).
     /// </summary>
-    public struct HsbColor
+    public struct HsbColor : IEquatable<HsbColor>
     {
         public float A;
         public float H;

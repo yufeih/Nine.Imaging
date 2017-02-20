@@ -24,6 +24,23 @@
         }
 
         [Fact]
+        public void convert_between_cmyk_and_rgb()
+        {
+            foreach (var c in new[] { Color.White, Color.Black, Color.Red, Color.Green, Color.Black, new Color(123, 123, 123) })
+            {
+                Assert.Equal(c, Color.FromCmyk(c.ToCmyk()));
+            }
+
+            var random = new Random(0);
+            for (var i = 0; i < 1000; i++)
+            {
+                var c = new Color((byte)random.Next(255), (byte)random.Next(255), (byte)random.Next(255));
+                var cmyk = c.ToCmyk();
+                Assert.Equal(c, Color.FromCmyk(cmyk.C, cmyk.M, cmyk.Y, cmyk.K));
+            }
+        }
+
+        [Fact]
         public void convert_between_hsb_and_rgb()
         {
             foreach (var c in new[] { Color.Transparent, Color.White, Color.Black, Color.Red, Color.Green, Color.Black, new Color(123, 123, 123) })

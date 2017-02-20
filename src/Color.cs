@@ -56,6 +56,13 @@
             return new HsbColor { H = hue, S = saturation, B = brightness, A = 1.0f }.ToRgb();
         }
 
+        public CmykColor ToCmyk() => CmykColor.FromRgb(this);
+        public static Color FromCmyk(CmykColor hsb) => hsb.ToRgb();
+        public static Color FromCmyk(float c, float m, float y, float k)
+        {
+            return new CmykColor { C = c, M = m, Y = y, K = k }.ToRgb();
+        }
+
         public override string ToString()
         {
             var sb = new StringBuilder(32);
