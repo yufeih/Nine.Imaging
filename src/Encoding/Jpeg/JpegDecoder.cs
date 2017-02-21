@@ -119,6 +119,31 @@ namespace Nine.Imaging.Encoding
                     }
                 }
             }
+            else if (jpg.Colorspace == Colorspace.CMYK)
+            {
+                for (int y = 0; y < pixelHeight; y++)
+                {
+                    SampleRow row = jpg.GetRow(y);
+
+                    for (int x = 0; x < pixelWidth; x++)
+                    {
+                        Sample sample = row.GetAt(x);
+                        
+                        Color color = Color.FromCmyk(
+                            -1.0f * ((byte)sample[0] / 255.0f) + 1.0f,
+                            -1.0f * ((byte)sample[1] / 255.0f) + 1.0f, 
+                            -1.0f * ((byte)sample[2] / 255.0f) + 1.0f, 
+                            -1.0f * ((byte)sample[3] / 255.0f) + 1.0f);
+
+                        int offset = (y * pixelWidth + x) * 4;
+
+                        pixels[offset + 0] = color.B;
+                        pixels[offset + 1] = color.G;
+                        pixels[offset + 2] = color.R;
+                        pixels[offset + 3] = (byte)255;
+                    }
+                }
+            }
             else
             {
                 throw new NotSupportedException($"JpegDecoder doesn't support {jpg.Colorspace} color space.");
