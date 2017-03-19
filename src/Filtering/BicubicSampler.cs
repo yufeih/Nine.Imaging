@@ -9,7 +9,6 @@
 
         protected override void Sample(Image source, int width, int height, int startY, int endY, byte[] pixels)
         {
-            // TODO: Implement this
             byte[] sourcePixels = source.Pixels;
 
             double factorX = (double)source.Width / width;
